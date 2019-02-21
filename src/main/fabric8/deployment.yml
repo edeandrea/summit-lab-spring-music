@@ -12,12 +12,12 @@ spec:
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: spring-music-db
+                  name: music
                   key: database-user
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: spring-music-db
+                  name: music
                   key: database-password
           livenessProbe:
             httpGet:
