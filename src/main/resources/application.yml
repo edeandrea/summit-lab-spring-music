@@ -1,4 +1,8 @@
 spring:
+  application:
+    name: spring-music
+  main:
+    allow-bean-definition-overriding: true
   jpa:
     generate-ddl: true
 
@@ -7,6 +11,11 @@ management:
     web:
       exposure:
         include: "*"
+
+logging:
+  level:
+    root: WARN
+    io.k8s.samples.music: DEBUG
 
 ---
 spring:
