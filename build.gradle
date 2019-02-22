@@ -19,9 +19,6 @@ ext {
 repositories {
 	mavenCentral()
 	jcenter()
-	maven {
-		url 'http://maven.repository.redhat.com/ga/'
-	}
 }
 
 dependencyManagement {

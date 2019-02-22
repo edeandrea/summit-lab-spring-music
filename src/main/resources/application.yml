@@ -5,6 +5,7 @@ spring:
     allow-bean-definition-overriding: true
   jpa:
     generate-ddl: true
+    show-sql: true
 
 management:
   endpoints:
@@ -42,10 +43,6 @@ management:
 ---
 spring:
   profiles: mysql
-  datasource:
-    url: "jdbc:mysql://localhost/music"
-    username:
-    password: 
   jpa:
     properties:
       hibernate:
@@ -53,10 +50,6 @@ spring:
 ---
 spring:
   profiles: postgres
-  datasource:
-    url: "jdbc:postgresql://localhost/music"
-    username: postgres
-    password: 
   jpa:
     properties:
       hibernate:
