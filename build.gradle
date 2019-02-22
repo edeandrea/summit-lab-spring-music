@@ -32,6 +32,8 @@ springBoot {
 }
 
 dependencies {
+	annotationProcessor 'org.springframework:spring-context-indexer'
+	
 	// Spring Boot
 	compile "org.springframework.boot:spring-boot-starter-web"
 	compile "org.springframework.boot:spring-boot-starter-actuator"

@@ -1,35 +1,23 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: spring-music-mysql
+  name: spring-music-redis
   annotations:
     iconClass: icon-spring
-    description: Application template for deploying the spring-music application on OpenShift using a MySQL backend
+    description: Application template for deploying the spring-music application on OpenShift using a Redis backend
 parameters:
   - name: SPRING_PROFILES_ACTIVE
-    value: mysql
+    value: redis
     description: The profiles to activate in the spring context
     required: true
   - name: APPLICATION_NAME
     value: spring-music
     description: The application name
     required: true
-  - name: DATABASE_NAME
-    value: music
-    description: The name of the database to use
-    required: true
-  - name: DATABASE_USERNAME
-    generate: expression
-    from: '[\w]{32}'
-    description: The database username
   - name: DATABASE_PASSWORD
     generate: expression
-    from: '[\w]{32}'
+    from: "[a-zA-Z0-9]{32}"
     description: The database password
-  - name: DATABASE_ROOT_PASSWORD
-    generate: expression
-    from: '[\w]{32}'
-    description: The database root password
   - name: GITHUB_TRIGGER_SECRET
     generate: expression
     from: '[a-zA-Z0-9]{8}'
@@ -39,8 +27,8 @@ parameters:
     from: '[a-zA-Z0-9]{8}'
     description: Generic build trigger secret
 labels:
-  createdBy: spring-music-mysql-template
-  template: spring-music-mysql
+  createdBy: spring-music-redis-template
+  template: spring-music-redis
 objects:
   - kind: Secret
     apiVersion: v1
@@ -49,15 +37,9 @@ objects:
       labels:
         application: ${APPLICATION_NAME}
       annotations:
-        template.openshift.io/expose-database_name: '{.data[''database-name'']}'
         template.openshift.io/expose-password: '{.data[''database-password'']}'
-        template.openshift.io/expose-root_password: '{.data[''database-root-password'']}'
-        template.openshift.io/expose-username: '{.data[''database-user'']}'
     stringData:
-      database-name: ${DATABASE_NAME}
       database-password: ${DATABASE_PASSWORD}
-      database-root-password: ${DATABASE_ROOT_PASSWORD}
-      database-user: ${DATABASE_USERNAME}
   - kind: ConfigMap
     apiVersion: v1
     metadata:
@@ -65,7 +47,8 @@ objects:
       labels:
         application: ${APPLICATION_NAME}
     data:
-      spring.datasource.url: 'jdbc:mysql://${APPLICATION_NAME}-db:3306/${DATABASE_NAME}'
+      spring.redis.host: ${APPLICATION_NAME}-db
+      spring.redis.port: 6379
   - kind: ImageStream
     apiVersion: v1
     metadata:
@@ -127,7 +110,7 @@ objects:
     metadata:
       name: ${APPLICATION_NAME}-db
       labels:
-        template: mysql-ephemeral-template
+        template: redis-ephemeral-template
         application: ${APPLICATION_NAME}
       annotations:
         template.alpha.openshift.io/wait-for-ready: "true"
@@ -145,31 +128,16 @@ objects:
         spec:
           containers:
             - env:
-                - name: MYSQL_USER
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${APPLICATION_NAME}-db
-                      key: database-user
-                - name: MYSQL_PASSWORD
+                - name: REDIS_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: ${APPLICATION_NAME}-db
                       key: database-password
-                - name: MYSQL_ROOT_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${APPLICATION_NAME}-db
-                      key: database-root-password
-                - name: MYSQL_DATABASE
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${APPLICATION_NAME}-db
-                      key: database-name
               name: ${APPLICATION_NAME}-db
-              image: rhscl/mysql-57-rhel7
+              image: rhscl/redis-32-rhel7
               imagePullPolicy: IfNotPresent
               ports:
-                - containerPort: 3306
+                - containerPort: 6379
                   protocol: TCP
               livenessProbe:
                 failureThreshold: 3
@@ -177,7 +145,7 @@ objects:
                 periodSeconds: 10
                 successThreshold: 1
                 tcpSocket:
-                  port: 3306
+                  port: 6379
                 timeoutSeconds: 1
               readinessProbe:
                 exec:
@@ -185,7 +153,7 @@ objects:
                     - /bin/sh
                     - -i
                     - -c
-                    - MYSQL_PWD="$MYSQL_PASSWORD" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'
+                    - test "$(redis-cli -h 127.0.0.1 -a $REDIS_PASSWORD ping) == "PONG"
                 failureThreshold: 3
                 initialDelaySeconds: 5
                 periodSeconds: 10
@@ -197,7 +165,7 @@ objects:
               securityContext:
                 privileged: false
               volumnMounts:
-                - mountPath: /var/lib/mysql/data
+                - mountPath: /var/lib/redis/data
                   name: ${APPLICATION_NAME}-db-data
       triggers:
         - type: ImageChange
@@ -207,7 +175,7 @@ objects:
               - ${APPLICATION_NAME}-db
             from:
               kind: ImageStreamTag
-              name: mysql:5.7
+              name: redis:3.2
               namespace: openshift
         - type: ConfigChange
       volumes:
@@ -218,14 +186,14 @@ objects:
     metadata:
       name: ${APPLICATION_NAME}-db
       labels:
-        template: mysql-ephemeral-template
+        template: redis-ephemeral-template
         application: ${APPLICATION_NAME}
     spec:
       ports:
-        - name: mysql
-          port: 3306
+        - name: postgres
+          port: 6379
           protocol: TCP
-          targetPort: 3306
+          targetPort: 6379
       selector:
         name: ${APPLICATION_NAME}-db
   - kind: DeploymentConfig
@@ -267,21 +235,21 @@ objects:
               env:
                 - name: SPRING_PROFILES_ACTIVE
                   value: ${SPRING_PROFILES_ACTIVE}
-                - name: SPRING_DATASOURCE_USERNAME
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${APPLICATION_NAME}-db
-                      key: database-user
-                - name: SPRING_DATASOURCE_PASSWORD
+                - name: SPRING_REDIS_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: ${APPLICATION_NAME}-db
                       key: database-password
-                - name: SPRING_DATASOURCE_URL
+                - name: SPRING_REDIS_HOST
                   valueFrom:
                     configMapKeyRef:
                       name: ${APPLICATION_NAME}-config
-                      key: spring.datasource.url
+                      key: spring.redis.host
+                - name: SPRING_REDIS_PORT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${APPLICATION_NAME}-config
+                      key: spring.redis.port
               resources:
                 requests:
                   memory: 512Mi
@@ -337,4 +305,3 @@ objects:
       to:
         kind: Service
         name: ${APPLICATION_NAME}
-

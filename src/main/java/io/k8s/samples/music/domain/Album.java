@@ -7,7 +7,10 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import org.springframework.data.annotation.Persistent;
+
 @Entity
+@Persistent
 public class Album {
     @Id
     @Column(length = 40)
