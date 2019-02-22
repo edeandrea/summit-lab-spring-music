@@ -1,6 +1,7 @@
 plugins {
 	id "org.springframework.boot" version "2.1.3.RELEASE"
 	id "io.spring.dependency-management" version "1.0.6.RELEASE"
+	id "com.gorylenko.gradle-git-properties" version "2.0.0"
 	id 'java'
 	id 'eclipse-wtp'
 	id 'idea'
@@ -27,6 +28,10 @@ dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
 	}
+}
+
+springBoot {
+	buildInfo()
 }
 
 dependencies {

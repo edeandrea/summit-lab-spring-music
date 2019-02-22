@@ -11,6 +11,12 @@ management:
     web:
       exposure:
         include: "*"
+  endpoint:
+    health:
+      show-details: always
+  info:
+    git:
+      mode: full
 
 logging:
   level:
@@ -19,23 +25,36 @@ logging:
 
 ---
 spring:
+  profiles: '!redis'
+
+management:
+  health:
+    redis:
+      enabled: false
+---
+spring:
+  profiles: '!mongodb'
+
+management:
+  health:
+    mongo:
+      enabled: false
+---
+spring:
   profiles: mysql
   datasource:
     url: "jdbc:mysql://localhost/music"
-    driver-class-name: com.mysql.jdbc.Driver
     username:
     password: 
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL55Dialect
-
 ---
 spring:
   profiles: postgres
   datasource:
     url: "jdbc:postgresql://localhost/music"
-    driver-class-name: org.postgresql.Driver
     username: postgres
     password: 
   jpa:
