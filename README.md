@@ -87,9 +87,11 @@ When running on Kubernetes you need to first deploy the appropriate service(s) a
  
  [Spring Cloud Kubernetes](https://spring.io/projects/spring-cloud-kubernetes) requires that the application being deployed needs to have read-only access to the host node so that it can use the Kubernetes REST API. This can be done by using the following command within your project:
  
- `oc adm policy add-role-to-user view system:serviceaccount:<project>:default`
+ ```
+ oc adm policy add-role-to-user view system:serviceaccount:<project>:default
+ ```
  
- Make sure to substitute your project's name for `<project>`.
+ > Make sure to substitute your project's name for `<project>`.
  
  Once that is done you can import one (or all) of the [templates](misc/templates) either into the project's registry or you can have your administrator upload them into the `openshift` registry so they are available to all projects. From there you can simply instantiate an instance of the template you would like (i.e. `spring-music-mysql` / `spring-music-postgresql` / `spring-music-mongodb` / `spring-music-redis`). There are some parameters you can customize but otherwise the template will create everything you need to deploy the application along with the appropriate datasource, secrets, config maps, and perform all necessary bindings.
 
