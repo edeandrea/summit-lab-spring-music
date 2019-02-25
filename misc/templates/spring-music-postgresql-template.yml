@@ -200,7 +200,7 @@ objects:
                   memory: 512Mi
               securityContext:
                 privileged: false
-              volumnMounts:
+              volumeMounts:
                 - mountPath: /var/lib/pgsql/data
                   name: ${APPLICATION_NAME}-db-data
       triggers:

@@ -196,7 +196,7 @@ objects:
                   memory: 512Mi
               securityContext:
                 privileged: false
-              volumnMounts:
+              volumeMounts:
                 - mountPath: /var/lib/mysql/data
                   name: ${APPLICATION_NAME}-db-data
       triggers:
