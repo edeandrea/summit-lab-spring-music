@@ -79,7 +79,7 @@ objects:
           from:
             kind: DockerImage
             name: fabric8/s2i-java
-          name: latest
+          name: latest-java11
           referencePolicy:
             type: Source
   - kind: ImageStream
@@ -91,7 +91,7 @@ objects:
     spec:
       tags:
         - name: latest
-  - kind: BuildConfig
+  - kind: BuildConfig. W
     apiVersion: v1
     metadata:
       name: ${APPLICATION_NAME}
@@ -117,7 +117,7 @@ objects:
         sourceStrategy:
           from:
             kind: ImageStreamTag
-            name: s2i-java:latest
+            name: s2i-java:latest-java11
       output:
         to:
           kind: ImageStreamTag
@@ -196,9 +196,9 @@ objects:
                   memory: 512Mi
               securityContext:
                 privileged: false
-              volumeMounts:
-                - mountPath: /var/lib/mysql/data
-                  name: ${APPLICATION_NAME}-db-data
+#              volumeMounts:
+#                - mountPath: /var/lib/mysql/data
+#                  name: ${APPLICATION_NAME}-db-data
       triggers:
         - type: ImageChange
           imageChangeParams:

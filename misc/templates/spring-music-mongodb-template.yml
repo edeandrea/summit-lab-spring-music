@@ -79,7 +79,7 @@ objects:
           from:
             kind: DockerImage
             name: fabric8/s2i-java
-          name: latest
+          name: 3.0.0-java11
           referencePolicy:
             type: Source
   - kind: ImageStream
@@ -117,7 +117,7 @@ objects:
         sourceStrategy:
           from:
             kind: ImageStreamTag
-            name: s2i-java:latest
+            name: s2i-java:3.0.0-java11
       output:
         to:
           kind: ImageStreamTag
