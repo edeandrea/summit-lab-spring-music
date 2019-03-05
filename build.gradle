@@ -74,6 +74,13 @@ tasks.withType(Test) {
 	useJUnitPlatform()
 }
 
+task printJavaVersion(type:  Exec) {
+	commandLine './gradlew'
+	args '-v'
+}
+
+build.finalizedBy printJavaVersion
+
 task unpack(type: Copy) {
 	dependsOn bootJar
 	from zipTree(tasks.bootJar.outputs.files.singleFile)
