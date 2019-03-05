@@ -78,8 +78,8 @@ objects:
             openshift.io/imported-from: fabric8/s2i-java
           from:
             kind: DockerImage
-            name: fabric8/s2i-java
-          name: 3.0.0-java11
+            name: fabric8/s2i-java:latest-java11
+          name: latest-java11
           referencePolicy:
             type: Source
   - kind: ImageStream
@@ -117,7 +117,7 @@ objects:
         sourceStrategy:
           from:
             kind: ImageStreamTag
-            name: s2i-java:3.0.0-java11
+            name: s2i-java:latest-java11
       output:
         to:
           kind: ImageStreamTag
@@ -196,9 +196,9 @@ objects:
                   memory: 512Mi
               securityContext:
                 privileged: false
-              volumeMounts:
-                - mountPath: /var/lib/mongodb/data
-                  name: ${APPLICATION_NAME}-db-data
+#              volumeMounts:
+#                - mountPath: /var/lib/mongodb/data
+#                  name: ${APPLICATION_NAME}-db-data
       triggers:
         - type: ImageChange
           imageChangeParams:
