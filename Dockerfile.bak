@@ -1,18 +1,21 @@
-#FROM registry.access.redhat.com/openjdk/openjdk-11-rhel7
-
 # Multi-layer
 #FROM adoptopenjdk/openjdk11
 FROM registry.access.redhat.com/openjdk/openjdk-11-rhel7
-VOLUME /tmp
 ARG DEPENDENCY=build/dependency
-COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY ${DEPENDENCY}/META-INF /app/META-INF
-COPY ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","io.k8s.samples.music.Application"]
+COPY ${DEPENDENCY}/BOOT-INF/lib /deployments/app/lib
+COPY ${DEPENDENCY}/META-INF /deployments/app/META-INF
+COPY ${DEPENDENCY}/BOOT-INF/classes /deployments/app
+ENV JAVA_CLASSPATH "/deployments/app:/deployments/app/lib/*"
+ENV JAVA_MAIN_CLASS "io.k8s.samples.music.Application"
+#ENTRYPOINT ["java","-cp","app:app/lib/*","io.k8s.samples.music.Application"]
+#ENTRYPOINT ["/usr/lib/jvm/java-11/bin/java","-cp","app:app/lib/*","io.k8s.samples.music.Application"]
+
 
 # FOR simple run
+#FROM registry.access.redhat.com/openjdk/openjdk-11-rhel7
 #VOLUME /tmp
-#COPY build/libs/*.jar app.jar
+#COPY build/libs/*.jar /deployments/app.jar
+#ENV JAVA_APP_JAR /deployments/app.jar
 #ENTRYPOINT ["java","-jar","/app.jar"]
 
 # Multi-stage

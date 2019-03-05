@@ -73,12 +73,14 @@ objects:
       labels:
         application: ${APPLICATION_NAME}
     spec:
+      lookupPolicy:
+        local: false
       tags:
         - annotations:
-            openshift.io/imported-from: fabric8/s2i-java
+            openshift.io/imported-from: fabric8/s2i-java:latest-java11
           from:
             kind: DockerImage
-            name: fabric8/s2i-java
+            name: fabric8/s2i-java:latest-java11
           name: latest-java11
           referencePolicy:
             type: Source
@@ -91,7 +93,7 @@ objects:
     spec:
       tags:
         - name: latest
-  - kind: BuildConfig. W
+  - kind: BuildConfig
     apiVersion: v1
     metadata:
       name: ${APPLICATION_NAME}
