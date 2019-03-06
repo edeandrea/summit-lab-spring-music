@@ -9,10 +9,7 @@ plugins {
 }
 
 version = '1.0'
-group = 'edeandrea'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+group = 'org.erd'
 
 ext {
 	springCloudVersion = 'Greenwich.RELEASE'
@@ -58,10 +55,6 @@ dependencies {
 	compile "org.webjars:angular-ui:0.4.0-2"
 	compile "org.webjars:angular-ui-bootstrap:0.10.0-1"
 	compile "org.webjars:jquery:2.1.0-2"
-
-	// Oracle - uncomment one of the following after placing driver in ./libs
-	// compile files('libs/ojdbc8.jar')
-	// compile files('libs/ojdbc7.jar')
 
 	// Testing
 	testCompile "org.springframework.boot:spring-boot-starter-test"
