@@ -11,8 +11,8 @@ plugins {
 version = '1.0'
 group = 'edeandrea'
 
-sourceCompatibility = 11
-targetCompatibility = 11
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 ext {
 	springCloudVersion = 'Greenwich.RELEASE'
