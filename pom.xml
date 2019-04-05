@@ -12,6 +12,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-boot.version>2.1.4.RELEASE</spring-boot.version>
+		<spring-cloud.version>Greenwich.SR1</spring-cloud.version>
 		<swagger.version>1.5.22</swagger.version>
 		<springfox.version>2.9.2</springfox.version>
 		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version>
@@ -25,6 +26,14 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-parent</artifactId>
 				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -45,6 +54,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-kubernetes-config</artifactId>
 		</dependency>
 
 		<dependency>
@@ -131,7 +145,7 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
-		
+
 		<plugins>
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
@@ -150,7 +164,7 @@
 					<generateGitPropertiesFile>true</generateGitPropertiesFile>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -184,6 +198,31 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>openshift</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>io.fabric8</groupId>
+						<artifactId>fabric8-maven-plugin</artifactId>
+						<version>${fabric8-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>fmp</id>
+								<phase>package</phase>
+								<goals>
+									<goal>resource</goal>
+									<goal>build</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<repositories>
 		<repository>

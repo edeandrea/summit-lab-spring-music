@@ -6,6 +6,12 @@ spring:
   jpa:
     generate-ddl: true
     show-sql: true
+  cloud:
+    kubernetes:
+      secrets:
+        enabled: false
+      config:
+        enabled: false
 
 management:
   endpoints:
