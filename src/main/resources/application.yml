@@ -22,6 +22,6 @@ management:
 logging:
   level:
     root: WARN
-    io.k8s.samples.music: DEBUG
+    com.redhat.summit2019.springmusic: DEBUG
 
 
