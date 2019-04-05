@@ -1,6 +1,6 @@
 spring:
   application:
-    name: spring-music
+    name: summit-lab-spring-music
   main:
     allow-bean-definition-overriding: true
   jpa:
@@ -23,59 +23,5 @@ logging:
   level:
     root: WARN
     io.k8s.samples.music: DEBUG
----
-spring:
-  profiles: 'mongodb | redis'
-
-management:
-  health:
-    db:
-      enabled: false
----
-spring:
-  profiles: '!redis'
-
-management:
-  health:
-    redis:
-      enabled: false
----
-spring:
-  profiles: '!mongodb'
-
-management:
-  health:
-    mongo:
-      enabled: false
----
-spring:
-  profiles: mysql
-  datasource:
-    url: 'jdbc:mysql://localhost:3306/music'
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL55Dialect
----
-spring:
-  profiles: postgres
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.ProgressDialect
-  datasource:
-    url: 'jdbc:postgresql://localhost:5432/music'
----
-spring:
-  profiles: mongodb
-  data:
-    mongodb:
-      uri: 'mongodb://localhost:27017/music'
----
-spring:
-  profiles: redis
-  redis:
-    host: localhost
-    port: 6379
 
 

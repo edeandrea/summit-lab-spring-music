@@ -1,0 +1,58 @@
+package com.redhat.summit2019.springmusic.config;
+
+import java.util.Arrays;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.redhat.summit2019.springmusic.Application;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@Configuration
+@EnableSwagger2
+public class SwaggerConfig {
+	@Bean
+	public Docket apiDocket() {
+		Docket docket = new Docket(DocumentationType.SWAGGER_2)
+			.useDefaultResponseMessages(false)
+			.apiInfo(apiInfo())
+			.select()
+				.apis(RequestHandlerSelectors.basePackage(Application.class.getPackage().getName()))
+				.paths(PathSelectors.any())
+			.build();
+
+		Arrays.stream(RequestMethod.values())
+			.forEach(requestMethod ->
+				docket.globalResponseMessage(
+					requestMethod,
+					Arrays.asList(
+						new ResponseMessageBuilder()
+							.code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+							.message("Something bad happened!")
+							.build()
+					)
+				)
+			);
+
+		return docket;
+	}
+
+	private ApiInfo apiInfo() {
+		return new ApiInfoBuilder()
+			.title("Red Hat Summit 2019 - Spring Music")
+			.description("Red Hat Summit 2019 sample application - Spring Music")
+			.version("1.0")
+			.contact(new Contact("Eric Deandrea", "https://github.com/edeandrea", "edeandrea@redhat.com"))
+			.build();
+	}
+}
