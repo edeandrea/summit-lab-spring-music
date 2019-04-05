@@ -16,7 +16,7 @@ public class Album {
     @Id
     @Column(length = 40)
     @GeneratedValue(generator = "randomId")
-    @GenericGenerator(name = "randomId", strategy = "RandomIdGenerator")
+    @GenericGenerator(name = "randomId", strategy = "com.redhat.summit2019.springmusic.domain.RandomIdGenerator")
     @ApiModelProperty(value = "The album id", hidden = true)
     private String id;
 

@@ -14,6 +14,7 @@
 		<spring-boot.version>2.1.4.RELEASE</spring-boot.version>
 		<swagger.version>1.5.22</swagger.version>
 		<springfox.version>2.9.2</springfox.version>
+		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
@@ -159,4 +160,36 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>redhat-ga-repository</id>
+			<name>Red Hat GA repository</name>
+			<url>http://maven.repository.redhat.com/ga/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>redhat-ga-repository</id>
+			<name>Red Hat GA repository</name>
+			<url>http://maven.repository.redhat.com/ga/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 </project>
