@@ -43,6 +43,10 @@
       {
         "name": "summit-lab-spring-music",
         "type": "maven",
+        "source": {
+          "location": "https://github.com/edeandrea/summit-lab-spring-music.git",
+          "type": "github"
+        },
         "path": "/summit-lab-spring-music"
       }
     ],
