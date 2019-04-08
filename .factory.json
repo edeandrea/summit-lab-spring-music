@@ -1,5 +1,6 @@
 {
   "v": "4.0",
+  "name": "spring-music",
   "workspace": {
     "defaultEnv": "default",
     "environments": {
@@ -40,19 +41,15 @@
     },
     "projects": [
       {
-        "name": "spring-music",
+        "name": "summit-lab-spring-music",
         "type": "maven",
-        "source": {
-          "location": "https://github.com/edeandrea/summit-lab-spring-music",
-          "type:": "git"
-        },
-        "path": "/spring-music"
+        "path": "/summit-lab-spring-music"
       }
     ],
     "name": "spring-music",
     "commands": [
       {
-        "commandLine": "MAVEN_OPTS='-Xmx100m' && mvn clean install -f ${current.project.path}/pom.xml",
+        "commandLine": "mvn clean install -f ${current.project.path}/pom.xml",
         "name": "build",
         "attributes": {
           "goal": "Build"
@@ -74,7 +71,7 @@
           "goal": "Run",
           "previewUrl": "${server.springboot}"
         },
-        "type:": "mvn"
+        "type": "mvn"
       },
       {
         "commandLine": "mvn clean fabric8:deploy -f ${current.project.path}/pom.xml -P openshift",
@@ -82,7 +79,7 @@
         "attributes": {
           "goal": "Deploy"
         },
-        "type:": "mvn"
+        "type": "mvn"
       }
     ]
   },
