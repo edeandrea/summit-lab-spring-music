@@ -58,7 +58,7 @@
 
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-kubernetes-config</artifactId>
+			<artifactId>spring-cloud-starter-kubernetes-all</artifactId>
 		</dependency>
 
 		<dependency>
@@ -145,7 +145,7 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
-
+		
 		<plugins>
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
@@ -164,7 +164,7 @@
 					<generateGitPropertiesFile>true</generateGitPropertiesFile>
 				</configuration>
 			</plugin>
-
+			
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -199,6 +199,7 @@
 		</plugins>
 	</build>
 
+	<!-- Add the profile here -->
 	<profiles>
 		<profile>
 			<id>openshift</id>
