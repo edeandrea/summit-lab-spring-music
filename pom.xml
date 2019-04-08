@@ -185,6 +185,8 @@
 		</plugins>
 	</build>
 
+	<!-- Add the profile here -->
+
 	<repositories>
 		<repository>
 			<id>redhat-ga-repository</id>
