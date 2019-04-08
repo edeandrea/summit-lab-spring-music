@@ -31,6 +31,8 @@ public class SwaggerConfig {
 				.paths(PathSelectors.any())
 			.build();
 
+		// Adds a 500 response message to all endpoints in the API
+		// This is instead of us having to go and add an @ApiResponse annotation on every action method in every controller
 		Arrays.stream(RequestMethod.values())
 			.forEach(requestMethod ->
 				docket.globalResponseMessage(
@@ -52,7 +54,7 @@ public class SwaggerConfig {
 			.title("Red Hat Summit 2019 - Spring Music")
 			.description("Red Hat Summit 2019 sample application - Spring Music")
 			.version("1.0")
-			.contact(new Contact("Eric Deandrea", "https://github.com/edeandrea", "edeandrea@redhat.com"))
+			.contact(new Contact("Eric Deandrea", "https://github.com/edeandrea/summit-lab-spring-music", "edeandrea@redhat.com"))
 			.build();
 	}
 }
