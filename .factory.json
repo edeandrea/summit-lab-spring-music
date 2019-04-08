@@ -1,0 +1,82 @@
+{
+  "defaultEnv": "default",
+  "environments": {
+    "default": {
+      "machines": {
+        "dev-machine": {
+          "attributes": {
+            "memoryLimitBytes": "2147483648"
+          },
+          "servers": {
+            "springboot": {
+              "port": "8080",
+              "protocol": "http"
+            }
+          },
+          "volumes": {
+            "m2": {
+              "path": "/home/jboss/.m2"
+            },
+            "javadata": {
+              "path": "/home/jboss/jdtls/data"
+            }
+          },
+          "installers": [
+            "org.eclipse.che.exec",
+            "org.eclipse.che.terminal",
+            "org.eclipse.che.ws-agent",
+            "org.eclipse.che.ls.java",
+            "com.redhat.bayesian.lsp"
+          ]
+        }
+      },
+      "recipe": {
+        "type": "dockerimage",
+        "content": "registry.access.redhat.com/codeready-workspaces/stacks-java"
+      }
+    }
+  },
+  "projects": [
+    {
+      "name": "spring-music",
+      "type": "maven",
+      "path": "/spring-music"
+    }
+  ],
+  "name": "spring-music",
+  "commands": [
+    {
+      "commandLine": "MAVEN_OPTS='-Xmx100m' && mvn clean install -f ${current.project.path}/pom.xml",
+      "name": "build",
+      "attributes": {
+        "goal": "Build"
+      },
+      "type": "mvn"
+    },
+    {
+      "commandLine": "${HOME}/stack-analysis.sh -f ${current.project.path}/pom.xml -p ${current.project.path}",
+      "name": "dependency_analysis",
+      "attributes": {
+        "goal": "Run"
+      },
+      "type": "custom"
+    },
+    {
+      "commandLine": "mvn clean spring-boot:run -f ${current.project.path}/pom.xml",
+      "name": "Run application locally",
+      "attributes": {
+        "goal": "Run",
+        "previewUrl": "${server.springboot}"
+      },
+      "type:": "mvn"
+    },
+    {
+      "commandLine": "mvn clean fabric8:deploy -f ${current.project.path}/pom.xml -P openshift",
+      "name": "Deploy to Openshift",
+      "attributes": {
+        "goal": "Deploy"
+      },
+      "type:": "mvn"
+    }
+  ]
+}
