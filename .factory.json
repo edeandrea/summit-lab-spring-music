@@ -1,6 +1,7 @@
 {
-  "defaultEnv": "default",
+  "v": "4.0",
   "workspace": {
+    "defaultEnv": "default",
     "environments": {
       "default": {
         "machines": {
@@ -84,5 +85,9 @@
         "type:": "mvn"
       }
     ]
+  },
+  "creator": {
+    "name": "Eric Deandrea",
+    "email": "edeandrea@redhat.com"
   }
 }
