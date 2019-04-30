@@ -37,18 +37,18 @@ public class AlbumController {
 	}
 
 	@ApiOperation(value = "Get all albums", notes = "Get all albums", nickname = "get-all-albums")
-	@ApiResponses({
-									@ApiResponse(code = 200, message = "Success!")
-								})
+	@ApiResponses(
+		@ApiResponse(code = 200, message = "Success!")
+	)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public Iterable<Album> albums() {
 		return this.repository.findAll();
 	}
 
 	@ApiOperation(value = "Adds an album", notes = "Adds an album", nickname = "add-album")
-	@ApiResponses({
-									@ApiResponse(code = 200, message = "Success!")
-								})
+	@ApiResponses(
+		@ApiResponse(code = 200, message = "Success!")
+	)
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Album add(@ApiParam(value = "The album to add", required = true) @RequestBody @Valid Album album) {
 		LOGGER.info("Adding album {}", album.getId());
@@ -56,9 +56,9 @@ public class AlbumController {
 	}
 
 	@ApiOperation(value = "Updates an album", notes = "Updates an album", nickname = "update-album")
-	@ApiResponses({
-									@ApiResponse(code = 200, message = "Success!")
-								})
+	@ApiResponses(
+		@ApiResponse(code = 200, message = "Success!")
+	)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Album update(@ApiParam(value = "The album to update", required = true) @RequestBody @Valid Album album) {
 		LOGGER.info("Updating album {}", album.getId());
@@ -66,9 +66,9 @@ public class AlbumController {
 	}
 
 	@ApiOperation(value = "Get an album", notes = "Get an album", nickname = "get-album")
-	@ApiResponses({
-									@ApiResponse(code = 200, message = "Success!")
-								})
+	@ApiResponses(
+		@ApiResponse(code = 200, message = "Success!")
+	)
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Album getById(@ApiParam(value = "The album id", required = true) @PathVariable String id) {
 		LOGGER.info("Getting album {}", id);
@@ -76,12 +76,12 @@ public class AlbumController {
 	}
 
 	@ApiOperation(value = "Delete an album", notes = "Delete an album", nickname = "delete-album")
-	@ApiResponses({
-									@ApiResponse(code = 204, message = "Success!")
-								})
+	@ApiResponses(
+		@ApiResponse(code = 204, message = "Success!")
+	)
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteById(@PathVariable String id) {
+	public void deleteById(@ApiParam(value = "The album id", required = true) @PathVariable String id) {
 		LOGGER.info("Deleting album {}", id);
 		this.repository.deleteById(id);
 	}
