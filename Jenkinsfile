@@ -21,7 +21,7 @@ pipeline {
 				script {
 					openshift.withCluster() {
 						openshift.withProject() {
-							openshift.startBuild("spring-music", "--from-file=target/spring-music.jar").logs("-f")
+							openshift.startBuild("spring-music", "--from-file=target/summit-lab-spring-music-1.0.jar").logs("-f")
 						}
 					}
 				}
