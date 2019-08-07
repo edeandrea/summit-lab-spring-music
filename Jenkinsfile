@@ -51,5 +51,19 @@ pipeline {
 				}
 			}
 		}
+
+		stage('Promote to Prod') {
+			steps {
+				timeout(time:15, unit:'MINUTES') {
+					input message: "Approve Promotion to Prod?", ok: "Promote"
+				}
+
+				script {
+					openshift.withCluster() {
+						openshift.tag("dev/spring-music:latest", "prod/spring-music:prod")
+					}
+				}
+			}
+		}
 	}
 }
