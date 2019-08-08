@@ -72,6 +72,7 @@ pipeline {
 			steps {
 				script {
 					writeFile file: '~/.docker/config.json', text: '''{"auths": {"quay.io": {"auth": "ZWRlYW5kcmVhK3Rlc3Q6TlZVR0ZFVlJNWlNEUDFZWFpYQjZRWVZTWFlHNERPTzNSVVBSRDAxN0VEMklFQTRQTEJQRDJJMzdTRzZKN1pSOA==","email": ""}}}'''
+					sh "oc extract -n default secrets/registry-certificates --keys=/etc/docker/certs.d/172.30.213.47/redhat-ca.crt"
 					sh "oc image mirror 172.30.213.47:5000/dev/spring-music:latest quay.io/edeandrea/spring-music:latest"
 				}
 			}
