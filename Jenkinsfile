@@ -22,7 +22,7 @@ pipeline {
 
 		stage('Publish Artifact') {
 			steps {
-				sh "mvn versions:set deploy -DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -s misc/config/settings.xml"
+				sh "mvn versions:set deploy -DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -DaltDeploymentRepository=libs-snapshot::default::http://nexus.labs-infra.svc/nexus/content/repositories/libs-snapshot -s misc/config/settings.xml"
 			}
 		}
 
