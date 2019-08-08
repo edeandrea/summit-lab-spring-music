@@ -81,7 +81,9 @@ pipeline {
 				script {
 					openshift.withCluster() {
 						openshift.withProject('prod') {
-							if (!openshift.selector('dc', 'spring-music').exists()) {
+							def dc = openshift.selector("dc", "spring-music")
+
+							if (!dc.exists()) {
 								def app = openshift.newApp("spring-music:prod")
 								def dcpatch = [
 									"apiVersion": "v1",
@@ -129,9 +131,50 @@ pipeline {
 									]
 								]
 
-								openshift.apply(dcpatch)
+								//openshift.apply(dcpatch)
+								dc = app.narrow("dc")
+								def dcmap = dc.object()
+								dcmap.spec.template.spec.containers[0].env << [
+									"name": "DB_NAME",
+									"valueFrom": [
+										"secretKeyRef": [
+											"name": "summit-lab-spring-music-db",
+											"key": "database-name"
+										]
+									]
+								]
 
+								dcmap.spec.template.spec.containers[0].env << [
+									"name": "SPRING_DATASOURCE_USERNAME",
+									"valueFrom": [
+										"secretKeyRef": [
+											"name": "summit-lab-spring-music-db",
+											"key": "database-user"
+										]
+									]
+								]
+
+								dcmap.spec.template.spec.containers[0].env << [
+									"name": "SPRING_DATASOURCE_PASSWORD",
+									"valueFrom": [
+										"secretKeyRef": [
+											"name": "summit-lab-spring-music-db",
+											"key": "database-password"
+										]
+									]
+								]
+
+								dcmap.spec.template.spec.containers[0].env << [
+									"name": "SPRING_DATASOURCE_URL",
+									"value": "jdbc:postgresql://summit-lab-spring-music-db/\$(DB_NAME)"
+								]
+
+								openshift.apply(dcmap)
 								app.narrow("svc").expose()
+							}
+
+							timeout(10) {
+								dc.rollout().status()
 							}
 						}
 					}
