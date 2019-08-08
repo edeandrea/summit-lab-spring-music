@@ -8,7 +8,7 @@ pipeline {
 	}
 
 	stages {
-		/*stage('Build App') {
+		stage('Build App') {
 			steps {
 				sh "mvn versions:set clean package -DnewVersion=${env.BUILD_VERSION} -DskipTests"
 			}
@@ -66,9 +66,9 @@ pipeline {
 					sh "curl -s http://spring-music:8080/actuator/health | grep 'UP'"
 				}
 			}
-		}*/
+		}
 
-		stage('Push to Quay') {
+		/*stage('Push to Quay') {
 			steps {
 				script {
 					sh "whoami"
@@ -82,9 +82,9 @@ pipeline {
 					//sh "oc image mirror docker-registry-default.apps.test-cea9.openshiftworkshop.com:5000/dev/spring-music:latest quay.io/edeandrea/spring-music:latest"
 				}
 			}
-		}
+		}*/
 
-		/*stage('Promote to Prod') {
+		stage('Promote to Prod') {
 			steps {
 				timeout(time:15, unit:'MINUTES') {
 					input message: "Approve Promotion to Prod?", ok: "Promote"
@@ -196,6 +196,6 @@ pipeline {
 					}
 				}
 			}
-		}*/
+		}
 	}
 }
