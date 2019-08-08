@@ -120,7 +120,7 @@ pipeline {
 														],
 														[
 															"name": "SPRING_DATASOURCE_URL",
-															"value": "jdbc:postgresql://summit-lab-spring-music-db/$(DB_NAME)"
+															"value": "jdbc:postgresql://summit-lab-spring-music-db/\$(DB_NAME)"
 														]
 													]
 												]
