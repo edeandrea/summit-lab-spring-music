@@ -81,7 +81,6 @@ pipeline {
 				script {
 					openshift.withCluster() {
 						openshift.withProject('prod') {
-							openshift.verbose()
 							def dc = openshift.selector("dc", "spring-music")
 
 							if (!dc.exists()) {
