@@ -62,7 +62,6 @@ public class SwaggerConfig {
 			.title("Red Hat Summit 2019 - Spring Music")
 			.description("Red Hat Summit 2019 sample application - Spring Music")
 			.version(this.buildProperties.map(BuildProperties::getVersion).orElse("1.0"))
-			.version("1.0")
 			.contact(new Contact("Eric Deandrea", "https://github.com/edeandrea/summit-lab-spring-music", "edeandrea@redhat.com"))
 			.build();
 	}
