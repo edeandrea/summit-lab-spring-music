@@ -69,5 +69,25 @@ pipeline {
 				}
 			}
 		}
+
+		stage('Deploy to Prod') {
+			steps {
+				script {
+					openshift.withCluster() {
+						openshift.withProject('prod') {
+							if (!openshift.selector('dc', 'spring-music').exists()) {
+								openshift.newApp("spring-music:prod").narrow("svc").expose()
+								// openshift.selector('dc', 'spring-music').delete()
+								// openshift.selector('svc', 'spring-music').delete()
+								//openshift.selector('route', 'spring-music').delete()
+							}
+							// else {
+								// openshift.newApp("spring-music:prod").narrow("svc").expose()
+							// }
+						}
+					}
+				}
+			}
+		}
 	}
 }
