@@ -91,7 +91,8 @@ pipeline {
 								def dcmap = dc.object()
 								echo "dcmap = ${dcmap}"
 
-								dcmap.spec.template.spec.containers[0].env << [
+								def envList = []
+								envList << [
 									"name": "DB_NAME",
 									"valueFrom": [
 										"secretKeyRef": [
@@ -101,7 +102,7 @@ pipeline {
 									]
 								]
 
-								dcmap.spec.template.spec.containers[0].env << [
+								envList << [
 									"name": "SPRING_DATASOURCE_USERNAME",
 									"valueFrom": [
 										"secretKeyRef": [
@@ -111,7 +112,7 @@ pipeline {
 									]
 								]
 
-								dcmap.spec.template.spec.containers[0].env << [
+								envList << [
 									"name": "SPRING_DATASOURCE_PASSWORD",
 									"valueFrom": [
 										"secretKeyRef": [
@@ -121,12 +122,15 @@ pipeline {
 									]
 								]
 
-								dcmap.spec.template.spec.containers[0].env << [
+								envList << [
 									"name": "SPRING_DATASOURCE_URL",
 									"value": "jdbc:postgresql://summit-lab-spring-music-db/\$(DB_NAME)"
 								]
 
-								dcmap.spec.template.spec.containers[0].livenessProbe = [
+								def container = dcmap.spec.template.spec.containers[0]
+								container['env'] = envList
+
+								container.livenessProbe = [
 									"failureThreshold": 3,
 									"httpGet": [
 										"path": "/actuator/health",
@@ -139,7 +143,7 @@ pipeline {
 									"timeoutSeconds": 10
 								]
 
-								dcmap.spec.template.spec.containers[0].readinessProbe = [
+								container.readinessProbe = [
 									"failureThreshold": 3,
 									"httpGet": [
 										"path": "/actuator/health",
@@ -152,7 +156,7 @@ pipeline {
 									"timeoutSeconds": 10
 								]
 
-								dcmap.spec.template.spec.containers[0].resources = [
+								container.resources = [
 									"limits": [
 										"cpu": "2"
 									],
