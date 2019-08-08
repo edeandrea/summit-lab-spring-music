@@ -81,59 +81,17 @@ pipeline {
 				script {
 					openshift.withCluster() {
 						openshift.withProject('prod') {
+							openshift.verbose()
 							def dc = openshift.selector("dc", "spring-music")
 
 							if (!dc.exists()) {
 								def app = openshift.newApp("spring-music:prod")
-								def dcpatch = [
-									"apiVersion": "v1",
-									"kind": "DeploymentConfig",
-									"spec": [
-										"template": [
-											"spec": [
-												"containers": [
-													"env": [
-														[
-															"name": "DB_NAME",
-															"valueFrom": [
-																"secretKeyRef": [
-																	"name": "summit-lab-spring-music-db",
-																	"key": "database-name"
-																]
-															]
-														],
-														[
-															"name": "SPRING_DATASOURCE_USERNAME",
-															"valueFrom": [
-																"secretKeyRef": [
-																	"name": "summit-lab-spring-music-db",
-																	"key": "database-user"
-																]
-															]
-														],
-														[
-															"name": "SPRING_DATASOURCE_PASSWORD",
-															"valueFrom": [
-																"secretKeyRef": [
-																	"name": "summit-lab-spring-music-db",
-																	"key": "database-password"
-																]
-															]
-														],
-														[
-															"name": "SPRING_DATASOURCE_URL",
-															"value": "jdbc:postgresql://summit-lab-spring-music-db/\$(DB_NAME)"
-														]
-													]
-												]
-											]
-										]
-									]
-								]
-
-								//openshift.apply(dcpatch)
+								echo "App = ${app.describe()}"
 								dc = app.narrow("dc")
+								echo "DC = ${dc.describe()}"
 								def dcmap = dc.object()
+								echo "dcmap = ${dcmap}"
+
 								dcmap.spec.template.spec.containers[0].env << [
 									"name": "DB_NAME",
 									"valueFrom": [
@@ -168,6 +126,44 @@ pipeline {
 									"name": "SPRING_DATASOURCE_URL",
 									"value": "jdbc:postgresql://summit-lab-spring-music-db/\$(DB_NAME)"
 								]
+
+								dcmap.spec.template.spec.containers[0].livenessProbe = [
+									"failureThreshold": 3,
+									"httpGet": [
+										"path": "/actuator/health",
+										"port": 8080,
+										"scheme": "HTTP"
+									],
+									"initialDelaySeconds": 30,
+									"periodSeconds": 10,
+									"successThreshold": 1,
+									"timeoutSeconds": 10
+								]
+
+								dcmap.spec.template.spec.containers[0].readinessProbe = [
+									"failureThreshold": 3,
+									"httpGet": [
+										"path": "/actuator/health",
+										"port": 8080,
+										"scheme": "HTTP"
+									],
+									"initialDelaySeconds": 30,
+									"periodSeconds": 10,
+									"successThreshold": 1,
+									"timeoutSeconds": 10
+								]
+
+								dcmap.spec.template.spec.containers[0].resources = [
+									"limits": [
+										"cpu": "2"
+									],
+									"requests": [
+										"cpu": "500m",
+										"memory": "512Mi"
+									]
+								]
+
+								echo "Applying ${dcmap}"
 
 								openshift.apply(dcmap)
 								app.narrow("svc").expose()
