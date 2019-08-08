@@ -22,7 +22,7 @@ pipeline {
 
 		stage('Publish Artifact') {
 			steps {
-				sh "mvn versions:set deploy -DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -DaltDeploymentRepository=libs-snapshot::default::http://nexus.labs-infra.svc/nexus/content/repositories/libs-snapshot -s misc/config/settings.xml"
+				sh "mvn versions:set deploy -DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -DaltDeploymentRepository=libs-snapshot::default::http://nexus.labs-infra.svc:8081/nexus/content/repositories/libs-snapshot -s misc/config/settings.xml"
 			}
 		}
 
@@ -82,14 +82,57 @@ pipeline {
 					openshift.withCluster() {
 						openshift.withProject('prod') {
 							if (!openshift.selector('dc', 'spring-music').exists()) {
-								openshift.newApp("spring-music:prod").narrow("svc").expose()
-								// openshift.selector('dc', 'spring-music').delete()
-								// openshift.selector('svc', 'spring-music').delete()
-								//openshift.selector('route', 'spring-music').delete()
+								def app = openshift.newApp("spring-music:prod")
+								def dcpatch = [
+									"apiVersion": "v1",
+									"kind": "DeploymentConfig",
+									"spec": [
+										"template": [
+											"spec": [
+												"containers": [
+													"env": [
+														[
+															"name": "DB_NAME",
+															"valueFrom": [
+																"secretKeyRef": [
+																	"name": "summit-lab-spring-music-db",
+																	"key": "database-name"
+																]
+															]
+														],
+														[
+															"name": "SPRING_DATASOURCE_USERNAME",
+															"valueFrom": [
+																"secretKeyRef": [
+																	"name": "summit-lab-spring-music-db",
+																	"key": "database-user"
+																]
+															]
+														],
+														[
+															"name": "SPRING_DATASOURCE_PASSWORD",
+															"valueFrom": [
+																"secretKeyRef": [
+																	"name": "summit-lab-spring-music-db",
+																	"key": "database-password"
+																]
+															]
+														],
+														[
+															"name": "SPRING_DATASOURCE_URL",
+															"value": "jdbc:postgresql://summit-lab-spring-music-db/$(DB_NAME)"
+														]
+													]
+												]
+											]
+										]
+									]
+								]
+
+								openshift.apply(dcpatch)
+
+								app.narrow("svc").expose()
 							}
-							// else {
-								// openshift.newApp("spring-music:prod").narrow("svc").expose()
-							// }
 						}
 					}
 				}
