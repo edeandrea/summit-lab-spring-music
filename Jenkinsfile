@@ -10,7 +10,7 @@ pipeline {
 	stages {
 		stage('Build App') {
 			steps {
-				sh "mvn versions:set clean package -DnewVersion=${env.BUILD_VERSION}"
+				sh "mvn versions:set clean package -DnewVersion=${env.BUILD_VERSION} -DskipTests"
 			}
 		}
 
@@ -18,6 +18,12 @@ pipeline {
 		  steps {
 		  	sh "mvn versions:set verify -DnewVersion=${env.BUILD_VERSION}"
 		  }
+		}
+
+		stage('Publish Artifact') {
+			steps {
+				sh "mvn versions:set deploy -DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -s misc/config/settings.xml"
+			}
 		}
 
 		stage('Build Image') {
