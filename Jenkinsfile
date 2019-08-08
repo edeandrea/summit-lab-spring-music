@@ -3,16 +3,20 @@ pipeline {
 		label 'maven'
 	}
 
+	environment {
+		BUILD_VERSION = "1.0.0.${currentBuild.number}"
+	}
+
 	stages {
 		stage('Build App') {
 			steps {
-				sh "mvn clean package"
+				sh "mvn versions:set clean package -DnewVersion=${env.BUILD_VERSION}"
 			}
 		}
 
 		stage('Unit Test') {
 		  steps {
-		  	sh "mvn verify"
+		  	sh "mvn versions:set verify -DnewVersion=${env.BUILD_VERSION}"
 		  }
 		}
 
@@ -21,7 +25,7 @@ pipeline {
 				script {
 					openshift.withCluster() {
 						openshift.withProject() {
-							openshift.startBuild("spring-music", "--from-file=target/summit-lab-spring-music-1.0.jar").logs("-f")
+							openshift.startBuild("spring-music", "--from-file=target/summit-lab-spring-music-${env.BUILD_VERSION}.jar").logs("-f")
 						}
 					}
 				}
