@@ -71,7 +71,7 @@ pipeline {
 		stage('Push to Quay') {
 			steps {
 				script {
-					writeFile file: '.docker/config.json', text: '''{"auths": {"quay.io": {"auth": "ZWRlYW5kcmVhK3Rlc3Q6TlZVR0ZFVlJNWlNEUDFZWFpYQjZRWVZTWFlHNERPTzNSVVBSRDAxN0VEMklFQTRQTEJQRDJJMzdTRzZKN1pSOA==","email": ""}}}'''
+					writeFile file: '~/.docker/config.json', text: '''{"auths": {"quay.io": {"auth": "ZWRlYW5kcmVhK3Rlc3Q6TlZVR0ZFVlJNWlNEUDFZWFpYQjZRWVZTWFlHNERPTzNSVVBSRDAxN0VEMklFQTRQTEJQRDJJMzdTRzZKN1pSOA==","email": ""}}}'''
 					sh "oc image mirror docker-registry-default.apps.test-cea9.openshiftworkshop.com/dev/spring-music:latest quay.io/edeandrea/spring-music:latest"
 				}
 			}
