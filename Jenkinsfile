@@ -20,6 +20,12 @@ pipeline {
 		  }
 		}
 
+		stage('Sonar Scan') {
+			steps {
+				sh "mvn versions:set sonar:sonar -Dsonar.host.url=http://sonarqube.labs-infra.svc:9000 -DskipTests -DnewVersion=${env.BUILD_VERSION} -P sonar -s misc/config/settings.xml"
+			}
+		}
+
 		stage('Publish Artifact') {
 			steps {
 				sh "mvn versions:set deploy -DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -DaltDeploymentRepository=libs-snapshot::default::http://nexus.labs-infra.svc:8081/repository/libs-snapshot/ -s misc/config/settings.xml"
@@ -85,11 +91,8 @@ pipeline {
 
 							if (!dc.exists()) {
 								def app = openshift.newApp("spring-music:prod")
-								echo "App = ${app.describe()}"
 								dc = app.narrow("dc")
-								echo "DC = ${dc.describe()}"
 								def dcmap = dc.object()
-								echo "dcmap = ${dcmap}"
 
 								def envList = []
 								envList << [
@@ -165,8 +168,6 @@ pipeline {
 										"memory": "512Mi"
 									]
 								]
-
-								echo "Applying ${dcmap}"
 
 								openshift.apply(dcmap)
 								app.narrow("svc").expose()
