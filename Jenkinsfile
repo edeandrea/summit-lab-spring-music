@@ -68,7 +68,7 @@ pipeline {
 			}
 		}
 
-		stage('Push to Quay - Container Image Scan') {
+		stage('Quay - Container Image Scan') {
 			steps {
 				script {
 					openshift.withCluster() {
