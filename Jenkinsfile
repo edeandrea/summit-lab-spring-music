@@ -68,6 +68,18 @@ pipeline {
 			}
 		}
 
+		stage('Push to Quay') {
+			steps {
+				script {
+					openshift.withCluster() {
+						openshift.withProject() {
+							openshift.startBuild("image-quay-image-mover").logs("-f")
+						}
+					}
+				}
+			}
+		}
+
 		stage('Promote to Prod') {
 			steps {
 				timeout(time:15, unit:'MINUTES') {
