@@ -49,7 +49,7 @@ public class AlbumRepositoryPopulator implements ApplicationListener<Application
 
 	private Object getEntityFromResource(Resource resource) {
 		try {
-			return this.resourceReader.readFrom(resource, this.getClass().getClassLoader());
+			return this.resourceReader.readFrom(resource, getClass().getClassLoader());
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
