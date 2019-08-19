@@ -11,8 +11,8 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<spring-boot.version>2.1.4.RELEASE</spring-boot.version>
-		<spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+		<spring-boot.version>2.1.7.RELEASE</spring-boot.version>
+		<spring-cloud.version>Greenwich.SR2</spring-cloud.version>
 		<swagger.version>1.5.22</swagger.version>
 		<springfox.version>2.9.2</springfox.version>
 		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version>
