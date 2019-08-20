@@ -10,7 +10,6 @@ pipeline {
 	stages {
 		stage('Build App') {
 			steps {
-				echo "env.JAVA_HOME = ${env.JAVA_HOME}"
 				sh "mvn versions:set clean package -DnewVersion=${env.BUILD_VERSION} -DskipTests"
 			}
 		}
