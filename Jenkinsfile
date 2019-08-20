@@ -8,7 +8,7 @@ pipeline {
 	}
 
 	stages {
-		stage('Build App') {
+		/*stage('Build App') {
 			steps {
 				sh "mvn versions:set clean package -DnewVersion=${env.BUILD_VERSION} -DskipTests"
 			}
@@ -92,7 +92,7 @@ pipeline {
 					}
 				}
 			}
-		}
+		}*/
 
 		stage('Deploy to Prod') {
 			steps {
@@ -187,6 +187,10 @@ pipeline {
 
 							timeout(10) {
 								dc.rollout().status()
+							}
+
+							timeout(10) {
+								dc.scale("--replicas=2").status()
 							}
 						}
 					}
