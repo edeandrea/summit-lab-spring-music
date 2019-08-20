@@ -190,7 +190,7 @@ pipeline {
 							}
 
 							timeout(10) {
-								dc.scale("--replicas=2").status()
+								dc.scale("--replicas=2")
 							}
 						}
 					}
