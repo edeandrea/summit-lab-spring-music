@@ -10,9 +10,8 @@ pipeline {
 	stages {
 		stage('Build App') {
 			steps {
-				echo "env.NEXUS_URL = ${env.NEXUS_URL}"
-				echo "params.NEXUS_URL = ${params.NEXUS_URL}"
-				echo "NEXUS_URL = ${NEXUS_URL}"
+				echo "JAVA_HOME = ${JAVA_HOME}"
+				echo "env.JAVA_HOME = ${env.JAVA_HOME}"
 				sh "mvn versions:set clean package -DnewVersion=${env.BUILD_VERSION} -DskipTests"
 			}
 		}
@@ -31,7 +30,7 @@ pipeline {
 
 		stage('Publish Artifact') {
 			steps {
-				sh "mvn versions:set deploy -DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -DaltDeploymentRepository=libs-snapshot::default::http://nexus.labs-infra.svc:8081/repository/libs-snapshot/ -s misc/config/settings.xml"
+				sh "mvn versions:set deploy -DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -DaltDeploymentRepository=libs-snapshot::default::${params.NEXUS_URL}/repository/libs-snapshot/ -s misc/config/settings.xml"
 			}
 		}
 
