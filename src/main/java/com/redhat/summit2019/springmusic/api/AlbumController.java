@@ -42,6 +42,7 @@ public class AlbumController {
 								})
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public Iterable<Album> albums() {
+		LOGGER.info("Getting all albums");
 		return this.repository.findAll();
 	}
 
