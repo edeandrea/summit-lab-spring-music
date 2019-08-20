@@ -10,25 +10,25 @@ pipeline {
 	stages {
 		stage('Build App') {
 			steps {
-				sh "mvn versions:set clean package \"-DnewVersion=${env.BUILD_VERSION} -DskipTests -Dscan -Dscan.tag.CI -Dscan.value.Build Version=${env.BUILD_VERSION} -Dscan.link.Build=${BUILD_URL}\""
+				sh "mvn versions:set clean package \"-DnewVersion=${env.BUILD_VERSION} -DskipTests -Dscan -Dscan.tag.CI -Dscan.value.Build Version=${env.BUILD_VERSION} -Dscan.link.Build=${env.BUILD_URL}\""
 			}
 		}
 
 		stage('Unit Test') {
 		  steps {
-		  	sh "mvn versions:set verify \"-DnewVersion=${env.BUILD_VERSION} -Dscan -Dscan.tag.CI -Dscan.value.Build Version=${env.BUILD_VERSION} -Dscan.link.Build=${BUILD_URL}\""
+		  	sh "mvn versions:set verify \"-DnewVersion=${env.BUILD_VERSION} -Dscan -Dscan.tag.CI -Dscan.value.Build Version=${env.BUILD_VERSION} -Dscan.link.Build=${env.BUILD_URL}\""
 		  }
 		}
 
 		stage('Sonar Scan') {
 			steps {
-				sh "mvn versions:set sonar:sonar \"-Dsonar.host.url=http://sonarqube.labs-infra.svc:9000 -DskipTests -DnewVersion=${env.BUILD_VERSION} -Dscan -Dscan.tag.CI -Dscan.value.Build Version=${env.BUILD_VERSION} -Dscan.link.Build=${BUILD_URL} -P sonar -s misc/config/settings.xml\""
+				sh "mvn versions:set sonar:sonar \"-Dsonar.host.url=http://sonarqube.labs-infra.svc:9000 -DskipTests -DnewVersion=${env.BUILD_VERSION} -Dscan -Dscan.tag.CI -Dscan.value.Build Version=${env.BUILD_VERSION} -Dscan.link.Build=${env.BUILD_URL} -P sonar -s misc/config/settings.xml\""
 			}
 		}
 
 		stage('Publish Artifact') {
 			steps {
-				sh "mvn versions:set deploy \"-DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -DaltDeploymentRepository=libs-snapshot::default::${params.NEXUS_URL}/repository/libs-snapshot/ -Dscan -Dscan.tag.CI -Dscan.value.Build Version=${env.BUILD_VERSION} -Dscan.link.Build=${BUILD_URL} -s misc/config/settings.xml\""
+				sh "mvn versions:set deploy \"-DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -DaltDeploymentRepository=libs-snapshot::default::${params.NEXUS_URL}/repository/libs-snapshot/ -Dscan -Dscan.tag.CI -Dscan.value.Build Version=${env.BUILD_VERSION} -Dscan.link.Build=${env.BUILD_URL} -s misc/config/settings.xml\""
 			}
 		}
 
