@@ -10,6 +10,9 @@ pipeline {
 	stages {
 		stage('Build App') {
 			steps {
+				echo "env.NEXUS_URL = ${env.NEXUS_URL}"
+				echo "params.NEXUS_URL = ${params.NEXUS_URL}"
+				echo "NEXUS_URL = ${NEXUS_URL}"
 				sh "mvn versions:set clean package -DnewVersion=${env.BUILD_VERSION} -DskipTests"
 			}
 		}
