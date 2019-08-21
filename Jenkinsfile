@@ -181,6 +181,8 @@ pipeline {
 									]
 								]
 
+								dcmap.spec.replicas = 2
+
 								openshift.apply(dcmap)
 								app.narrow("svc").expose()
 							}
@@ -188,10 +190,6 @@ pipeline {
 							timeout(10) {
 								dc.rollout().status()
 							}
-
-							/*timeout(10) {
-								dc.scale("--replicas=2")
-							}*/
 						}
 					}
 				}
