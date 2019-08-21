@@ -84,6 +84,40 @@ objects:
     apiVersion: v1
     metadata:
       labels:
+        app: spring-music
+      name: spring-music
+      spec:
+        runPolicy: Serial
+        source:
+          type: Git
+          contextDir: /
+          git:
+            ref: pipeline
+            uri: "https://github.com/edeandrea/summit-lab-spring-music.git"
+        strategy:
+          type: Source
+          sourceStrategy:
+            from:
+              kind: ImageStreamTag
+              name: "java:8"
+              namespace: openshift
+        output:
+          to:
+            kind: ImageStreamTag
+            name: "spring-music:latest"
+        triggers:
+          - type: ConfigChange
+          - type: ImageChange
+          - type: GitHub
+            github:
+              secret: 861875dc04f5b7f8
+          - type: Generic
+            generic:
+              secret: e1ec30d6d510c600
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      labels:
         build: spring-music-pipeline-git
       name: spring-music-pipeline-git
     spec:
