@@ -80,6 +80,15 @@ objects:
           from:
             kind: ImageStreamTag
             name: "spring-music:latest"
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: spring-music
+      labels:
+        app: spring-mucis
+    spec:
+      tags:
+        - name: latest
   - kind: BuildConfig
     apiVersion: v1
     metadata:
@@ -105,9 +114,6 @@ objects:
         to:
           kind: ImageStreamTag
           name: "spring-music:latest"
-      triggers:
-        - type: ConfigChange
-        - type: ImageChange
   - kind: BuildConfig
     apiVersion: v1
     metadata:
@@ -159,14 +165,6 @@ objects:
           from:
             kind: ImageStreamTag
             name: spring-music:latest
-      triggers:
-        - type: ConfigChange
-        - type: GitHub
-          github:
-            secret: kINUgSxvX7uvvbF4gQNQ
-        - type: Generic
-          generic:
-            secret: Ch7jcPPnrbVv1wn99Q1W
   - kind: Service
     apiVersion: v1
     metadata:

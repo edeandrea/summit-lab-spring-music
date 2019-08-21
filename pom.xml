@@ -262,6 +262,16 @@
 
 	<repositories>
 		<repository>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
 			<id>redhat-ga-repository</id>
 			<name>Red Hat GA repository</name>
 			<url>http://maven.repository.redhat.com/ga/</url>
@@ -277,6 +287,19 @@
 	</repositories>
 
 	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</pluginRepository>
+
 		<pluginRepository>
 			<id>redhat-ga-repository</id>
 			<name>Red Hat GA repository</name>

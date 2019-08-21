@@ -20,12 +20,27 @@
       <id>def</id>
       <repositories>
         <repository>
-          <id>maven-central</id>
-          <name>Central Repository for Maven builds</name>
-          <url>http://central.maven.org/maven2/</url>
+          <id>central</id>
+          <name>Central Repository</name>
+          <url>https://repo.maven.apache.org/maven2</url>
           <layout>default</layout>
         </repository>
       </repositories>
+
+      <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <name>Central Repository</name>
+          <url>https://repo.maven.apache.org/maven2</url>
+          <layout>default</layout>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <releases>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+        </pluginRepository>
+      </pluginRepositories>
     </profile>
 
     <!-- Profile with online repositories required by Fuse -->
@@ -147,8 +162,8 @@
 
   <activeProfiles>
     <!-- Activation of the Fuse profile -->
-    <activeProfile>fis-online-repos</activeProfile>
     <activeProfile>def</activeProfile>
+    <activeProfile>fis-online-repos</activeProfile>
   </activeProfiles>
 
   <servers>

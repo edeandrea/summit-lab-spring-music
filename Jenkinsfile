@@ -189,9 +189,9 @@ pipeline {
 								dc.rollout().status()
 							}
 
-							timeout(10) {
+							/*timeout(10) {
 								dc.scale("--replicas=2")
-							}
+							}*/
 						}
 					}
 				}
