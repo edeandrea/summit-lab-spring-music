@@ -108,12 +108,6 @@ objects:
       triggers:
         - type: ConfigChange
         - type: ImageChange
-        - type: GitHub
-          github:
-            secret: 861875dc04f5b7f8
-        - type: Generic
-          generic:
-            secret: e1ec30d6d510c600
   - kind: BuildConfig
     apiVersion: v1
     metadata:
