@@ -79,7 +79,7 @@ objects:
     metadata:
       name: spring-music
       labels:
-        app: spring-mucis
+        app: spring-music
     spec:
       tags:
         - name: latest
