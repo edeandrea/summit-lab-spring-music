@@ -50,7 +50,7 @@ pipeline {
 					openshift.withCluster() {
 						openshift.withProject() {
 							dc = openshift.selector("dc", "spring-music")
-							dc.rollout().latest()
+							// dc.rollout().latest()
 							timeout(10) {
 								dc.rollout().status()
 							}
