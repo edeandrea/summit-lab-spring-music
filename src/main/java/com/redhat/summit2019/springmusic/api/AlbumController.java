@@ -44,7 +44,6 @@ public class AlbumController {
 	public Iterable<Album> albums() {
 		LOGGER.info("Getting all albums");
 		return this.repository.findAll();
-
 	}
 
 	@ApiOperation(value = "Adds an album", notes = "Adds an album", nickname = "add-album")
