@@ -16,6 +16,8 @@
 		<swagger.version>1.5.22</swagger.version>
 		<springfox.version>2.9.2</springfox.version>
 		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version>
+<!--		For OpenShift 4 -->
+<!--		<fabric8-maven-plugin.version>4.2.0</fabric8-maven-plugin.version> -->
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
