@@ -36,7 +36,7 @@ objects:
             deploymentconfig: spring-music
         spec:
           containers:
-            - image: ' '
+            - image: 'dev/spring-music:latest'
               imagePullPolicy: Always
               livenessProbe:
                 failureThreshold: 3
@@ -70,6 +70,7 @@ objects:
       - type: ConfigChange
       - type: ImageChange
         imageChangeParams:
+          automatic: true
           containerNames:
             - spring-music
           from:
