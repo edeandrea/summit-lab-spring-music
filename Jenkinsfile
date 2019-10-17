@@ -20,7 +20,7 @@ pipeline {
 		  }
 		}
 
-		stage('Sonar Scan') {
+		/* stage('Sonar Scan') {
 			steps {
 				sh "mvn versions:set sonar:sonar -Dsonar.host.url=http://sonarqube.labs-infra.svc:9000 -DskipTests -DnewVersion=${env.BUILD_VERSION} -P sonar -s misc/config/settings.xml"
 			}
@@ -30,7 +30,7 @@ pipeline {
 			steps {
 				sh "mvn versions:set deploy -DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -DaltDeploymentRepository=libs-snapshot::default::${params.NEXUS_URL}/repository/libs-snapshot/ -s misc/config/settings.xml"
 			}
-		}
+		} */
 
 		stage('Build Image') {
 			steps {
@@ -68,7 +68,7 @@ pipeline {
 			}
 		}
 
-		stage('Quay - Container Image Scan') {
+		/* stage('Quay - Container Image Scan') {
 			steps {
 				script {
 					openshift.withCluster() {
@@ -78,7 +78,7 @@ pipeline {
 					}
 				}
 			}
-		}
+		} */
 
 		stage('Promote to Prod') {
 			steps {
@@ -103,8 +103,52 @@ pipeline {
 
 							if (!dc.exists()) {
 								def app = openshift.newApp("spring-music:prod")
+
+								/* def dcpatch = [
+									"metadata":[
+										"name":"spring-music"
+									],
+									"apiVersion":"apps.openshift.io/v1",
+									"kind":"DeploymentConfig",
+									"spec":[
+										"template":[
+											"spec":[
+												"containers":[
+													[
+														"image":"registry.access.redhat.com/jboss-fuse-6/fis-java-openshift",
+														"name":"fis-java-openshift",
+                                                    "resources":[:],
+                                                    "ports":[
+                                                         ["name":"jolokia",
+                                                          "containerPort":8778,
+                                                          "protocol":"TCP"
+                                                          ]
+                                                         ]
+                                                    ]
+                                             ],
+                                             "securityContext":[:],
+                                         ]
+                                     ]
+                                     ]
+								] */
+
 								dc = app.narrow("dc")
 								def dcmap = dc.object()
+
+								dcmap.remove('status')
+								dcmap.metadata.remove('annotations')
+								dcmap.metadata.remove('labels')
+								dcmap.metadata.remove('creationTimestamp')
+								dcmap.metadata.remove('generation')
+								dcmap.metadata.remove('resourceVersion')
+								dcmap.metadata.remove('selfLink')
+								dcmap.metadata.remove('uid')
+								dcmap.spec.remove('replicas')
+								dcmap.spec.remove('revisionHistoryLimit')
+								dcmap.spec.remove('selector')
+								dcmap.spec.remove('strategy')
+								dcmap.spec.remove('test')
+								dcmap.spec.remove('triggers')
 
 								def envList = []
 								envList << [
