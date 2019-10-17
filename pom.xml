@@ -11,8 +11,8 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<spring-boot.version>2.1.9.RELEASE</spring-boot.version>
-		<spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+		<spring-boot.version>2.2.0.RELEASE</spring-boot.version>
+		<spring-cloud.version>Hoxton.M3</spring-cloud.version>
 		<swagger.version>1.5.22</swagger.version>
 		<springfox.version>2.9.2</springfox.version>
 		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version>
@@ -268,6 +268,16 @@
 			<id>central</id>
 			<name>Central Repository</name>
 			<url>https://repo.maven.apache.org/maven2</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>spring-milestone</id>
+			<name>Spring Milestone Repo</name>
+			<url>https://repo.spring.io/libs-milestone-local</url>
 			<layout>default</layout>
 			<snapshots>
 				<enabled>false</enabled>
