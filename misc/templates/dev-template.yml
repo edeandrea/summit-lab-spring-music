@@ -17,65 +17,6 @@ objects:
     subjects:
       - kind: ServiceAccount
         name: default
-  - kind: DeploymentConfig
-    apiVersion: v1
-    metadata:
-      labels:
-        app: spring-music
-      name: spring-music
-    spec:
-      replicas: 1
-      selector:
-        deploymentconfig: spring-music
-      strategy:
-        type: Rolling
-      template:
-        metadata:
-          labels:
-            app: spring-music
-            deploymentconfig: spring-music
-        spec:
-          containers:
-            - image: 'dev/spring-music:latest'
-              imagePullPolicy: Always
-              livenessProbe:
-                failureThreshold: 3
-                httpGet:
-                  path: /actuator/health
-                  port: 8080
-                  scheme: HTTP
-                initialDelaySeconds: 30
-                periodSeconds: 10
-                successThreshold: 1
-                timeoutSeconds: 10
-              name: spring-music
-              ports:
-                - containerPort: 8080
-                  protocol: TCP
-                - containerPort: 8443
-                  protocol: TCP
-                - containerPort: 8778
-                  protocol: TCP
-              readinessProbe:
-                failureThreshold: 3
-                httpGet:
-                  path: /actuator/health
-                  port: 8080
-                  scheme: HTTP
-                initialDelaySeconds: 30
-                periodSeconds: 10
-                successThreshold: 1
-                timeoutSeconds: 10
-    triggers:
-      - type: ConfigChange
-      - type: ImageChange
-        imageChangeParams:
-          automatic: true
-          containerNames:
-            - spring-music
-          from:
-            kind: ImageStreamTag
-            name: "spring-music:latest"
   - kind: ImageStream
     apiVersion: v1
     metadata:
@@ -161,6 +102,65 @@ objects:
           from:
             kind: ImageStreamTag
             name: spring-music:latest
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      labels:
+        app: spring-music
+      name: spring-music
+    spec:
+      replicas: 1
+      selector:
+        deploymentconfig: spring-music
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          labels:
+            app: spring-music
+            deploymentconfig: spring-music
+        spec:
+          containers:
+            - image: spring-music:latest
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /actuator/health
+                  port: 8080
+                  scheme: HTTP
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 10
+              name: spring-music
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+                - containerPort: 8443
+                  protocol: TCP
+                - containerPort: 8778
+                  protocol: TCP
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /actuator/health
+                  port: 8080
+                  scheme: HTTP
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 10
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - spring-music
+            from:
+              kind: ImageStreamTag
+              name: spring-music:latest
   - kind: Service
     apiVersion: v1
     metadata:
