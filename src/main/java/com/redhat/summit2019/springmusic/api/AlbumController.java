@@ -36,6 +36,7 @@ public class AlbumController {
 		this.repository = repository;
 	}
 
+
 	@ApiOperation(value = "Get all albums", notes = "Get all albums", nickname = "get-all-albums")
 	@ApiResponses({
 									@ApiResponse(code = 200, message = "Success!")
