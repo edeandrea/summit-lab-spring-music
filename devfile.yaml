@@ -26,6 +26,8 @@ components:
     type: chePlugin
     memoryLimit: 768Mi
     alias: exec-plugin
+  - id: redhat/vscode-yaml/latest
+    type: chePlugin
 commands:
   - name: Build
     actions:
