@@ -1,0 +1,47 @@
+apiVersion: 1.0.0
+metadata:
+  name: spring-music
+projects:
+  - name: summit-lab-spring-music
+    source:
+      type: git
+      location: 'https://github.com/edeandrea/summit-lab-spring-music.git'
+components:
+  - mountSources: true
+    endpoints:
+      - name: spring-music
+        port: 8080
+    memoryLimit: 768Mi
+    type: dockerimage
+    volumes:
+      - name: m2
+        containerPath: /home/user/.m2
+    alias: spring-music
+    image: quay.io/eclipse/che-java8-maven:7.3.1
+  - id: eclipse/che-theia/latest
+    type: cheEditor
+  - id: redhat/java8/latest
+    type: chePlugin
+  - id: eclipse/che-machine-exec-plugin/latest
+    type: chePlugin
+    memoryLimit: 768Mi
+    alias: exec-plugin
+commands:
+  - name: Build
+    actions:
+      - type: exec
+        workdir: /projects/summit-lab-spring-music
+        command: mvn clean install
+        component: spring-music
+  - name: Run application locally
+    actions:
+      - type: exec
+        workdir: /projects/summit-lab-spring-music
+        command: mvn clean spring-boot:run
+        component: spring-music
+  - name: Deploy to OpenShift
+    actions:
+      - type: exec
+        workdir: /projects/summit-lab-spring-music
+        command: mvn clean fabric8:deploy -Popenshift -DskipTests
+        component: spring-music
