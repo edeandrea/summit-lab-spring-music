@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redhat.summit2019.springmusic.domain.ApplicationInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@Api("Application Information")
+@Tag(name = "appInfo", description = "Application Information")
 public class InfoController {
 	private final Environment springEnvironment;
 
@@ -20,10 +19,8 @@ public class InfoController {
 		this.springEnvironment = springEnvironment;
 	}
 
-	@ApiOperation(value = "Get application information", notes = "Get application information", nickname = "app-info")
-	@ApiResponses({
-									@ApiResponse(code = 200, message = "Success!")
-								})
+	@Operation(description = "Get application information", tags = { "appInfo" })
+	@ApiResponse(responseCode = "200", description = "Success!")
 	@GetMapping(path = "/appinfo", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ApplicationInfo info() {
 		return new ApplicationInfo(this.springEnvironment.getActiveProfiles(), new String[0]);

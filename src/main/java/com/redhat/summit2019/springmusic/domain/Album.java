@@ -7,35 +7,33 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
-@ApiModel(description = "An album")
 public class Album {
     @Id
     @Column(length = 40)
     @GeneratedValue(generator = "randomId")
     @GenericGenerator(name = "randomId", strategy = "com.redhat.summit2019.springmusic.domain.RandomIdGenerator")
-    @ApiModelProperty(value = "The album id", hidden = true)
+    @Schema(description = "The album id", hidden = true)
     private String id;
 
-    @ApiModelProperty("The album title")
+    @Schema(description = "The album title")
     private String title;
 
-    @ApiModelProperty("The album artist")
+    @Schema(description = "The album artist")
     private String artist;
 
-    @ApiModelProperty("The album release year")
+    @Schema(description = "The album release year")
     private String releaseYear;
 
-    @ApiModelProperty("The album genre")
+    @Schema(description = "The album genre")
     private String genre;
 
-    @ApiModelProperty("The number of tracks on the album")
+    @Schema(description = "The number of tracks on the album")
     private int trackCount;
 
-    @ApiModelProperty("The album id")
+    @Schema(description = "The album id")
     private String albumId;
 
     public String getId() {

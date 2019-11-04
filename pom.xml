@@ -13,8 +13,7 @@
 		<java.version>1.8</java.version>
 		<spring-boot.version>2.2.0.RELEASE</spring-boot.version>
 		<spring-cloud.version>Hoxton.M3</spring-cloud.version>
-		<swagger.version>1.5.22</swagger.version>
-		<springfox.version>2.9.2</springfox.version>
+		<springdoc.version>1.2.3</springdoc.version>
 		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version>
 <!--		For OpenShift 4 -->
 <!--		<fabric8-maven-plugin.version>4.2.0</fabric8-maven-plugin.version> -->
@@ -75,21 +74,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.swagger</groupId>
-			<artifactId>swagger-annotations</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${springfox.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${springfox.version}</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 
 		<dependency>

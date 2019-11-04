@@ -1,14 +1,12 @@
 package com.redhat.summit2019.springmusic.domain;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@ApiModel(description = "The application information")
 public class ApplicationInfo {
-    @ApiModelProperty("The application profiles")
+    @Schema(description = "The application profiles")
     private String[] profiles;
 
-    @ApiModelProperty("The application services")
+    @Schema(description = "The application services")
     private String[] services;
 
     public ApplicationInfo(String[] profiles, String[] services) {
