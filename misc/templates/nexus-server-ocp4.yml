@@ -25,7 +25,7 @@ spec:
     write_policy: allow_once
   - name: libs-snapshot
     version_policy: mixed
-    write_policy: allow_redeploy
+    write_policy: allow
     layout_policy: permissive
   nexus_repos_maven_group:
   - name: maven-all-public
