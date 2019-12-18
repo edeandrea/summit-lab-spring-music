@@ -11,12 +11,12 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<spring-boot.version>2.2.0.RELEASE</spring-boot.version>
-		<spring-cloud.version>Hoxton.M3</spring-cloud.version>
-		<springdoc.version>1.2.3</springdoc.version>
+		<spring-boot.version>2.2.2.RELEASE</spring-boot.version>
+		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
+		<springdoc.version>1.2.18</springdoc.version>
 <!--		For OpenShift 3 -->		
 <!--		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version> -->
-		<fabric8-maven-plugin.version>4.2.0</fabric8-maven-plugin.version>
+		<fabric8-maven-plugin.version>4.3.1</fabric8-maven-plugin.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
@@ -74,9 +74,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>${springdoc.version}</version>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>2.1.0</version>
 		</dependency>
 
 		<dependency>
@@ -125,18 +125,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
@@ -255,16 +249,6 @@
 			<id>central</id>
 			<name>Central Repository</name>
 			<url>https://repo.maven.apache.org/maven2</url>
-			<layout>default</layout>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-
-		<repository>
-			<id>spring-milestone</id>
-			<name>Spring Milestone Repo</name>
-			<url>https://repo.spring.io/libs-milestone-local</url>
 			<layout>default</layout>
 			<snapshots>
 				<enabled>false</enabled>
