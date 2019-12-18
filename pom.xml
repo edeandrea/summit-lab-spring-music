@@ -14,9 +14,9 @@
 		<spring-boot.version>2.2.0.RELEASE</spring-boot.version>
 		<spring-cloud.version>Hoxton.M3</spring-cloud.version>
 		<springdoc.version>1.2.3</springdoc.version>
-		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version>
-<!--		For OpenShift 4 -->
-<!--		<fabric8-maven-plugin.version>4.2.0</fabric8-maven-plugin.version> -->
+<!--		For OpenShift 3 -->		
+<!--		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version> -->
+		<fabric8-maven-plugin.version>4.2.0</fabric8-maven-plugin.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
