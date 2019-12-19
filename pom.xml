@@ -79,6 +79,12 @@
 			<version>2.1.0</version>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>org.springdoc</groupId>-->
+<!--			<artifactId>springdoc-openapi-ui</artifactId>-->
+<!--			<version>${springdoc.version}</version>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
