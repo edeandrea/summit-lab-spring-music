@@ -12,8 +12,8 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-boot.version>2.2.2.RELEASE</spring-boot.version>
-		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
-		<springdoc.version>1.2.18</springdoc.version>
+		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
+		<springdoc.version>1.2.22</springdoc.version>
 <!--		For OpenShift 3 -->		
 <!--		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version> -->
 		<fabric8-maven-plugin.version>4.3.1</fabric8-maven-plugin.version>
@@ -74,16 +74,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.swagger.core.v3</groupId>
-			<artifactId>swagger-annotations</artifactId>
-			<version>2.1.0</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
-
-<!--		<dependency>-->
-<!--			<groupId>org.springdoc</groupId>-->
-<!--			<artifactId>springdoc-openapi-ui</artifactId>-->
-<!--			<version>${springdoc.version}</version>-->
-<!--		</dependency>-->
 
 		<dependency>
 			<groupId>com.h2database</groupId>
