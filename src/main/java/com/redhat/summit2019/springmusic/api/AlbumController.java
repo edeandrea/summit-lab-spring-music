@@ -89,6 +89,8 @@ public class AlbumController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteById(@Parameter(description = "The album id") @PathVariable String id) {
 		LOGGER.info("Deleting album {}", id);
-		this.repository.deleteById(id);
+		if (this.repository.existsById(id)) {
+			this.repository.deleteById(id);
+		}
 	}
 }
