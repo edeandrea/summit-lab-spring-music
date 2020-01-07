@@ -43,6 +43,8 @@ objects:
       labels:
         template: postgresql-ephemeral-template
         application: summit-lab-spring-music
+        app: spring-music
+        app.kubernetes.io/part-of: spring-music
       annotations:
         template.alpha.openshift.io/wait-for-ready: "true"
     spec:
