@@ -188,12 +188,14 @@ objects:
       labels:
         app: sonarqube
         deploymentconfig: postgresql-sonarqube
+        app.kubernetes.io/part-of: sonarqube
       name: postgresql-sonarqube
     spec:
       replicas: 1
       selector:
         app: sonarqube
         deploymentconfig: postgresql-sonarqube
+        app.kubernetes.io/part-of: sonarqube
       strategy:
         recreateParams:
           timeoutSeconds: 600
