@@ -12,6 +12,14 @@ components:
     type: chePlugin
   - id: redhat/java8/latest
     type: chePlugin
+  - id: redhat/vscode-openshift-connector/latest
+    type: chePlugin
+  - id: redhat/vscode-yaml/latest
+    type: chePlugin
+  - id: redhat/vscode-xml/latest
+    type: chePlugin
+  - id: redhat/project-initializer/latest
+    type: chePlugin
   - mountSources: true
     endpoints:
       - name: spring-music
@@ -20,7 +28,7 @@ components:
     type: dockerimage
     volumes:
       - name: m2
-        containerPath: /home/user/.m2
+        containerPath: /home/jboss/.m2
     alias: spring-music
     image: 'registry.redhat.io/codeready-workspaces/stacks-java-rhel8:2.0'
   # - id: redhat/vscode-yaml/latest
@@ -29,13 +37,13 @@ commands:
   - name: Build
     actions:
       - type: exec
-        workdir: /projects/summit-lab-spring-music
+        workdir: '/${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
         command: mvn clean install
         component: spring-music
   - name: Run application locally
     actions:
       - type: exec
-        workdir: /projects/summit-lab-spring-music
+        workdir: '/${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
         command: mvn clean spring-boot:run
         component: spring-music
   - name: Dependency analysis
