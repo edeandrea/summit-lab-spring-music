@@ -41,21 +41,19 @@ objects:
   - apiVersion: image.openshift.io/v1
     kind: ImageStream
     metadata:
-      generation: 2
+#      generation: 2
       labels:
-        app: sonarqube-community
+        app: sonarqube
       name: sonarqube
       namespace: sonarqube
     spec:
       lookupPolicy:
         local: false
       tags:
-        - annotations:
-            openshift.io/generated-by: OpenShiftWebConsole
-          from:
+        - from:
             kind: DockerImage
             name: 'sonarqube:latest'
-          generation: 2
+#          generation: 2
           importPolicy: {}
           name: latest
           referencePolicy:
@@ -96,7 +94,7 @@ objects:
                   value: sonar
                 - name: sonar.jdbc.password
                   value: ${POSTGRESQL_PASSWORD}
-                - name: SONAR_SEARCH_JAVA_ADDITIONAL_OPTS
+                - name: sonar.search.javaAdditionalOpts
                   value: '-Dnode.store.allow_mmapfs=false'
               image: ' '
               imagePullPolicy: IfNotPresent
