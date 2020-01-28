@@ -54,7 +54,7 @@ objects:
             openshift.io/generated-by: OpenShiftWebConsole
           from:
             kind: DockerImage
-            name: 'sonarqube:7.9.2-community'
+            name: 'sonarqube:latest'
           generation: 2
           importPolicy: {}
           name: 7.9.2-community
@@ -164,7 +164,7 @@ objects:
               - sonarqube
             from:
               kind: ImageStreamTag
-              name: sonarqube:7.9.2-community
+              name: sonarqube:latest
           type: ImageChange
   - apiVersion: v1
     kind: Service
