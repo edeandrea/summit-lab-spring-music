@@ -109,7 +109,7 @@ pipeline {
 
 								dcmap.remove('status')
 								dcmap.metadata.remove('annotations')
-								dcmap.metadata.remove('labels')
+								//dcmap.metadata.remove('labels')
 								dcmap.metadata.remove('creationTimestamp')
 								dcmap.metadata.remove('generation')
 								dcmap.metadata.remove('resourceVersion')
@@ -121,6 +121,8 @@ pipeline {
 								dcmap.spec.remove('strategy')
 								dcmap.spec.remove('test')
 								dcmap.spec.remove('triggers')
+
+								dcmap.metadata.labels['app.kubernetes.io/part-of'] = 'spring-music'
 
 								def envList = []
 								envList << [
