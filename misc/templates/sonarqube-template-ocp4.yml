@@ -52,13 +52,12 @@ objects:
       tags:
         - annotations:
             openshift.io/generated-by: OpenShiftWebConsole
-            openshift.io/imported-from: 'sonarqube:7.9-community'
           from:
             kind: DockerImage
-            name: 'sonarqube:7.9-community'
+            name: 'sonarqube:7.9.2-community'
           generation: 2
           importPolicy: {}
-          name: 7.9-community
+          name: 7.9.2-community
           referencePolicy:
             type: Source
   - apiVersion: v1
@@ -97,8 +96,8 @@ objects:
                   value: sonar
                 - name: sonar.jdbc.password
                   value: ${POSTGRESQL_PASSWORD}
-              securityContext:
-                fsGroup: 999
+                - name: SONAR_SEARCH_JAVA_ADDITIONAL_OPTS
+                  value: '-Dnode.store.allow_mmapfs=false'
               image: ' '
               imagePullPolicy: IfNotPresent
               name: sonarqube
@@ -165,7 +164,7 @@ objects:
               - sonarqube
             from:
               kind: ImageStreamTag
-              name: sonarqube:7.9-community
+              name: sonarqube:7.9.2-community
           type: ImageChange
   - apiVersion: v1
     kind: Service
