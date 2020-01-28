@@ -195,7 +195,6 @@ objects:
       selector:
         app: sonarqube
         deploymentconfig: postgresql-sonarqube
-        app.kubernetes.io/part-of: sonarqube
       strategy:
         recreateParams:
           timeoutSeconds: 600
