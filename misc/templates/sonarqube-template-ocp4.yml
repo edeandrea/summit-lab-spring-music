@@ -97,6 +97,8 @@ objects:
                   value: sonar
                 - name: sonar.jdbc.password
                   value: ${POSTGRESQL_PASSWORD}
+              securityContext:
+                fsGroup: 999
               image: ' '
               imagePullPolicy: IfNotPresent
               name: sonarqube
