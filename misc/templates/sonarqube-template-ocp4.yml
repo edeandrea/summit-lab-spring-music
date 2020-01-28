@@ -52,13 +52,13 @@ objects:
       tags:
         - annotations:
             openshift.io/generated-by: OpenShiftWebConsole
-            openshift.io/imported-from: 'sonarqube:7.7-community'
+            openshift.io/imported-from: 'sonarqube:7.9-community'
           from:
             kind: DockerImage
-            name: 'sonarqube:7.7-community'
+            name: 'sonarqube:7.9-community'
           generation: 2
           importPolicy: {}
-          name: 7.7-community
+          name: 7.9-community
           referencePolicy:
             type: Source
   - apiVersion: v1
@@ -163,7 +163,7 @@ objects:
               - sonarqube
             from:
               kind: ImageStreamTag
-              name: sonarqube:7.7-community
+              name: sonarqube:7.9-community
           type: ImageChange
   - apiVersion: v1
     kind: Service
