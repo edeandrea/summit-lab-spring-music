@@ -57,7 +57,7 @@ objects:
             name: 'sonarqube:latest'
           generation: 2
           importPolicy: {}
-          name: 7.9.2-community
+          name: latest
           referencePolicy:
             type: Source
   - apiVersion: v1
