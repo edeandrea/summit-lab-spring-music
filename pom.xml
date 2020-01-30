@@ -11,10 +11,10 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<spring-boot.version>2.2.2.RELEASE</spring-boot.version>
+		<spring-boot.version>2.2.4.RELEASE</spring-boot.version>
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
-		<springdoc.version>1.2.22</springdoc.version>
-<!--		For OpenShift 3 -->		
+		<springdoc.version>1.2.29</springdoc.version>
+<!--		For OpenShift 3 -->
 <!--		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version> -->
 		<fabric8-maven-plugin.version>4.2.0</fabric8-maven-plugin.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
@@ -140,7 +140,7 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
-		
+
 		<plugins>
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
@@ -159,7 +159,7 @@
 					<generateGitPropertiesFile>true</generateGitPropertiesFile>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
