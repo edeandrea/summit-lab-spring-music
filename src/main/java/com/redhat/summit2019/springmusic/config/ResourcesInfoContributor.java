@@ -23,7 +23,7 @@ public class ResourcesInfoContributor implements InfoContributor {
 		resourcesInfo.put("Max memory", humanReadableByteCount(runtime.maxMemory(), false));
 		resourcesInfo.put("Free memory", humanReadableByteCount(runtime.freeMemory(), false));
 		resourcesInfo.put("Total memory", humanReadableByteCount(runtime.totalMemory(), false));
-		resourcesInfo.put("Memory", memory(runtime));
+//		resourcesInfo.put("Memory", memory(runtime));
 
 		builder.withDetail("resources", resourcesInfo);
 	}
