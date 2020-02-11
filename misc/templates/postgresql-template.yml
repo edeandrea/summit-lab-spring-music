@@ -82,7 +82,7 @@ objects:
                       name: summit-lab-spring-music-db
                       key: database-admin-password
               name: summit-lab-spring-music-db
-              image: rhscl/postgresql-96-rhel7
+              image: rhel8/postgresql-12:latest
               imagePullPolicy: IfNotPresent
               ports:
                 - containerPort: 5432
