@@ -24,7 +24,7 @@ components:
     endpoints:
       - name: spring-music
         port: 8080
-    memoryLimit: 768Mi
+    memoryLimit: 2048Mi
     type: dockerimage
     volumes:
       - name: m2
