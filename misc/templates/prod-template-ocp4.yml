@@ -82,7 +82,7 @@ objects:
                       name: summit-lab-spring-music-db
                       key: database-admin-password
               name: summit-lab-spring-music-db
-              image: rhel8/postgresql-12:latest
+              image: registry.redhat.io/rhel8/postgresql-12:latest
               imagePullPolicy: IfNotPresent
               ports:
                 - containerPort: 5432
@@ -118,15 +118,15 @@ objects:
                 privileged: false
       triggers:
         - type: ConfigChange
-        - type: ImageChange
-          imageChangeParams:
-            automatic: true
-            containerNames:
-              - summit-lab-spring-music-db
-            from:
-              kind: ImageStreamTag
-              name: postgresql-12:latest
-              namespace: openshift
+        # - type: ImageChange
+        #   imageChangeParams:
+        #     automatic: true
+        #     containerNames:
+        #       - summit-lab-spring-music-db
+        #     from:
+        #       kind: ImageStreamTag
+        #       name: postgresql-12:latest
+        #       namespace: openshift
       volumes:
         - name: summit-lab-spring-music-db-data
           emptyDir: {}
