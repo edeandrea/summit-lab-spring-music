@@ -41,7 +41,6 @@ objects:
     metadata:
       name: summit-lab-spring-music-db
       labels:
-        template: postgresql-ephemeral-template
         application: summit-lab-spring-music
         app: spring-music
         app.kubernetes.io/part-of: spring-music
@@ -59,45 +58,63 @@ objects:
           labels:
             name: summit-lab-spring-music-db
         spec:
+#          strategy:
+#            rollingParams:
+#              post:
+#                execNewPod:
+#                  command:
+#                    - /bin/sh
+#                    - -c
+#                    -
+          volumes:
+            - name: db-data
+              emptyDir: {}
           containers:
             - env:
-                - name: POSTGRESQL_USER
+                - name: MYSQL_USER
                   valueFrom:
                     secretKeyRef:
                       name: summit-lab-spring-music-db
                       key: database-user
-                - name: POSTGRESQL_PASSWORD
+                - name: MYSQL_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: summit-lab-spring-music-db
                       key: database-password
-                - name: POSTGRESQL_DATABASE
+                - name: MYSQL_DATABASE
                   valueFrom:
                     secretKeyRef:
                       name: summit-lab-spring-music-db
                       key: database-name
-                - name: POSTGRESQL_ADMIN_PASSWORD
+                - name: MYSQL_ROOT_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: summit-lab-spring-music-db
                       key: database-admin-password
               name: summit-lab-spring-music-db
-              image: registry.redhat.io/rhel8/postgresql-12:latest
+              image: registry.redhat.io/rhel8/mysql-80:latest
               imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - name: db-data
+                  mountPath: /var/lib/mysql/data
               ports:
-                - containerPort: 5432
+#                - containerPort: 5432
+                - containerPort: 3306
                   protocol: TCP
               livenessProbe:
                 failureThreshold: 3
                 initialDelaySeconds: 30
                 periodSeconds: 10
                 successThreshold: 1
-                exec:
-                  command:
-                    - /bin/sh
-                    - -i
-                    - -c
-                    - pg_isready -h 127.0.0.1 -p 5432
+                tcpSocket:
+                  port: 3306
+#                exec:
+#                  command:
+#                    - /bin/sh
+#                    - -i
+#                    - -c
+#                    - mysqladmin -u$MYSQL_USER -p$MYSQL_PASSWORD -h 127.0.0.1 ping
+##                    - pg_isready -h 127.0.0.1 -p 5432
                 timeoutSeconds: 1
               readinessProbe:
                 exec:
@@ -105,7 +122,10 @@ objects:
                     - /bin/sh
                     - -i
                     - -c
-                    - psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'
+                    - >-
+                      MYSQL_PWD="$MYSQL_PASSWORD" mysql -h 127.0.0.1 -u $MYSQL_USER
+                      -D $MYSQL_DATABASE -e 'SELECT 1'
+#                    - psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'
                 failureThreshold: 3
                 initialDelaySeconds: 5
                 periodSeconds: 10
@@ -127,21 +147,21 @@ objects:
         #       kind: ImageStreamTag
         #       name: postgresql-12:latest
         #       namespace: openshift
-      volumes:
-        - name: summit-lab-spring-music-db-data
-          emptyDir: {}
   - kind: Service
     apiVersion: v1
     metadata:
       name: summit-lab-spring-music-db
       labels:
-        template: postgresql-ephemeral-template
         application: summit-lab-spring-music
     spec:
       ports:
-        - name: postgres
-          port: 5432
+        - name: mysql
+          port: 3306
           protocol: TCP
-          targetPort: 5432
+          targetPort: 3306
+#        - name: postgres
+#          port: 5432
+#          protocol: TCP
+#          targetPort: 5432
       selector:
         name: summit-lab-spring-music-db

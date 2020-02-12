@@ -157,7 +157,7 @@ pipeline {
 
 								envList << [
 									"name": "SPRING_DATASOURCE_URL",
-									"value": "jdbc:postgresql://summit-lab-spring-music-db/\$(DB_NAME)"
+									"value": "jdbc:mysql://summit-lab-spring-music-db/\$(DB_NAME)"
 								]
 
 								def container = dcmap.spec.template.spec.containers[0]
