@@ -56,3 +56,19 @@ commands:
         workdir: '/${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
         command: mvn clean fabric8:deploy -Popenshift -DskipTests
         component: spring-music
+  - name: Remote debug
+    actions:
+      - type: vscode-launch
+        referenceContent: |
+          {
+            "version": "0.2.0",
+            "configurations": [
+              {
+                "type": "java",
+                "request": "attach",
+                "name": "Attach to Remote App",
+                "hostName": "localhost",
+                "port": 5005
+              }
+            ]
+          }
