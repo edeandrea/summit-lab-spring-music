@@ -125,7 +125,7 @@ objects:
               - summit-lab-spring-music-db
             from:
               kind: ImageStreamTag
-              name: postgresql:9.6
+              name: postgresql-12:latest
               namespace: openshift
       volumes:
         - name: summit-lab-spring-music-db-data
