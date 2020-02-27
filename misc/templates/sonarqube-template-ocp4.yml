@@ -64,6 +64,7 @@ objects:
       labels:
         app: sonarqube
         deploymentconfig: sonarqube
+        app.kubernetes.io/part-of: SonarQube
       name: sonarqube
     spec:
       replicas: 1
@@ -187,7 +188,7 @@ objects:
       labels:
         app: sonarqube
         deploymentconfig: postgresql-sonarqube
-        app.kubernetes.io/part-of: sonarqube
+        app.kubernetes.io/part-of: SonarQube
       name: postgresql-sonarqube
     spec:
       replicas: 1

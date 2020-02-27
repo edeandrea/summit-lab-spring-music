@@ -15,6 +15,16 @@ parameters:
     generate: expression
     from: "[a-zA-Z0-9]{32}"
     description: The database password
+  - name: DATABASE_DEBEZIUM_USERNAME
+    value: dbz
+    generate: expression
+    from: "[a-zA-Z]{32}"
+    description: The database username for Debezium
+  - name: DATABASE_DEBEZIUM_PASSWORD
+    value: debezium
+    generate: expression
+    from: "[a-zA-Z0-9]{32}"
+    description: The database password for Debezium
   - name: DATABASE_ADMIN_PASSWORD
     generate: expression
     from: "[a-zA-Z0-9]{32}"
@@ -45,8 +55,41 @@ objects:
     type: Opaque
     stringData:
       connector.properties: |-
-        dbUsername: ${DATABASE_USERNAME}
-        dbPassword: ${DATABASE_PASSWORD}
+        dbUsername: ${DATABASE_DEBEZIUM_USERNAME}
+        dbPassword: ${DATABASE_DEBEZIUM_PASSWORD}
+  - kind: ConfigMap
+    apiVersion: v1
+    metadata:
+      name: summit-lab-spring-music-db-init-config
+      labels:
+        application: summit-lab-spring-music
+        app: summit-lab-spring-music
+    data:
+      initdb.sql: |-
+        CREATE USER IF NOT EXISTS '${DATABASE_DEBEZIUM_USERNAME}'@'%' IDENTIFIED BY '${DATABASE_DEBEZIUM_PASSWORD}';
+        GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO '${DATABASE_DEBEZIUM_USERNAME}'@'%';
+        FLUSH PRIVILEGES;
+  - kind: ConfigMap
+    apiVersion: v1
+    metadata:
+      name: summit-lab-spring-music-db-config
+      labels:
+        application: summit-lab-spring-music
+        app: summit-lab-spring-music
+    data:
+      my-debezium.cnf: |-
+        !include /etc/my.cnf
+
+        [mysqld]
+        server-id = 223344
+        server_id = 223344
+        log_bin = ON
+        binlog_format = ROW
+        binlog_row_image = full
+        binlog_rows_query_log_events = ON
+        expire_logs_days = 10
+        gtid_mode = ON
+        enforce_gtid_consistency = ON
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
@@ -62,6 +105,17 @@ objects:
       replicas: 1
       strategy:
         type: Recreate
+        recreateParams:
+          post:
+            failurePolicy: Abort
+            execNewPod:
+              command:
+                - /bin/sh
+                - '-c'
+                - sleep 10 && MYSQL_PWD="$MYSQL_ROOT_PASSWORD" $MYSQL_PREFIX/bin/mysql -h $SUMMIT_LAB_SPRING_MUSIC_DB_SERVICE_HOST -u root < /entrypoint/initdb.d/initdb.sql
+              containerName: summit-lab-spring-music-db
+              volumes:
+                - summit-lab-spring-music-db-init
       selector:
         name: summit-lab-spring-music-db
       template:
@@ -70,19 +124,19 @@ objects:
           labels:
             name: summit-lab-spring-music-db
         spec:
-#          strategy:
-#            rollingParams:
-#              post:
-#                execNewPod:
-#                  command:
-#                    - /bin/sh
-#                    - -c
-#                    -
           volumes:
             - name: db-data
               emptyDir: {}
+            - name: summit-lab-spring-music-db-init
+              configMap:
+                name: summit-lab-spring-music-db-init-config
+            - name: summit-lab-spring-music-db-config
+              configMap:
+                name: summit-lab-spring-music-db-config
           containers:
             - env:
+                - name: MYSQL_DEFAULTS_FILE
+                  value: /entrypoint/configdb.d/my-debezium.cnf
                 - name: MYSQL_USER
                   valueFrom:
                     secretKeyRef:
@@ -104,11 +158,15 @@ objects:
                       name: summit-lab-spring-music-db
                       key: database-admin-password
               name: summit-lab-spring-music-db
-              image: registry.redhat.io/rhel8/mysql-80:latest
+              image: ' '
               imagePullPolicy: IfNotPresent
               volumeMounts:
                 - name: db-data
                   mountPath: /var/lib/mysql/data
+                - name: summit-lab-spring-music-db-init
+                  mountPath: /entrypoint/initdb.d
+                - name: summit-lab-spring-music-db-config
+                  mountPath: /entrypoint/configdb.d
               ports:
 #                - containerPort: 5432
                 - containerPort: 3306
@@ -134,9 +192,7 @@ objects:
                     - /bin/sh
                     - -i
                     - -c
-                    - >-
-                      MYSQL_PWD="$MYSQL_PASSWORD" mysql -h 127.0.0.1 -u $MYSQL_USER
-                      -D $MYSQL_DATABASE -e 'SELECT 1'
+                    - MYSQL_PWD="$MYSQL_PASSWORD" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'
 #                    - psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'
                 failureThreshold: 3
                 initialDelaySeconds: 5
@@ -150,6 +206,16 @@ objects:
                 privileged: false
       triggers:
         - type: ConfigChange
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - summit-lab-spring-music-db
+            from:
+              kind: ImageStreamTag
+              name: mysql:8.0
+              namespace: openshift
+            lastTriggeredImage: ""
         # - type: ImageChange
         #   imageChangeParams:
         #     automatic: true
@@ -165,6 +231,9 @@ objects:
       name: summit-lab-spring-music-db
       labels:
         application: summit-lab-spring-music
+        app: summit-lab-spring-music
+      annotations:
+        template.openshift.io/expose-uri: mysql://{.spec.clusterIP}:{.spec.ports[?(.name=="mysql")].port}
     spec:
       ports:
         - name: mysql
