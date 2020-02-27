@@ -108,7 +108,7 @@ pipeline {
 								def dcmap = dc.object()
 
 								dcmap.remove('status')
-								dcmap.metadata.remove('annotations')
+								//dcmap.metadata.remove('annotations')
 								//dcmap.metadata.remove('labels')
 								dcmap.metadata.remove('creationTimestamp')
 								dcmap.metadata.remove('generation')
@@ -123,6 +123,11 @@ pipeline {
 								dcmap.spec.remove('triggers')
 
 								dcmap.metadata.labels['app.kubernetes.io/part-of'] = 'spring-music'
+								dcmap.metadata.labels['app.openshift.io/runtime'] = 'java'
+								dcmap.metadata.labels['app.openshift.io/runtime-version'] = '8'
+								dcmap.metadata.annotations['app.openshift.io/vcs-ref'] = 'pipeline'
+								dcmap.metadata.annotations['app.openshift.io/vcs-uri'] = 'https://github.com/edeandrea/summit-lab-spring-music'
+								dcmap.metadata.annotations['app.openshift.io/connects-to'] = 'summit-lab-spring-music-db'
 
 								def envList = []
 								envList << [
@@ -191,7 +196,8 @@ pipeline {
 
 								container.resources = [
 									"limits": [
-										"cpu": "2"
+										"cpu": "2",
+										"memory": "1Gi"
 									],
 									"requests": [
 										"cpu": "500m",

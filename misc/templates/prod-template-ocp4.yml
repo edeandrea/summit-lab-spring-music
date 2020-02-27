@@ -36,6 +36,17 @@ objects:
       database-password: ${DATABASE_PASSWORD}
       database-user: ${DATABASE_USERNAME}
       database-admin-password: ${DATABASE_ADMIN_PASSWORD}
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: summit-lab-spring-music-db-connector-creds
+      labels:
+        app: spring-music-cdc
+    type: Opaque
+    stringData:
+      connector.properties: |-
+        dbUsername: ${DATABASE_USERNAME}
+        dbPassword: ${DATABASE_PASSWORD}
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
