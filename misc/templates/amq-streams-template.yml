@@ -67,9 +67,9 @@ objects:
         offset.storage.topic: spring-music-db-offsets
         config.storage.topic: spring-music-db-configs
         status.storage.topic: spring-music-db-status
-        config.storage.replication.factor: ${{KAFKA_REPLICA_COUNT}}
-        offset.storage.replication.factor: ${{KAFKA_REPLICA_COUNT}}
-        status.storage.replication.factor: ${{KAFKA_REPLICA_COUNT}}
+        config.storage.replication.factor: 1
+        offset.storage.replication.factor: 1
+        status.storage.replication.factor: 1
         config.providers: file
         config.providers.file.class: org.apache.kafka.common.config.provider.FileConfigProvider
       externalConfiguration:
