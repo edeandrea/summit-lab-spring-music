@@ -57,7 +57,7 @@ objects:
         app.openshift.io/connects-to: db-events-kafka,summit-lab-spring-music-db
         strimzi.io/use-connector-resources: "true"
     spec:
-      replicas: ${{KAFKA_REPLICA_COUNT}}
+      replicas: 1
       image: "quay.io/edeandrea/kafka-connect-debezium-mysql:latest"
       bootstrapServers: "db-events-kafka-bootstrap:9092"
       jvmOptions:
