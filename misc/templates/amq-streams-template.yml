@@ -16,9 +16,10 @@ objects:
       labels:
         app.kubernetes.io/part-of: spring-music-cdc
         app: spring-music-cdc
+        template: spring-music-cdc
     spec:
       kafka:
-        replicas: ${KAFKA_REPLICA_COUNT}
+        replicas: ${{KAFKA_REPLICA_COUNT}}
         listeners:
           plain: {}
           tls: {}
@@ -27,16 +28,16 @@ objects:
         config:
           auto.create.topics.enable: "true"
           num.partitions: 1
-          offsets.topic.replication.factor: ${KAFKA_REPLICA_COUNT}
-          default.replication.factor: ${KAFKA_REPLICA_COUNT}
-          transaction.state.log.replication.factor: ${KAFKA_REPLICA_COUNT}
+          offsets.topic.replication.factor: ${{KAFKA_REPLICA_COUNT}}
+          default.replication.factor: ${{KAFKA_REPLICA_COUNT}}
+          transaction.state.log.replication.factor: ${{KAFKA_REPLICA_COUNT}}
           transaction.state.log.min.isr: 2
         storage:
           type: persistent-claim
           size: 100Gi
           deleteClaim: true
       zookeeper:
-        replicas: ${KAFKA_REPLICA_COUNT}
+        replicas: ${{KAFKA_REPLICA_COUNT}}
         storage:
           type: persistent-claim
           size: 100Gi
@@ -51,11 +52,12 @@ objects:
       labels:
         app: spring-music-cdc
         app.kubernetes.io/part-of: spring-music-cdc
+        template: spring-music-cdc
       annotations:
         app.openshift.io/connects-to: db-events-kafka,summit-lab-spring-music-db
         strimzi.io/use-connector-resources: "true"
     spec:
-      replicas: ${KAFKA_REPLICA_COUNT}
+      replicas: ${{KAFKA_REPLICA_COUNT}}
       image: "quay.io/edeandrea/kafka-connect-debezium-mysql:latest"
       bootstrapServers: "db-events-kafka-bootstrap:9092"
       jvmOptions:
@@ -65,9 +67,9 @@ objects:
         offset.storage.topic: spring-music-db-offsets
         config.storage.topic: spring-music-db-configs
         status.storage.topic: spring-music-db-status
-        config.storage.replication.factor: ${KAFKA_REPLICA_COUNT}
-        offset.storage.replication.factor: ${KAFKA_REPLICA_COUNT}
-        status.storage.replication.factor: ${KAFKA_REPLICA_COUNT}
+        config.storage.replication.factor: ${{KAFKA_REPLICA_COUNT}}
+        offset.storage.replication.factor: ${{KAFKA_REPLICA_COUNT}}
+        status.storage.replication.factor: ${{KAFKA_REPLICA_COUNT}}
         config.providers: file
         config.providers.file.class: org.apache.kafka.common.config.provider.FileConfigProvider
       externalConfiguration:
@@ -80,6 +82,7 @@ objects:
     metadata:
       labels:
         app: spring-music-cdc
+        template: spring-music-cdc
       name: db-events-connect-api
     spec:
       port:
