@@ -7,7 +7,7 @@ metadata:
 parameters:
   - name: KAFKA_REPLICA_COUNT
     description: The number of replicas for Kafka/Kafka Connect/Zookeeper
-    value: 3
+    value: "3"
 objects:
   - kind: Kafka
     apiVersion: kafka.strimzi.io/v1beta1
