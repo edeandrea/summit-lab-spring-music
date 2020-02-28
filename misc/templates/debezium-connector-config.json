@@ -1,0 +1,19 @@
+{
+	"name": "spring-music-db-connector",
+	"config": {
+		"connector.class": "io.debezium.connector.mysql.MySqlConnector",
+		"database.hostname": "summit-lab-spring-music-db",
+		"database.port": "3306",
+		"database.user": "dbz",
+		"database.password": "debezium",
+		"database.dbname": "music",
+		"database.server.name": "spring-music",
+		"database.server.id": "223344",
+		"database.whitelist": "music",
+		"database.allowPublicKeyRetrieval":"true",
+		"database.history.kafka.bootstrap.servers": "db-events-kafka-bootstrap:9092",
+		"database.history.kafka.topic": "dbhistory.music",
+		"include.schema.changes": "true",
+		"tasks.max": "1"
+	}
+}

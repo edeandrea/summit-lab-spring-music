@@ -1,0 +1,107 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: spring-music-cdc
+  annotations:
+    description: Template including AMQ Streams and Kafka Connect
+parameters:
+  - name: KAFKA_REPLICA_COUNT
+    description: The number of replicas for Kafka/Kafka Connect/Zookeeper
+    value: 3
+objects:
+  - kind: Kafka
+    apiVersion: kafka.strimzi.io/v1beta1
+    metadata:
+      name: db-events
+      labels:
+        app.kubernetes.io/part-of: spring-music-cdc
+        app: spring-music-cdc
+    spec:
+      kafka:
+        replicas: ${KAFKA_REPLICA_COUNT}
+        listeners:
+          plain: {}
+          tls: {}
+        jvmOptions:
+          gcLoggingEnabled: false
+        config:
+          auto.create.topics.enable: "true"
+          num.partitions: 1
+          offsets.topic.replication.factor: ${KAFKA_REPLICA_COUNT}
+          default.replication.factor: ${KAFKA_REPLICA_COUNT}
+          transaction.state.log.replication.factor: ${KAFKA_REPLICA_COUNT}
+          transaction.state.log.min.isr: 2
+        storage:
+          type: persistent-claim
+          size: 100Gi
+          deleteClaim: true
+      zookeeper:
+        replicas: ${KAFKA_REPLICA_COUNT}
+        storage:
+          type: persistent-claim
+          size: 100Gi
+          deleteClaim: true
+      entityOperator:
+        topicOperator: {}
+        userOperator: {}
+  - kind: KafkaConnect
+    apiVersion: kafka.strimzi.io/v1beta1
+    metadata:
+      name: db-events
+      labels:
+        app: spring-music-cdc
+        app.kubernetes.io/part-of: spring-music-cdc
+      annotations:
+        app.openshift.io/connects-to: db-events-kafka,summit-lab-spring-music-db
+        strimzi.io/use-connector-resources: "true"
+    spec:
+      replicas: ${KAFKA_REPLICA_COUNT}
+      image: "quay.io/edeandrea/kafka-connect-debezium-mysql:latest"
+      bootstrapServers: "db-events-kafka-bootstrap:9092"
+      jvmOptions:
+        gcLoggingEnabled: false
+      config:
+        group.id: spring-music-db
+        offset.storage.topic: spring-music-db-offsets
+        config.storage.topic: spring-music-db-configs
+        status.storage.topic: spring-music-db-status
+        config.storage.replication.factor: ${KAFKA_REPLICA_COUNT}
+        offset.storage.replication.factor: ${KAFKA_REPLICA_COUNT}
+        status.storage.replication.factor: ${KAFKA_REPLICA_COUNT}
+        config.providers: file
+        config.providers.file.class: org.apache.kafka.common.config.provider.FileConfigProvider
+      externalConfiguration:
+        volumes:
+          - name: connector-config
+            secret:
+              secretName: summit-lab-spring-music-db-connector-creds
+  - kind: Route
+    apiVersion: v1
+    metadata:
+      labels:
+        app: spring-music-cdc
+      name: db-events-connect-api
+    spec:
+      port:
+        targetPort: rest-api
+      to:
+        kind: Service
+        name: db-events-connect-api
+        weight: 100
+  # - kind: KafkaConnector
+  #apiVersion: kafka.strimzi.io/v1alpha1
+  #metadata:
+  #  name: db-connector
+  #  labels:
+  #    app: spring-music-cdc
+  #    strimzi.io/cluster: db-connect
+  #spec:
+  #  class: io.debezium.connector.mysql.MySqlConnector
+  #  config:
+  #    topic: summit-lab-spring-music-db
+  #    database.hostname: summit-lab-spring-music-db
+  #    database.port: 3306
+  #    database.user: "${file:/opt/kafka/external-configuration/connector-config/connector.properties:dbUsername}"
+  #    database.password: "${file:/opt/kafka/external-configuration/connector-config/connector.properties:dbPassword}"
+  #    database.dbname: music
+  #    database.server.name: spring-music
