@@ -15,6 +15,9 @@
 		"database.history.kafka.topic": "dbhistory.music",
 		"include.schema.changes": "false",
 		"table.whitelist": "album_events",
+		"transforms": "unwrap",
+		"transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+		"transforms.unwrap.add.source.fields": "ts_ms,db,table,server_id,gtid,file,pos,row",
 		"tasks.max": "1"
 	}
 }
