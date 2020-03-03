@@ -1,26 +1,27 @@
 package com.redhat.summit2019.springmusic.repositories;
 
 import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
 
-import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.init.Jackson2ResourceReader;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.redhat.summit2019.springmusic.domain.Album;
+import com.redhat.summit2019.springmusic.domain.jpa.Album;
+import com.redhat.summit2019.springmusic.service.AlbumService;
 
+@Component
 public class AlbumRepositoryPopulator implements ApplicationListener<ApplicationReadyEvent> {
+	private final AlbumService albumService;
 	private final Jackson2ResourceReader resourceReader;
 	private final Resource sourceData;
 
-	public AlbumRepositoryPopulator() {
+	public AlbumRepositoryPopulator(AlbumService albumService) {
+		this.albumService = albumService;
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		this.resourceReader = new Jackson2ResourceReader(mapper);
@@ -29,21 +30,22 @@ public class AlbumRepositoryPopulator implements ApplicationListener<Application
 
 	@Override
 	public void onApplicationEvent(ApplicationReadyEvent event) {
-		Optional.ofNullable(BeanFactoryUtils.beanOfTypeIncludingAncestors(event.getApplicationContext(), CrudRepository.class))
-			.filter(repo -> repo.count() == 0)
-			.ifPresent(this::populate);
+		if (this.albumService.isEmpty()) {
+			populate();
+		}
 	}
 
-	private void populate(CrudRepository repository) {
+	private void populate() {
 		Object entity = getEntityFromResource(this.sourceData);
 
 		if (entity instanceof Collection) {
-			((Collection<Album>) entity).stream()
-				.filter(Objects::nonNull)
-				.forEach(repository::save);
+			((Collection<?>) entity).stream()
+				.filter(Album.class::isInstance)
+				.map(Album.class::cast)
+				.forEach(this.albumService::createAlbum);
 		}
-		else {
-			repository.save(entity);
+		else if (entity instanceof Album) {
+			this.albumService.createAlbum((Album) entity);
 		}
 	}
 

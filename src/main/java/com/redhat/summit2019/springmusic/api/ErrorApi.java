@@ -17,8 +17,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/errors")
 @Tag(name = "errSim", description = "Error Simulation")
-public class ErrorController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ErrorController.class);
+public class ErrorApi {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ErrorApi.class);
 	private List<int[]> junk = new ArrayList<>();
 
 	@Operation(summary = "Kill the application", tags = { "errSim" })

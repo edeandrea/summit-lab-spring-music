@@ -12,10 +12,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @Tag(name = "appInfo", description = "Application Information")
-public class InfoController {
+public class InfoApi {
 	private final Environment springEnvironment;
 
-	public InfoController(Environment springEnvironment) {
+	public InfoApi(Environment springEnvironment) {
 		this.springEnvironment = springEnvironment;
 	}
 

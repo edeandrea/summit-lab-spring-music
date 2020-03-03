@@ -12,9 +12,10 @@
 	<properties>
 		<java.version>1.8</java.version>
 <!--		<java.version>11</java.version>-->
-		<spring-boot.version>2.2.4.RELEASE</spring-boot.version>
-		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
-		<springdoc.version>1.2.29</springdoc.version>
+		<spring-boot.version>2.2.5.RELEASE</spring-boot.version>
+		<spring-cloud.version>Hoxton.SR2</spring-cloud.version>
+		<springdoc.version>1.2.33</springdoc.version>
+		<lombok.version>1.18.12</lombok.version>
 <!--		For OpenShift 3 -->
 <!--		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version> -->
 		<fabric8-maven-plugin.version>4.2.0</fabric8-maven-plugin.version>
@@ -77,9 +78,22 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.9</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>${springdoc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -265,9 +279,9 @@
 		</repository>
 
 		<repository>
-			<id>redhat-ga-repository</id>
-			<name>Red Hat GA repository</name>
-			<url>http://maven.repository.redhat.com/ga/</url>
+			<id>redhat-ga-albumRepository</id>
+			<name>Red Hat GA albumRepository</name>
+			<url>http://maven.albumRepository.redhat.com/ga/</url>
 			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>never</updatePolicy>
@@ -294,9 +308,9 @@
 		</pluginRepository>
 
 		<pluginRepository>
-			<id>redhat-ga-repository</id>
-			<name>Red Hat GA repository</name>
-			<url>http://maven.repository.redhat.com/ga/</url>
+			<id>redhat-ga-albumRepository</id>
+			<name>Red Hat GA albumRepository</name>
+			<url>http://maven.albumRepository.redhat.com/ga/</url>
 			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>never</updatePolicy>

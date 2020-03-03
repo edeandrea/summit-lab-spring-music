@@ -13,7 +13,8 @@
 		"database.allowPublicKeyRetrieval":"true",
 		"database.history.kafka.bootstrap.servers": "db-events-kafka-bootstrap:9092",
 		"database.history.kafka.topic": "dbhistory.music",
-		"include.schema.changes": "true",
+		"include.schema.changes": "false",
+		"table.whitelist": "album_events",
 		"tasks.max": "1"
 	}
 }
