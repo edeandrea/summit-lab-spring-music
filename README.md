@@ -167,3 +167,5 @@ Events will look something like
 }
 ```
 Next will be working on wiring this together with a schema registry.
+
+If you want to provision this app with all the Kafka clusters/Debezium setup on an OpenShift cluster, you can run the [Ansible Playbook](https://github.com/edeandrea/debezium-demo-apb).
