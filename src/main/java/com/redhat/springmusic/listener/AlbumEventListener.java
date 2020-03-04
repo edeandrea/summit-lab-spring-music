@@ -7,16 +7,16 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import com.redhat.springmusic.domain.jpa.AlbumEvent;
-import com.redhat.springmusic.service.AlbumEventService;
+import com.redhat.springmusic.domain.event.AlbumEvent;
+import com.redhat.springmusic.service.OutboxEventService;
 
 @Component
 public class AlbumEventListener {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AlbumEventListener.class);
-	private final AlbumEventService albumEventService;
+	private final OutboxEventService outboxEventService;
 
-	protected AlbumEventListener(AlbumEventService albumEventService) {
-		this.albumEventService = albumEventService;
+	protected AlbumEventListener(OutboxEventService outboxEventService) {
+		this.outboxEventService = outboxEventService;
 	}
 
 	@EventListener
@@ -24,6 +24,6 @@ public class AlbumEventListener {
 		Assert.notNull(albumEvent, "albumEvent can not be null");
 		LOGGER.info("Handling AlbumEvent {}", albumEvent);
 
-		this.albumEventService.persistEvent(albumEvent);
+		this.outboxEventService.persistEvent(albumEvent);
 	}
 }

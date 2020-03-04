@@ -14,7 +14,7 @@
 		"database.history.kafka.bootstrap.servers": "db-events-kafka-bootstrap:9092",
 		"database.history.kafka.topic": "dbhistory.music",
 		"include.schema.changes": "false",
-		"table.whitelist": "music.album_events",
+		"table.whitelist": "music.outbox_events",
 		"transforms": "unwrap",
 		"transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
 		"transforms.unwrap.add.source.fields": "ts_ms,db,table,server_id,gtid,file,pos,row",

@@ -10,9 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import com.redhat.springmusic.domain.AlbumEventType;
+import com.redhat.springmusic.domain.event.AlbumCreatedEvent;
+import com.redhat.springmusic.domain.event.AlbumDeletedEvent;
+import com.redhat.springmusic.domain.event.AlbumUpdatedEvent;
 import com.redhat.springmusic.domain.jpa.Album;
-import com.redhat.springmusic.domain.jpa.AlbumEvent;
 import com.redhat.springmusic.repositories.jpa.AlbumRepository;
 
 @Service
@@ -38,11 +39,7 @@ public class AlbumEventPublishingService implements AlbumService {
 		LOGGER.info("Creating album {}", album);
 
 		Album newAlbum = this.albumRepository.save(album);
-		this.eventPublisher.publishEvent(
-			AlbumEvent.album(newAlbum)
-				.eventType(AlbumEventType.ALBUM_CREATED)
-				.build()
-		);
+		this.eventPublisher.publishEvent(new AlbumCreatedEvent(newAlbum));
 
 		return newAlbum;
 	}
@@ -54,12 +51,7 @@ public class AlbumEventPublishingService implements AlbumService {
 			.map(this.albumRepository::detach)
 			.ifPresent(existingAlbum -> {
 				LOGGER.info("Updating previous album {} to {}", existingAlbum, album);
-
-				this.eventPublisher.publishEvent(
-					AlbumEvent.album(this.albumRepository.save(album))
-						.eventType(AlbumEventType.ALBUM_UPDATED)
-						.build()
-				);
+				this.eventPublisher.publishEvent(new AlbumUpdatedEvent(existingAlbum, this.albumRepository.save(album)));
 			});
 	}
 
@@ -72,16 +64,13 @@ public class AlbumEventPublishingService implements AlbumService {
 	@Override
 	@Transactional
 	public void deleteAlbum(String albumId) {
-		if (this.albumRepository.existsById(albumId)) {
-			LOGGER.info("Deleting album {}", albumId);
-			this.albumRepository.deleteById(albumId);
-			this.eventPublisher.publishEvent(
-				AlbumEvent.builder()
-					.eventType(AlbumEventType.ALBUM_DELETED)
-					.albumId(albumId)
-					.build()
-			);
-		}
+		this.albumRepository.findById(albumId)
+			.map(this.albumRepository::detach)
+			.ifPresent(existingAlbum -> {
+				LOGGER.info("Deleting album {}", existingAlbum.getId());
+				this.albumRepository.delete(existingAlbum);
+				this.eventPublisher.publishEvent(new AlbumDeletedEvent(existingAlbum));
+			});
 	}
 
 	@Override

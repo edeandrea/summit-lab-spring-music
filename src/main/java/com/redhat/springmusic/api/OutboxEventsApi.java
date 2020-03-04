@@ -10,47 +10,47 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.redhat.springmusic.domain.jpa.AlbumEvent;
-import com.redhat.springmusic.service.AlbumEventService;
+import com.redhat.springmusic.domain.jpa.OutboxEvent;
+import com.redhat.springmusic.service.OutboxEventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/album_events")
-@Tag(name = "Album Events", description = "The album events API")
-public class AlbumEventsApi {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AlbumEventsApi.class);
-	private final AlbumEventService albumEventService;
+@RequestMapping("/outbox")
+@Tag(name = "Outbox Events", description = "The outbox events API")
+public class OutboxEventsApi {
+	private static final Logger LOGGER = LoggerFactory.getLogger(OutboxEventsApi.class);
+	private final OutboxEventService outboxEventService;
 
-	public AlbumEventsApi(AlbumEventService albumEventService) {
-		this.albumEventService = albumEventService;
+	public OutboxEventsApi(OutboxEventService outboxEventService) {
+		this.outboxEventService = outboxEventService;
 	}
 
-	@Operation(summary = "Get all album events", tags = { "Album events" })
+	@Operation(summary = "Get all outbox events", tags = { "Outbox events" })
 	@ApiResponse(responseCode = "200", description = "Success!")
 	@ApiResponse(responseCode = "500", description = "Something bad happened")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public Iterable<AlbumEvent> getAllEvents() {
+	public Iterable<OutboxEvent> getAllEvents() {
 		LOGGER.info("Getting all album events");
-		return this.albumEventService.getAllEventsOrderedByTimestampDescending();
+		return this.outboxEventService.getAllEventsOrderedByTimestampDescending();
 	}
 
-	@Operation(summary = "Get an event by it's id", tags = { "Album event" })
+	@Operation(summary = "Get an event by it's id", tags = { "Outbox event" })
 	@ApiResponse(responseCode = "200", description = "Success!")
 	@ApiResponse(responseCode = "404", description = "No event for given id found")
 	@ApiResponse(responseCode = "500", description = "Something bad happened")
 	@GetMapping(path = "/event/{eventId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<AlbumEvent> getEventById(@Parameter(description = "The event id", required = true) @PathVariable long eventId) {
-		return ResponseEntity.of(this.albumEventService.getById(eventId));
+	public ResponseEntity<OutboxEvent> getEventById(@Parameter(description = "The event id", required = true) @PathVariable long eventId) {
+		return ResponseEntity.of(this.outboxEventService.getById(eventId));
 	}
 
-	@Operation(summary = "Get all events for an album, ordered by timestamp, descending", tags = { "Album events" })
+	@Operation(summary = "Get all events for an id, ordered by timestamp, descending", tags = { "Outbox events" })
 	@ApiResponse(responseCode = "200", description = "Success!")
 	@ApiResponse(responseCode = "500", description = "Something bad happened")
 	@GetMapping(path = "/album/{albumId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Iterable<AlbumEvent> getEventsForAlbumId(@Parameter(description = "The album id", required = true) @PathVariable String albumId) {
-		return this.albumEventService.getAllEventsForAlbumIdOrderedByTimestampDescending(albumId);
+	public Iterable<OutboxEvent> getEventsForAlbumId(@Parameter(description = "The album id", required = true) @PathVariable String albumId) {
+		return this.outboxEventService.getAllEventsForAlbumIdOrderedByTimestampDescending(albumId);
 	}
 }
