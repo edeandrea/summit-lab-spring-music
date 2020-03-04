@@ -45,17 +45,21 @@ public class OutboxEvent {
 	private Long eventId;
 
 	@Schema(description = "The type of aggregate root to which a given event is related")
+	@Column(nullable = false)
 	private String aggregateType;
 
 	@Schema(description = "The id of the aggregate root that is affected by the event")
+	@Column(nullable = false)
 	private String aggregateId;
 
 	@Schema(description = "The type of event that occurred")
 	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private AlbumEventType eventType;
 
 	@Schema(description = "The timestamp the event occurred")
 	@CreatedDate
+	@Column(nullable = false)
 	private Instant eventTimestamp;
 
 	@Schema(description = "The payload with the actual event contents")
