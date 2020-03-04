@@ -13,11 +13,18 @@
 		"database.allowPublicKeyRetrieval":"true",
 		"database.history.kafka.bootstrap.servers": "db-events-kafka-bootstrap:9092",
 		"database.history.kafka.topic": "dbhistory.music",
-		"include.schema.changes": "false",
 		"table.whitelist": "music.outbox_events",
-		"transforms": "unwrap",
-		"transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
-		"transforms.unwrap.add.source.fields": "ts_ms,db,table,server_id,gtid,file,pos,row",
+		"tombstones.on.delete" : "false",
+		"transforms": "outbox",
+		"transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
+		"transforms.outbox.route.topic.replacement": "outbox.${routedByValue}.events",
+		"transforms.outbox.table.field.event.id": "event_id",
+		"transforms.outbox.table.field.event.key": "aggregate_id",
+		"transforms.outbox.table.field.event.timestamp": "event_timestamp",
+		"transforms.outbox.table.field.event.type": "event_type",
+		"transforms.outbox.table.field.event.payload.id": "aggregate_id",
+		"transforms.outbox.route.by.field": "aggregate_type",
+		"transforms.outbox.table.fields.additional.placement": "event_id:envelope:eventId,event_timestamp:envelope:eventTimestamp,aggregate_id:envelope:aggregateId,aggregate_type:envelope:aggregateType",
 		"tasks.max": "1"
 	}
 }
