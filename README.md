@@ -6,8 +6,9 @@ The source code from this was adapted from the well-known [Spring Music](https:/
 The application has been refactored to use [Spring Cloud Kubernetes](https://spring.io/projects/spring-cloud-kubernetes) as well as adopting the [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html) and [Outbox](https://debezium.io/blog/2020/02/10/event-sourcing-vs-cdc/) patterns.
 
 # Outbox
-All events are captured in an Outbox table called `outbox_events`. There is a [Debezium](https://debezium.io) connector [config file](misc/templates/debezium-connector-config.json) which will emit events into the `outbox.Album.events` Kafka topic. Events will look something like
+All events are captured in an Outbox table called `outbox_events`. There is a [Debezium](https://debezium.io) connector [config file](misc/templates/debezium-connector-config.json) which will emit events into the `outbox.${aggregateType}.events` Kafka topic, where `${aggregateType}` is driven by the domain event itself. Currently in this application there is only a single aggregate type, namely `Album`. 
 
+Events will look something like
 ```json
 {
   "schema": {
