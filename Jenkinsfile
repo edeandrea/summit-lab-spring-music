@@ -26,11 +26,11 @@ pipeline {
 			}
 		}
 
-		stage('Publish Artifact') {
+		/* stage('Publish Artifact') {
 			steps {
 				sh "mvn versions:set deploy -DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -DaltDeploymentRepository=libs-snapshot::default::${params.NEXUS_URL}/repository/libs-snapshot/ -s misc/config/settings.xml"
 			}
-		}
+		}*/
 
 		stage('Build Image') {
 			steps {
