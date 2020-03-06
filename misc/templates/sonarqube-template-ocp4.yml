@@ -66,6 +66,8 @@ objects:
         deploymentconfig: sonarqube
         app.kubernetes.io/part-of: SonarQube
       name: sonarqube
+      annotations:
+        app.openshift.io/connects-to: postgresql-sonarqube
     spec:
       replicas: 1
       selector:
