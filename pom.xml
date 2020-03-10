@@ -20,6 +20,7 @@
 <!--		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version> -->
 		<fabric8-maven-plugin.version>4.2.0</fabric8-maven-plugin.version>
 <!--		<fabric8-maven-plugin.version>4.3.1</fabric8-maven-plugin.version>-->
+		<oc-maven-plugin.version>0.2.0</oc-maven-plugin.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 <!--		<fabric8.generator.from>registry.redhat.io/openjdk/openjdk-11-rhel8:latest</fabric8.generator.from>-->
@@ -75,6 +76,11 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-kubernetes-all</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
 
 		<dependency>
@@ -248,12 +254,22 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>io.fabric8</groupId>
-						<artifactId>fabric8-maven-plugin</artifactId>
-						<version>${fabric8-maven-plugin.version}</version>
+						<groupId>org.eclipse.jkube</groupId>
+						<artifactId>oc-maven-plugin</artifactId>
+						<version>${oc-maven-plugin.version}</version>
+<!--						<configuration>-->
+<!--							<generator>-->
+<!--								<includes>-->
+<!--									<include>spring-boot</include>-->
+<!--								</includes>-->
+<!--								<config>-->
+<!--									<color>always</color>-->
+<!--								</config>-->
+<!--							</generator>-->
+<!--						</configuration>-->
 						<executions>
 							<execution>
-								<id>fmp</id>
+								<id>jkube</id>
 								<phase>package</phase>
 								<goals>
 									<goal>resource</goal>
