@@ -7,43 +7,63 @@ projects:
       type: git
       location: 'https://github.com/edeandrea/summit-lab-spring-music.git'
 components:
+  - id: redhat/dependency-analytics/latest
+    type: chePlugin
+  - id: redhat/java8/latest
+    type: chePlugin
+  - id: redhat/vscode-yaml/latest
+    type: chePlugin
+  - id: redhat/vscode-xml/latest
+    type: chePlugin
   - mountSources: true
     endpoints:
       - name: spring-music
         port: 8080
-    memoryLimit: 768Mi
+    memoryLimit: 2048Mi
     type: dockerimage
     volumes:
       - name: m2
-        containerPath: /home/user/.m2
+        containerPath: /home/jboss/.m2
     alias: spring-music
-    image: quay.io/eclipse/che-java8-maven:7.3.1
-  - id: eclipse/che-theia/latest
-    type: cheEditor
-  - id: redhat/java8/latest
-    type: chePlugin
-  - id: eclipse/che-machine-exec-plugin/latest
-    type: chePlugin
-    memoryLimit: 768Mi
-    alias: exec-plugin
-  # - id: redhat/vscode-yaml/latest
-  #  type: chePlugin
+    image: 'registry.redhat.io/codeready-workspaces/stacks-java-rhel8:2.0'
 commands:
   - name: Build
     actions:
       - type: exec
-        workdir: /projects/summit-lab-spring-music
+        workdir: '/${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
         command: mvn clean install
         component: spring-music
   - name: Run application locally
     actions:
       - type: exec
-        workdir: /projects/summit-lab-spring-music
+        workdir: '/${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
         command: mvn clean spring-boot:run
         component: spring-music
+  - name: Dependency analysis
+    actions:
+      - type: exec
+        workdir: '${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
+        component: spring-music
+        command: '${HOME}/stack-analysis.sh -f ${CHE_PROJECTS_ROOT}/summit-lab-spring-music/pom.xml -p ${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
   - name: Deploy to OpenShift
     actions:
       - type: exec
-        workdir: /projects/summit-lab-spring-music
-        command: mvn clean fabric8:deploy -Popenshift -DskipTests
+        workdir: '/${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
+        command: mvn clean oc:deploy -Popenshift -DskipTests
         component: spring-music
+  - name: Remote debug
+    actions:
+      - type: vscode-launch
+        referenceContent: |
+          {
+            "version": "0.2.0",
+            "configurations": [
+              {
+                "type": "java",
+                "request": "attach",
+                "name": "Attach to Remote App",
+                "hostName": "localhost",
+                "port": 5005
+              }
+            ]
+          }
