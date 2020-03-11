@@ -18,6 +18,12 @@ pipeline {
 		  steps {
 		  	sh "mvn versions:set verify -DnewVersion=${env.BUILD_VERSION}"
 		  }
+		  post {
+		  	always {
+		  		junit 'target/surefire-reports/TEST-*.xml'
+		  		jacoco execPattern: 'target/jacoco.exec'
+		  	}
+		  }
 		}
 
 		stage('Sonar Scan') {
