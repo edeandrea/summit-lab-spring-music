@@ -54,7 +54,7 @@ commands:
     actions:
       - type: exec
         workdir: '/${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
-        command: mvn clean oc:deploy -Popenshift -DskipTests
+        command: mvn clean fabric8:deploy -Popenshift -DskipTests
         component: spring-music
   - name: Remote debug
     actions:
