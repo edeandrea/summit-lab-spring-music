@@ -110,7 +110,7 @@ objects:
       labels:
         app: spring-music
         app.kubernetes.io/part-of: spring-music
-        app.openshift.io/runtime: java
+        app.openshift.io/runtime: spring
         app.openshift.io/runtime-version: '8'
       name: spring-music
       annotations:
