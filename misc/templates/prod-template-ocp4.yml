@@ -98,7 +98,7 @@ objects:
         application: summit-lab-spring-music
         app: spring-music
         app.kubernetes.io/part-of: spring-music
-        app.openshift.io/runtime: mysql
+        app.openshift.io/runtime: mysql-database
       annotations:
         template.alpha.openshift.io/wait-for-ready: "true"
     spec:
