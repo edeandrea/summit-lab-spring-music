@@ -5,12 +5,25 @@ metadata:
     description: The spring-music application
     tags: spring-music
   name: spring-music
+parameters:
+  - name: APP_NAME
+    value: spring-music
+    description: The name of the application
+    required: true
+  - name: GIT_URL
+    value: "https://github.com/edeandrea/summit-lab-spring-music.git"
+    description: The git url to build from
+    required: true
+  - name: GIT_REF
+    value: pipeline
+    description: The git branch/tag to pull from
+    required: true
 objects:
   - kind: RoleBinding
     apiVersion: rbac.authorization.k8s.io/v1
     metadata:
       labels:
-        app: spring-music
+        app: ${APP_NAME}
       name: default_view
     roleRef:
       name: view
@@ -22,9 +35,9 @@ objects:
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
     metadata:
-      name: spring-music
+      name: ${APP_NAME}
       labels:
-        app: spring-music
+        app: ${APP_NAME}
     spec:
       tags:
         - name: latest
@@ -32,16 +45,16 @@ objects:
     apiVersion: build.openshift.io/v1
     metadata:
       labels:
-        app: spring-music
-      name: spring-music
+        app: ${APP_NAME}
+      name: ${APP_NAME}
     spec:
       runPolicy: Serial
       source:
         type: Git
         contextDir: /
         git:
-          ref: pipeline
-          uri: "https://github.com/edeandrea/summit-lab-spring-music.git"
+          ref: ${GIT_REF}
+          uri: ${GIT_URL}
       strategy:
         type: Source
         sourceStrategy:
@@ -52,27 +65,24 @@ objects:
       output:
         to:
           kind: ImageStreamTag
-          name: "spring-music:latest"
+          name: "${APP_NAME}:latest"
   - kind: BuildConfig
     apiVersion: build.openshift.io/v1
     metadata:
       labels:
-        build: spring-music-pipeline-git
-      name: spring-music-pipeline-git
+        build: ${APP_NAME}-${GIT_REF}-git
+      name: ${APP_NAME}-${GIT_REF}-git
     spec:
       runPolicy: Serial
       source:
         type: Git
         git:
-          uri: "https://github.com/edeandrea/summit-lab-spring-music.git"
-          ref: pipeline
+          uri: ${GIT_URL}
+          ref: ${GIT_REF}
       strategy:
         type: JenkinsPipeline
         jenkinsPipelineStrategy:
           jenkinsfilePath: Jenkinsfile
-          env:
-            - name: NEXUS_URL
-              value: "http://nexus.labs-infra.svc:8081"
       triggers:
         - type: ConfigChange
         - type: GitHub
@@ -94,42 +104,42 @@ objects:
           name: quay
         to:
           kind: DockerImage
-          name: "quay.io/edeandrea/spring-music:latest"
+          name: "quay.io/edeandrea/${APP_NAME}:latest"
       source:
         type: Dockerfile
-        dockerfile: "FROM spring-music:latest"
+        dockerfile: "FROM ${APP_NAME}:latest"
       strategy:
         type: Docker
         dockerStrategy:
           from:
             kind: ImageStreamTag
-            name: spring-music:latest
+            name: ${APP_NAME}:latest
   - kind: DeploymentConfig
     apiVersion: apps.openshift.io/v1
     metadata:
       labels:
-        app: spring-music
-        app.kubernetes.io/part-of: spring-music
+        app: ${APP_NAME}
+        app.kubernetes.io/part-of: ${APP_NAME}
         app.openshift.io/runtime: spring
         app.openshift.io/runtime-version: '8'
-      name: spring-music
+      name: ${APP_NAME}
       annotations:
-        app.openshift.io/vcs-ref: pipeline
-        app.openshift.io/vcs-uri: "https://github.com/edeandrea/summit-lab-spring-music"
+        app.openshift.io/vcs-ref: ${GIT_REF}
+        app.openshift.io/vcs-uri: ${GIT_URL}
     spec:
       replicas: 1
       selector:
-        deploymentconfig: spring-music
+        deploymentconfig: ${APP_NAME}
       strategy:
         type: Recreate
       template:
         metadata:
           labels:
-            app: spring-music
-            deploymentconfig: spring-music
+            app: ${APP_NAME}
+            deploymentconfig: ${APP_NAME}
         spec:
           containers:
-            - image: spring-music:latest
+            - image: ${APP_NAME}:latest
               imagePullPolicy: Always
               livenessProbe:
                 failureThreshold: 3
@@ -141,7 +151,7 @@ objects:
                 periodSeconds: 10
                 successThreshold: 1
                 timeoutSeconds: 10
-              name: spring-music
+              name: ${APP_NAME}
               ports:
                 - containerPort: 8080
                   protocol: TCP
@@ -165,16 +175,16 @@ objects:
           imageChangeParams:
             automatic: true
             containerNames:
-              - spring-music
+              - ${APP_NAME}
             from:
               kind: ImageStreamTag
-              name: spring-music:latest
+              name: ${APP_NAME}:latest
   - kind: Service
     apiVersion: v1
     metadata:
-      name: spring-music
+      name: ${APP_NAME}
       labels:
-        app: spring-music
+        app: ${APP_NAME}
     spec:
       ports:
         - name: 8080-tcp
@@ -190,17 +200,17 @@ objects:
           protocol: TCP
           targetPort: 8778
       selector:
-        deploymentconfig: spring-music
+        deploymentconfig: ${APP_NAME}
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:
       labels:
-        app: spring-music
-      name: spring-music
+        app: ${APP_NAME}
+      name: ${APP_NAME}
     spec:
       port:
         targetPort: 8080-tcp
       to:
         kind: Service
-        name: spring-music
+        name: ${APP_NAME}
         weight: 100
