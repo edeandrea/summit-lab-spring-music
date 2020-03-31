@@ -107,6 +107,7 @@ pipeline {
 						openshift.withProject('prod') {
 							def dc = openshift.selector("dc", "spring-music")
 
+							// If this is the first time this app is being deployed into the prod namespace
 							if (!dc.exists()) {
 								def app = openshift.newApp("spring-music:prod")
 
