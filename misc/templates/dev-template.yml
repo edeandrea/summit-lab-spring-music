@@ -29,7 +29,7 @@ objects:
       tags:
         - name: latest
   - kind: BuildConfig
-    apiVersion: v1
+    apiVersion: build.openshift.io/v1
     metadata:
       labels:
         app: spring-music
@@ -54,7 +54,7 @@ objects:
           kind: ImageStreamTag
           name: "spring-music:latest"
   - kind: BuildConfig
-    apiVersion: v1
+    apiVersion: build.openshift.io/v1
     metadata:
       labels:
         build: spring-music-pipeline-git
@@ -82,7 +82,7 @@ objects:
           generic:
             secret: ZSyQC2Cy7nc6fMxZJMZi
   - kind: BuildConfig
-    apiVersion: v1
+    apiVersion: build.openshift.io/v1
     metadata:
       labels:
         build: image-quay-image-mover
