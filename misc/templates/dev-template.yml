@@ -20,7 +20,7 @@ objects:
       - kind: ServiceAccount
         name: default
   - kind: ImageStream
-    apiVersion: v1
+    apiVersion: image.openshift.io/v1
     metadata:
       name: spring-music
       labels:
@@ -105,7 +105,7 @@ objects:
             kind: ImageStreamTag
             name: spring-music:latest
   - kind: DeploymentConfig
-    apiVersion: v1
+    apiVersion: apps.openshift.io/v1
     metadata:
       labels:
         app: spring-music
@@ -192,7 +192,7 @@ objects:
       selector:
         deploymentconfig: spring-music
   - kind: Route
-    apiVersion: v1
+    apiVersion: route.openshift.io/v1
     metadata:
       labels:
         app: spring-music
