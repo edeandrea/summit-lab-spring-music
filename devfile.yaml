@@ -44,6 +44,12 @@ commands:
         workdir: '/${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
         command: mvn clean spring-boot:run
         component: spring-music
+	- name: Run application locally (debug)
+    actions:
+      - type: exec
+        component: spring-music
+        command: mvn -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 clean spring-boot:run
+        workdir: '${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
   - name: Dependency analysis
     actions:
       - type: exec
