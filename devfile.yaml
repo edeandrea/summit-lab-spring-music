@@ -44,7 +44,7 @@ commands:
         workdir: '/${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
         command: mvn clean spring-boot:run
         component: spring-music
-	- name: Run application locally (debug)
+  - name: Run application locally (debug)
     actions:
       - type: exec
         component: spring-music
