@@ -18,7 +18,7 @@
 		<lombok.version>1.18.12</lombok.version>
 <!--		For OpenShift 3 -->
 <!--		<fabric8-maven-plugin.version>3.5.42</fabric8-maven-plugin.version> -->
-		<fabric8-maven-plugin.version>4.2.0</fabric8-maven-plugin.version>
+		<fabric8-maven-plugin.version>4.4.1</fabric8-maven-plugin.version>
 <!--		<fabric8-maven-plugin.version>4.3.1</fabric8-maven-plugin.version>-->
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
