@@ -30,7 +30,7 @@ components:
       - name: m2
         containerPath: /home/jboss/.m2
     alias: spring-music
-    image: 'registry.redhat.io/codeready-workspaces/stacks-java-rhel8:2.0'
+    image: 'registry.redhat.io/codeready-workspaces/stacks-java-rhel8:2.1'
 commands:
   - name: Build
     actions:
