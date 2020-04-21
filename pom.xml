@@ -284,9 +284,9 @@
 		</repository>
 
 		<repository>
-			<id>redhat-ga-albumRepository</id>
-			<name>Red Hat GA albumRepository</name>
-			<url>http://maven.albumRepository.redhat.com/ga/</url>
+			<id>redhat-ga-repository</id>
+			<name>Red Hat GA Repository</name>
+			<url>http://maven.repository.redhat.com/ga/</url>
 			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>never</updatePolicy>
@@ -313,9 +313,9 @@
 		</pluginRepository>
 
 		<pluginRepository>
-			<id>redhat-ga-albumRepository</id>
-			<name>Red Hat GA albumRepository</name>
-			<url>http://maven.albumRepository.redhat.com/ga/</url>
+			<id>redhat-ga-repository</id>
+			<name>Red Hat GA Repository</name>
+			<url>http://maven.repository.redhat.com/ga/</url>
 			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>never</updatePolicy>
