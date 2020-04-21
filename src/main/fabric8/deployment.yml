@@ -1,3 +1,7 @@
+metadata:
+  labels:
+    app.openshift.io/runtime: spring
+    app.kubernetes.io/part-of: spring-music
 spec:
   template:
     spec:
