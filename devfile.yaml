@@ -44,7 +44,7 @@ commands:
     actions:
       - type: exec
         component: spring-music
-        command: ./mvnw -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 clean spring-boot:run
+        command: ./mvnw clean spring-boot:run -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
         workdir: '${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
   - name: Dependency analysis
     actions:
