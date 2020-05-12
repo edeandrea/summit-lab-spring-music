@@ -26,11 +26,11 @@ pipeline {
 		  }
 		}
 
-		stage('Sonar Scan') {
+		/*stage('Sonar Scan') {
 			steps {
 				sh "mvn versions:set sonar:sonar -Dsonar.host.url=http://sonarqube.labs-infra.svc:9000 -DskipTests -DnewVersion=${env.BUILD_VERSION} -P sonar -s misc/config/settings.xml"
 			}
-		}
+		}*/
 
 		stage('Publish Artifact') {
 			steps {
