@@ -191,7 +191,7 @@ objects:
         app: sonarqube
         deploymentconfig: postgresql-sonarqube
         app.kubernetes.io/part-of: SonarQube
-				app.openshift.io/runtime: postgresql
+        app.openshift.io/runtime: postgresql
       name: postgresql-sonarqube
     spec:
       replicas: 1
