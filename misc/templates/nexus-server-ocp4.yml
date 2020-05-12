@@ -7,29 +7,30 @@ metadata:
 spec:
   nexusVolumeSize: 10Gi
   nexusSsl: True
-  nexusImageTag: latest
   nexusCpuRequest: 1
   nexusCpuLimit: 2
   nexusMemoryRequest: 2Gi
   nexusMemoryLimit: 2Gi
   nexusImageTag: 3.23.0-ubi-1
-  nexus_repos_maven_proxy:
-  - name: maven-central
-    remote_url: https://repo1.maven.org/maven2/
-    layout_policy: permissive
-  - name: redhat-ga
-    remote_url: https://maven.repository.redhat.com/ga/
-    layout_policy: permissive
-  - name: jboss
-    remote_url: https://repository.jboss.org/nexus/content/groups/public
+  #nexus_repos_maven_proxy:
+  #- name: maven-central
+  #  remote_url: https://repo1.maven.org/maven2/
+  #  layout_policy: permissive
+  #- name: redhat-ga
+  #  remote_url: https://maven.repository.redhat.com/ga/
+  #  layout_policy: permissive
+  #- name: jboss
+  #  remote_url: https://repository.jboss.org/nexus/content/groups/public
   nexus_repos_maven_hosted:
-  - name: releases
-    version_policy: release
-    write_policy: allow_once
+  #- name: releases
+  #  version_policy: release
+  #  write_policy: allow_once
   - name: libs-snapshot
     version_policy: mixed
     write_policy: allow
     layout_policy: permissive
+		blob_store: default
+		strict_content_validation: true
   nexus_repos_maven_group:
   - name: maven-all-public
     member_repos:
