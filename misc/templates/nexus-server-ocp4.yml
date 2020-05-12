@@ -33,7 +33,7 @@ spec:
     strict_content_validation: true
   nexus_repos_maven_group:
   - name: maven-all-public
-		blob_store: default
+    blob_store: default
     strict_content_validation: true
     member_repos:
       - maven-central
