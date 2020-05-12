@@ -3,7 +3,7 @@ angular.module('albums', ['ngResource', 'ui.bootstrap']).
         return $resource('albums');
     }).
     factory('Album', function ($resource) {
-        return $resource('albums/:id', {id: '@id'});
+        return $resource('albums/:id', {id: '@id'}, {update: {method: 'PUT'}});
     }).
     factory("EditorStatus", function () {
         var editorEnabled = {};
@@ -36,8 +36,20 @@ function AlbumsController($scope, $modal, Albums, Album, Status) {
         return JSON.parse(JSON.stringify(obj));
     }
 
-    function saveAlbum(album) {
+    function addAlbum(album) {
         Albums.save(album,
+            function () {
+                Status.success("Album saved");
+                list();
+            },
+            function (result) {
+                Status.error("Error saving album: " + result.status);
+            }
+        );
+    }
+
+    function updateAlbum(album) {
+        Album.update(album,
             function () {
                 Status.success("Album saved");
                 list();
@@ -63,7 +75,7 @@ function AlbumsController($scope, $modal, Albums, Album, Status) {
         });
 
         addModal.result.then(function (album) {
-            saveAlbum(album);
+            addAlbum(album);
         });
     };
 
@@ -82,7 +94,7 @@ function AlbumsController($scope, $modal, Albums, Album, Status) {
         });
 
         updateModal.result.then(function (album) {
-            saveAlbum(album);
+            updateAlbum(album);
         });
     };
 

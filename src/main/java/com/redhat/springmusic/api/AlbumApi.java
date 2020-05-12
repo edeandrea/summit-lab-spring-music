@@ -52,7 +52,7 @@ public class AlbumApi {
 		@ApiResponse(responseCode = "200", description = "Success!"),
 		@ApiResponse(responseCode = "500", description = "Something bad happened")
 	})
-	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Album add(@Parameter(description = "The album to add", required = true) @RequestBody @Valid Album album) {
 		LOGGER.info("Adding album {}", album.getId());
 		return this.albumService.createAlbum(album);
@@ -60,15 +60,14 @@ public class AlbumApi {
 
 	@Operation(summary = "Updates an album", tags = { "Albums" })
 	@ApiResponses({
-		@ApiResponse(responseCode = "200", description = "Success!"),
+		@ApiResponse(responseCode = "204", description = "Success!"),
 		@ApiResponse(responseCode = "500", description = "Something bad happened")
 	})
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Album update(@Parameter(description = "The album to update", required = true) @RequestBody @Valid Album album) {
+	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void update(@Parameter(description = "The album to update", required = true) @RequestBody @Valid Album album) {
 		LOGGER.info("Updating album {}", album.getId());
 		this.albumService.updateAlbum(album);
-
-		return album;
 	}
 
 	@Operation(summary = "Get an album", tags = { "Albums" })
