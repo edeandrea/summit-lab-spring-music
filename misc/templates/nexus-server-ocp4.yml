@@ -12,7 +12,7 @@ spec:
   nexusCpuLimit: 2
   nexusMemoryRequest: 2Gi
   nexusMemoryLimit: 2Gi
-  nexusImageTag: 3.20.1-01-ubi-3
+  nexusImageTag: 3.23.0-ubi-1
   nexus_repos_maven_proxy:
   - name: maven-central
     remote_url: https://repo1.maven.org/maven2/
