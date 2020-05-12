@@ -33,24 +33,28 @@ spec:
     strict_content_validation: true
   nexus_repos_maven_group:
   - name: maven-all-public
+		blob_store: default
+    strict_content_validation: true
     member_repos:
       - maven-central
       - redhat-ga
       - jboss
   - name: maven-all
+    blob_store: default
+    strict_content_validation: true
     member_repos:
       - maven-central
       - redhat-ga
       - jboss
       - libs-snapshot
-  nexus_repos_docker_hosted:
-  - name: docker
-    http_port: 5000
-    v1_enabled: True
-  nexus_repos_npm_proxy:
-  - name: npm
-    remote_url: https://registry.npmjs.org
-  nexus_repos_npm_group:
-  - name: npm-all
-    member_repos:
-      - npm
+#  nexus_repos_docker_hosted:
+#  - name: docker
+#    http_port: 5000
+#    v1_enabled: True
+#  nexus_repos_npm_proxy:
+#  - name: npm
+#    remote_url: https://registry.npmjs.org
+#  nexus_repos_npm_group:
+#  - name: npm-all
+#    member_repos:
+#      - npm
