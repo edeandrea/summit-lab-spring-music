@@ -29,8 +29,8 @@ spec:
     version_policy: mixed
     write_policy: allow
     layout_policy: permissive
-		blob_store: default
-		strict_content_validation: true
+    blob_store: default
+    strict_content_validation: true
   nexus_repos_maven_group:
   - name: maven-all-public
     member_repos:
