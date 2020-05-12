@@ -63,7 +63,7 @@ public class AlbumApi {
 		@ApiResponse(responseCode = "204", description = "Success!"),
 		@ApiResponse(responseCode = "500", description = "Something bad happened")
 	})
-	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void update(@Parameter(description = "The album to update", required = true) @RequestBody @Valid Album album) {
 		LOGGER.info("Updating album {}", album.getId());
