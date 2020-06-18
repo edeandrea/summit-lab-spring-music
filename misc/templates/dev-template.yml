@@ -83,6 +83,9 @@ objects:
         type: JenkinsPipeline
         jenkinsPipelineStrategy:
           jenkinsfilePath: Jenkinsfile
+					env:
+            - name: NEXUS_URL
+              value: "http://nexus.labs-infra.svc:8081"
       triggers:
         - type: ConfigChange
         - type: GitHub
