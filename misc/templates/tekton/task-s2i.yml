@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: s2i
+spec:
+  params:
+    - name: BUILD_CONFIG
+      type: string
+      description: The name of the BuildConfig to invoke
+  steps:
+    - name: s2i-build
+      image: quay.io/openshift/origin-cli:latest
+      script: |
+        #!/usr/bin/env bash
+
+        oc start-build $(params.BUILD_CONFIG) -F

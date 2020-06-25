@@ -1,0 +1,140 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: spring-music-pipeline
+spec:
+  workspaces:
+    - name: git-source
+  params:
+    - name: GIT_REVISION
+      description: The Git revision
+      type: string
+      default: master
+    - name: GIT_URL
+      description: The Git URL
+      type: string
+    - name: BUILD_VERSION
+      description: The build version
+      type: string
+    - name: SONAR_HOST
+      description: The SonarQube host URL
+      type: string
+      default: "http://sonarqube.labs-infra.svc:9000"
+    - name: NEXUS_URL
+      description: The Nexus URL
+      type: string
+      default: "http://nexus.labs-infra.svc:8081"
+  tasks:
+    - name: clone
+      taskRef:
+        name: git-clone
+        kind: ClusterTask
+      workspaces:
+        - name: output
+          workspace: git-source
+      params:
+        - name: url
+          value: "$(params.GIT_URL)"
+        - name: revision
+          value: "$(params.GIT_REVISION)"
+        - name: deleteExisting
+          value: "true"
+    - name: build
+      taskRef:
+        name: mvn
+      workspaces:
+        - name: source
+          workspace: git-source
+      runAfter:
+        - clone
+      params:
+        - name: GOALS
+          value: "clean package"
+        - name: ARGUMENTS
+          value: "-DskipTests"
+        - name: BUILD_VERSION
+          value: "$(params.BUILD_VERSION)"
+    - name: unit-test
+      taskRef:
+        name: mvn
+      workspaces:
+        - name: source
+          workspace: git-source
+      runAfter:
+        - build
+      params:
+        - name: GOALS
+          value: verify
+        - name: BUILD_VERSION
+          value: "$(params.BUILD_VERSION)"
+    - name: sonar-scan
+      taskRef:
+        name: mvn
+      workspaces:
+        - name: source
+          workspace: git-source
+      runAfter:
+        - unit-test
+      params:
+        - name: GOALS
+          value: "versions:set sonar:sonar"
+        - name: PROFILES
+          value: sonar
+        - name: BUILD_VERSION
+          value: "$(params.BUILD_VERSION)"
+        - name: ARGUMENTS
+          value: "-Dsonar.host.url=$(params.SONAR_HOST) -s $(workspaces.source.path)/misc/config/settings.xml"
+    - name: publish-to-nexus
+      taskRef:
+        name: mvn
+      workspaces:
+        - name: source
+          workspace: git-source
+      runAfter:
+        - sonar-scan
+      params:
+        - name: GOALS
+          value: "versions:set deploy"
+        - name: ARGUMENTS
+          value: "-DskipTests -Dmaven.install.skip=true -DaltDeploymentRepository=libs-snapshot::default::$(params.NEXUS_URL)/repository/libs-snapshot/ -s $(workspaces.source.path)/misc/config/settings.xml"
+    - name: build-image
+      taskRef:
+        name: binary-s2i
+      workspaces:
+        - name: source
+          workspace: git-source
+      runAfter:
+        - sonar-scan
+      params:
+        - name: FILE
+          value: "$(workspaces.source.path)/target/summit-lab-spring-music-$(params.BUILD_VERSION).jar"
+        - name: BUILD_CONFIG
+          value: spring-music
+    - name: deploy-dev
+      taskRef:
+        name: deploy
+      runAfter:
+        - build-image
+        - publish-to-nexus
+      params:
+        - name: NAME
+          value: spring-music
+        - name: NAMESPACE
+          value: dev
+    - name: integration-test
+      taskRef:
+        name: curl
+      runAfter:
+        - deploy-dev
+      params:
+        - name: URL
+          value: http://spring-music:8080/actuator/health
+    - name: container-image-scan
+      taskRef:
+        name: s2i
+      runAfter:
+        - build-image
+        - integration-test
+      params:
+        - name: BUILD_CONFIG
+          value: image-quay-image-mover

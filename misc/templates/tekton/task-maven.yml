@@ -1,0 +1,49 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: mvn
+spec:
+  workspaces:
+    - name: source
+  params:
+    - name: GOALS
+      description: The Maven goals to run, space separated
+      type: string
+      default: "package"
+    - name: PROFILES
+      description: The Maven profiles to activate, comma separated
+      type: string
+      default: ""
+    - name: ARGUMENTS
+      description: Maven arguments, typically -D switches like -DskipTests, space separated
+      type: string
+      default: ""
+    - name: M2_DIRECTORY
+      type: string
+      description: Location of the M2 directory
+      default: /tekton/home/.m2
+    - name: BUILD_VERSION
+      type: string
+      description: The build version
+      default: 1.0-SNAPSHOT
+  steps:
+    - name: mvn
+      image: docker.io/maven:3.6.3-jdk-11
+      command:
+        - '/bin/bash'
+        - '-c'
+      args:
+        - |-
+          if [[ -z "$(params.PROFILES)" ]]; then
+            mvn versions:set $(params.GOALS) $(params.ARGUMENTS) -DnewVersion=$(params.BUILD_VERSION)
+          else
+            mvn versions:set $(params.GOALS) -P$(params.PROFILES) $(params.ARGUMENTS) -DnewVersion=$(params.BUILD_VERSION)
+          fi
+      workingDir: "$(workspaces.source.path)"
+      volumeMounts:
+        - name: m2-repository
+          mountPath: $(params.M2_DIRECTORY)
+  volumes:
+    - name: m2-repository
+      persistentVolumeClaim:
+        claimName: m2-cache

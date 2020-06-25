@@ -1,0 +1,20 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: spring-music-pipeline-
+  labels:
+    tekton.dev/pipeline: spring-music-pipeline
+spec:
+  pipelineRef:
+    name: spring-music-pipeline
+  params:
+    - name: BUILD_VERSION
+      value: 1.0.0.1
+    - name: GIT_URL
+      value: https://github.com/edeandrea/summit-lab-spring-music.git
+    - name: GIT_REVISION
+      value: pipeline
+  workspaces:
+    - name: git-source
+      persistentVolumeClaim:
+        claimName: git-source
