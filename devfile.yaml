@@ -10,7 +10,7 @@ projects:
 components:
   - id: redhat/dependency-analytics/latest
     type: chePlugin
-  - id: redhat/java8/latest
+  - id: redhat/java11/latest
     type: chePlugin
   - id: redhat/vscode-yaml/latest
     type: chePlugin
@@ -26,7 +26,7 @@ components:
       - name: m2
         containerPath: /home/jboss/.m2
     alias: spring-music
-    image: 'registry.redhat.io/codeready-workspaces/stacks-java-rhel8:2.1'
+    image: 'registry.redhat.io/codeready-workspaces/plugin-java11-rhel8:2.2'
 commands:
   - name: Build
     actions:
