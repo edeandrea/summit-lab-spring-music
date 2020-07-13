@@ -38,13 +38,13 @@ commands:
     actions:
       - type: exec
         workdir: '/${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
-        command: ./mvnw clean spring-boot:run
+        command: ./mvnw clean spring-boot:run -DskipTests
         component: spring-music
   - name: Run application locally (debug)
     actions:
       - type: exec
         component: spring-music
-        command: ./mvnw clean spring-boot:run -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
+        command: ./mvnw clean spring-boot:run -DskipTests -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
         workdir: '${CHE_PROJECTS_ROOT}/summit-lab-spring-music'
   - name: Dependency analysis
     actions:
