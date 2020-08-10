@@ -8,7 +8,7 @@ pipeline {
 	}
 
 	stages {
-		stage('Build App') {
+		/*stage('Build App') {
 			steps {
 				sh "mvn versions:set clean package -DnewVersion=${env.BUILD_VERSION} -DskipTests"
 			}
@@ -98,7 +98,7 @@ pipeline {
 					}
 				}
 			}
-		}
+		}*/
 
 		stage('Deploy to Prod') {
 			steps {
@@ -110,9 +110,13 @@ pipeline {
 							// If this is the first time this app is being deployed into the prod namespace
 							if (!dc.exists()) {
 								def app = openshift.newApp("spring-music:prod")
+								println "app = $app"
 
 								dc = app.narrow("dc")
+								println "dc = $dc"
 								def dcmap = dc.object()
+								
+								println "dcmap = $dcmap"
 
 								dcmap.remove('status')
 								//dcmap.metadata.remove('annotations')
@@ -130,8 +134,8 @@ pipeline {
 								dcmap.spec.remove('triggers')
 
 								dcmap.metadata.labels['app.kubernetes.io/part-of'] = 'spring-music'
-								dcmap.metadata.labels['app.openshift.io/runtime'] = 'java'
-								dcmap.metadata.labels['app.openshift.io/runtime-version'] = '8'
+								dcmap.metadata.labels['app.openshift.io/runtime'] = 'spring'
+								dcmap.metadata.labels['app.openshift.io/runtime-version'] = '11'
 								dcmap.metadata.annotations['app.openshift.io/vcs-ref'] = 'pipeline'
 								dcmap.metadata.annotations['app.openshift.io/vcs-uri'] = 'https://github.com/edeandrea/summit-lab-spring-music'
 								dcmap.metadata.annotations['app.openshift.io/connects-to'] = 'summit-lab-spring-music-db'
