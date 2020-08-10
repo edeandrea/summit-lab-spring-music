@@ -8,7 +8,7 @@ pipeline {
 	}
 
 	stages {
-		/*stage('Build App') {
+		stage('Build App') {
 			steps {
 				sh "mvn versions:set clean package -DnewVersion=${env.BUILD_VERSION} -DskipTests"
 			}
@@ -98,7 +98,7 @@ pipeline {
 					}
 				}
 			}
-		}*/
+		}
 
 		stage('Deploy to Prod') {
 			steps {
@@ -113,11 +113,8 @@ pipeline {
 								app.describe()
 
 								dc = app.narrow("deploymentconfig")
-								println "dc = $dc"
 								def dcmap = dc.object()
 								
-								println "dcmap = $dcmap"
-
 								dcmap.remove('status')
 								//dcmap.metadata.remove('annotations')
 								//dcmap.metadata.remove('labels')
