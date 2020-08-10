@@ -112,7 +112,7 @@ pipeline {
 								def app = openshift.newApp("spring-music:prod", "--as-deployment-config=true")
 								app.describe()
 
-								dc = app.narrow("deploymentconfig")
+								dc = app.narrow("dc")
 								def dcmap = dc.object()
 								
 								dcmap.remove('status')
