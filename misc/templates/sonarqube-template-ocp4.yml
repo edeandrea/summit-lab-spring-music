@@ -52,10 +52,9 @@ objects:
       tags:
         - from:
             kind: DockerImage
-            name: 'sonarqube:latest'
-#          generation: 2
+            name: 'sonarqube:8.3-community'
           importPolicy: {}
-          name: latest
+          name: 8.3-community
           referencePolicy:
             type: Source
   - apiVersion: v1
@@ -165,7 +164,7 @@ objects:
               - sonarqube
             from:
               kind: ImageStreamTag
-              name: sonarqube:latest
+              name: sonarqube:8.3-community
           type: ImageChange
   - apiVersion: v1
     kind: Service
