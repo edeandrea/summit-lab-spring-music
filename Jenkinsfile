@@ -109,7 +109,7 @@ pipeline {
 
 							// If this is the first time this app is being deployed into the prod namespace
 							if (!dc.exists()) {
-								def app = openshift.newApp("spring-music:prod")
+								def app = openshift.newApp("spring-music:prod", "--as-deployment-config=true")
 								app.describe()
 
 								dc = app.narrow("deploymentconfig")
