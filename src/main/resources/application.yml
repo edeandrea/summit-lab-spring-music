@@ -29,3 +29,8 @@ logging:
   level:
     root: WARN
     com.redhat.springmusic: DEBUG
+
+server:
+  error:
+    include-exception: true
+    include-stacktrace: always

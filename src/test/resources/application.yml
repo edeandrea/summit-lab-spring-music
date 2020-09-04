@@ -1,4 +1,4 @@
-spring:
-  cloud:
-    kubernetes:
-      enabled: false
+#spring:
+#  cloud:
+#    kubernetes:
+#      enabled: false
