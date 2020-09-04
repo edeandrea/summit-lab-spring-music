@@ -26,7 +26,7 @@ components:
       - name: m2
         containerPath: /home/jboss/.m2
     alias: spring-music
-    image: 'registry.redhat.io/codeready-workspaces/plugin-java11-rhel8:2.2'
+    image: 'registry.redhat.io/codeready-workspaces/plugin-java11-rhel8:2.3'
 commands:
   - name: Build
     actions:
