@@ -18,7 +18,7 @@
 		<fabric8-maven-plugin.version>4.4.1</fabric8-maven-plugin.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-<!--		<fabric8.generator.from>registry.redhat.io/openjdk/openjdk-11-rhel8:latest</fabric8.generator.from>-->
+		<fabric8.generator.from>registry.redhat.io/openjdk/openjdk-11-rhel8:latest</fabric8.generator.from>
 	</properties>
 
 	<dependencyManagement>
