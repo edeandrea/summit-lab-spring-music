@@ -179,7 +179,7 @@ pipeline {
 								container.livenessProbe = [
 									"failureThreshold": 3,
 									"httpGet": [
-										"path": "/actuator/health",
+										"path": "/actuator/health/liveness",
 										"port": 8080,
 										"scheme": "HTTP"
 									],
@@ -192,7 +192,7 @@ pipeline {
 								container.readinessProbe = [
 									"failureThreshold": 3,
 									"httpGet": [
-										"path": "/actuator/health",
+										"path": "/actuator/health/readiness",
 										"port": 8080,
 										"scheme": "HTTP"
 									],
