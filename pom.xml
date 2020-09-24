@@ -15,7 +15,7 @@
 		<springdoc.version>1.4.6</springdoc.version>
 		<lombok.version>1.18.12</lombok.version>
 		<jkube-maven-plugin.version>1.0.0</jkube-maven-plugin.version>
-		<jkube.generator.from>registry.redhat.io/openjdk/openjdk-11-rhel8:latest</jkube.generator.from>
+		<jkube.generator.from>registry.redhat.io/ubi8/openjdk-11:latest</jkube.generator.from>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
