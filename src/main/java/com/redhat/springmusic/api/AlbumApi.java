@@ -36,7 +36,6 @@ public class AlbumApi {
 		this.albumService = albumService;
 	}
 	
-
 	@Operation(summary = "Get all albums", tags = { "Albums" })
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Success!"),
