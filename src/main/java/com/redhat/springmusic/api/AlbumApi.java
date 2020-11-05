@@ -46,7 +46,6 @@ public class AlbumApi {
 		LOGGER.info("Getting all albums");
 		return this.albumService.getAllAlbums();
 	}
-
 	
 	@Operation(summary = "Adds an album", tags = { "Albums" })
 	@ApiResponses({
