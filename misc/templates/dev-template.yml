@@ -134,7 +134,7 @@ objects:
       selector:
         deploymentconfig: ${APP_NAME}
       strategy:
-        type: Recreate
+        type: Rolling
       template:
         metadata:
           labels:
