@@ -10,11 +10,11 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<spring-boot.version>2.3.3.RELEASE</spring-boot.version>
-		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
-		<springdoc.version>1.4.6</springdoc.version>
-		<lombok.version>1.18.12</lombok.version>
-		<jkube-maven-plugin.version>1.0.0</jkube-maven-plugin.version>
+		<spring-boot.version>2.3.6.RELEASE</spring-boot.version>
+		<spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+		<springdoc.version>1.5.0</springdoc.version>
+		<lombok.version>1.18.16</lombok.version>
+		<jkube-maven-plugin.version>1.0.2</jkube-maven-plugin.version>
 		<jkube.generator.from>registry.redhat.io/ubi8/openjdk-11:latest</jkube.generator.from>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
