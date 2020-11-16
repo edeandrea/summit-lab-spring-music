@@ -5,7 +5,7 @@ metadata:
 spec:
   params:
     - name: URL
-      description: The URL to be curled	
+      description: The URL to be curled
       type: string
     - name: OPTIONS
       description: The options for the cURL
@@ -17,6 +17,7 @@ spec:
       default: curlimages/curl
   steps:
     - name: curl
-      image: "$(params.IMAGE)" 
+      image: "$(params.IMAGE)"
       command: [curl]
       args: ["$(params.OPTIONS[*])", "$(params.URL)"]
+
