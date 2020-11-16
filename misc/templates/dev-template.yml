@@ -124,7 +124,7 @@ objects:
         app: ${APP_NAME}
         app.kubernetes.io/part-of: ${APP_NAME}
         app.openshift.io/runtime: spring
-        app.openshift.io/runtime-version: '8'
+        app.openshift.io/runtime-version: '11'
       name: ${APP_NAME}
       annotations:
         app.openshift.io/vcs-ref: ${GIT_REF}
