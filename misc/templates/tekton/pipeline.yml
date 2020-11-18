@@ -67,6 +67,8 @@ spec:
           value: verify
         - name: BUILD_VERSION
           value: "$(params.BUILD_VERSION)"
+        - name: ARGUMENTS
+          value: "-Djkube.skip=true"
     - name: sonar-scan
       taskRef:
         name: mvn
@@ -83,7 +85,7 @@ spec:
         - name: BUILD_VERSION
           value: "$(params.BUILD_VERSION)"
         - name: ARGUMENTS
-          value: "-Dsonar.host.url=$(params.SONAR_HOST) -s $(workspaces.source.path)/misc/config/settings.xml"
+          value: "-Dsonar.host.url=$(params.SONAR_HOST) -Djkube.skip=true -s $(workspaces.source.path)/misc/config/settings.xml"
     - name: publish-to-nexus
       taskRef:
         name: mvn
