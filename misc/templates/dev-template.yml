@@ -62,6 +62,9 @@ objects:
             kind: ImageStreamTag
             name: "java:11"
             namespace: openshift
+          env:
+            - name: MAVEN_ARGS_APPEND
+              value: '-Djkube.skip=true'
       output:
         to:
           kind: ImageStreamTag

@@ -51,7 +51,7 @@ spec:
         - name: GOALS
           value: "clean package"
         - name: ARGUMENTS
-          value: "-DskipTests"
+          value: "-DskipTests -Djkube.skip=true"
         - name: BUILD_VERSION
           value: "$(params.BUILD_VERSION)"
     - name: unit-test
