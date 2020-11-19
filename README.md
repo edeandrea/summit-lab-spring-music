@@ -7,6 +7,7 @@ All events are captured in an Outbox table called `outbox_events`. There is a [D
 
 The outbox table is defined in the [`OutboxEvent` JPA class](src/main/java/com/redhat/springmusic/domain/jpa/OutboxEvent.java). The resulting table should look like:
 
+
 ```
 +-----------------+--------------+------+-----+---------+----------------+
 | Field           | Type         | Null | Key | Default | Extra          |
