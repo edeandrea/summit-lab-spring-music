@@ -126,7 +126,7 @@ objects:
       labels:
         app: ${APP_NAME}
         app.kubernetes.io/part-of: ${APP_NAME}
-        app.openshift.io/runtime: spring
+        app.openshift.io/runtime: spring-boot
         app.openshift.io/runtime-version: '11'
       name: ${APP_NAME}
       annotations:
