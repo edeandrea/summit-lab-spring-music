@@ -41,7 +41,6 @@ objects:
   - apiVersion: image.openshift.io/v1
     kind: ImageStream
     metadata:
-#      generation: 2
       labels:
         app: sonarqube
       name: sonarqube
@@ -52,9 +51,9 @@ objects:
       tags:
         - from:
             kind: DockerImage
-            name: 'sonarqube:8.3-community'
+            name: 'sonarqube:8.5-community'
           importPolicy: {}
-          name: 8.3-community
+          name: 8.5-community
           referencePolicy:
             type: Source
   - apiVersion: v1
@@ -164,7 +163,7 @@ objects:
               - sonarqube
             from:
               kind: ImageStreamTag
-              name: sonarqube:8.3-community
+              name: sonarqube:8.5-community
           type: ImageChange
   - apiVersion: v1
     kind: Service
