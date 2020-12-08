@@ -10,14 +10,14 @@ pipeline {
 	stages {
 		stage('Build App') {
 			steps {
-				sh "mvn -version"
-				sh "mvn versions:set clean package -DnewVersion=${env.BUILD_VERSION} -DskipTests"
+				sh "./mvnw -version"
+				sh "./mvnw versions:set clean package -DnewVersion=${env.BUILD_VERSION} -DskipTests"
 			}
 		}
 
 		stage('Unit Test') {
 		  steps {
-		  	sh "mvn versions:set verify -DnewVersion=${env.BUILD_VERSION}"
+		  	sh "./mvnw versions:set verify -DnewVersion=${env.BUILD_VERSION}"
 		  }
 		  post {
 		  	always {
@@ -29,13 +29,13 @@ pipeline {
 
 		stage('Sonar Scan') {
 			steps {
-				sh "mvn versions:set sonar:sonar -Dsonar.host.url=http://sonarqube.labs-infra.svc:9000 -DskipTests -DnewVersion=${env.BUILD_VERSION} -P sonar -s misc/config/settings.xml"
+				sh "./mvnw versions:set sonar:sonar -Dsonar.host.url=http://sonarqube.labs-infra.svc:9000 -DskipTests -DnewVersion=${env.BUILD_VERSION} -P sonar -s misc/config/settings.xml"
 			}
 		}
 
 		stage('Publish Artifact') {
 			steps {
-				sh "mvn versions:set deploy -DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -DaltDeploymentRepository=libs-snapshot::default::${params.NEXUS_URL}/repository/libs-snapshot/ -s misc/config/settings.xml"
+				sh "./mvnw versions:set deploy -DskipTests -Dmaven.install.skip=true -DnewVersion=${env.BUILD_VERSION} -DaltDeploymentRepository=libs-snapshot::default::${params.NEXUS_URL}/repository/libs-snapshot/ -s misc/config/settings.xml"
 			}
 		}
 
