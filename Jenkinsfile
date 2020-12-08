@@ -10,6 +10,7 @@ pipeline {
 	stages {
 		stage('Build App') {
 			steps {
+				sh "mvn -version"
 				sh "mvn versions:set clean package -DnewVersion=${env.BUILD_VERSION} -DskipTests"
 			}
 		}
