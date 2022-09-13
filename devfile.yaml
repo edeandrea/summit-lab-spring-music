@@ -20,6 +20,8 @@ components:
       endpoints:
         - name: spring-music
           targetPort: 8080
+	- name: m2
+    volume: {}
 commands:
   - id: build
     exec:
