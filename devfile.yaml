@@ -9,6 +9,8 @@ projects:
       checkoutFrom:
         revision: pipeline
 components:
+  - name: m2
+	  volume: {}
   - name: spring-music
     container:
       image: 'registry.redhat.io/codeready-workspaces/plugin-java11-rhel8:latest'
@@ -20,8 +22,6 @@ components:
       endpoints:
         - name: spring-music
           targetPort: 8080
-	- name: m2
-    volume: {}
 commands:
   - id: build
     exec:
