@@ -10,7 +10,7 @@ projects:
         revision: pipeline
 components:
   - name: m2
-	  volume: {}
+    volume: {}
   - name: spring-music
     container:
       image: 'registry.redhat.io/codeready-workspaces/plugin-java11-rhel8:latest'
