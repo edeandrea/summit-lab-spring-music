@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    kubernetes:
+      config:
+        enabled: false
+      secrets:
+        enabled: false

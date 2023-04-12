@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@SpringBootTest
+@SpringBootTest(properties = { "spring.cloud.kubernetes.config.enabled=false" })
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 public class ApplicationTests {
 	@Autowired

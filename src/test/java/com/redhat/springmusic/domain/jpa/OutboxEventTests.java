@@ -28,7 +28,7 @@ import com.redhat.springmusic.listener.AlbumEventListener;
 import com.redhat.springmusic.repositories.jpa.OutboxEventRepository;
 import com.redhat.springmusic.service.AlbumService;
 
-@DataJpaTest
+@DataJpaTest(properties = { "spring.cloud.kubernetes.config.enabled=false" })
 //@SpringBootTest
 class OutboxEventTests {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OutboxEventTests.class);

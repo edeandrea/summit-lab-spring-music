@@ -24,7 +24,7 @@ import com.redhat.springmusic.domain.jpa.Album;
 import com.redhat.springmusic.domain.jpa.OutboxEvent;
 import com.redhat.springmusic.service.OutboxEventService;
 
-@WebMvcTest(OutboxEventsApi.class)
+@WebMvcTest(value = OutboxEventsApi.class, properties = { "spring.cloud.kubernetes.config.enabled=false" })
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
 class OutboxEventsApiTests {
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();

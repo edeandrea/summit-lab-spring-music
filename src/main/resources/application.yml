@@ -34,3 +34,9 @@ server:
   error:
     include-exception: true
     include-stacktrace: always
+---
+spring:
+  config:
+    activate:
+      on-profile: kubernetes
+    import: 'kubernetes:'
