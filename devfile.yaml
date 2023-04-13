@@ -25,7 +25,6 @@ components:
 commands:
   - id: switch-to-java-17
 	  exec:
-		  label: Switch to Java 17
 			component: tools
 			commandLine: |
 			  [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
