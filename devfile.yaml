@@ -13,7 +13,7 @@ components:
     volume: {}
   - name: spring-music
     container:
-      image: 'quay.io/devfile/universal-developer-image:ubi8-0e189d9'
+      image: 'quay.io/devfile/universal-developer-image:ubi8-latest'
       mountSources: true
       memoryLimit: 2048Mi
       volumeMounts:
@@ -25,7 +25,7 @@ components:
 commands:
   - id: switch-to-java-17
     exec:
-      component: tools
+      component: spring-music
       commandLine: |
         [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
         sdk install java 17.0.6.-tem
