@@ -24,11 +24,11 @@ components:
           targetPort: 8080
 commands:
   - id: switch-to-java-17
-	  exec:
-			component: tools
-			commandLine: |
-			  [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-				sdk install java 17.0.6-tem
+    exec:
+      component: tools
+      commandLine: |
+        [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+        sdk install java 17.0.6-tem
   - id: build
     exec:
       component: spring-music
