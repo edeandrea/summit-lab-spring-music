@@ -65,6 +65,7 @@ commands:
       component: spring-music
       group:
         kind: run
+
 events:
   postStart:
 	  - switch-to-java-17
