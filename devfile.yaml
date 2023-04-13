@@ -23,6 +23,13 @@ components:
         - name: spring-music
           targetPort: 8080
 commands:
+  - id: switch-to-java-17
+	  exec:
+		  label: Switch to Java 17
+			component: spring-music
+			commandLine: |
+			  [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+				sdk install java 17.0.6-tem
   - id: build
     exec:
       component: spring-music
@@ -59,3 +66,6 @@ commands:
       component: spring-music
       group:
         kind: run
+events:
+  postStart:
+	  - switch-to-java-17
