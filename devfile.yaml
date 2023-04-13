@@ -28,7 +28,7 @@ commands:
       component: tools
       commandLine: |
         [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-        sdk install java 17.0.6-tem
+        sdk install java 17.0.6.-tem
   - id: build
     exec:
       component: spring-music
@@ -65,7 +65,6 @@ commands:
       component: spring-music
       group:
         kind: run
-
 events:
   postStart:
-	  - switch-to-java-17
+    - switch-to-java-17
