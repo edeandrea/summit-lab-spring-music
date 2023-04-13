@@ -26,7 +26,7 @@ commands:
   - id: switch-to-java-17
 	  exec:
 		  label: Switch to Java 17
-			component: spring-music
+			component: tools
 			commandLine: |
 			  [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 				sdk install java 17.0.6-tem
