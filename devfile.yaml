@@ -68,3 +68,4 @@ commands:
 events:
   postStart:
     - switch-to-java-17
+
