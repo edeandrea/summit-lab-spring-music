@@ -1,7 +1,7 @@
 package com.redhat.springmusic.repositories.jpa;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 public class EntityOperationsRepositoryImpl<T> implements EntityOperationsRepository<T> {
 	@PersistenceContext

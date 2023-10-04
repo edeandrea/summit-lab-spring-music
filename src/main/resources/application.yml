@@ -6,6 +6,10 @@ spring:
   jpa:
     generate-ddl: true
     show-sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
   cloud:
     kubernetes:
       secrets:

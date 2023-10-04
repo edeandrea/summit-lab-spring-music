@@ -1,5 +1,8 @@
 package com.redhat.springmusic;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest(properties = { "spring.cloud.kubernetes.config.enabled=false" })
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
@@ -19,12 +20,12 @@ public class ApplicationTests {
 
 	@Test
 	public void appLoads() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/"))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.forwardedUrl("index.html"));
+		this.mockMvc.perform(get("/"))
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("index.html"));
 
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/index.html"))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.header().string(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_HTML_VALUE));
+		this.mockMvc.perform(get("/index.html"))
+			.andExpect(status().isOk())
+			.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_HTML_VALUE));
 	}
 }

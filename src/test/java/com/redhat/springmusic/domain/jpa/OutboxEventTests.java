@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.sql.DataSource;
 
+import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,7 +103,20 @@ class OutboxEventTests {
 			);
 
 		assertThat(((AlbumCreatedEvent) albumEvent).getAlbum())
-			.isEqualToComparingFieldByField(createdAlbum);
+			.usingRecursiveComparison(
+				RecursiveComparisonConfiguration.builder()
+					.withComparedFields(
+						"id",
+						"title",
+						"artist",
+						"releaseYear",
+						"genre",
+						"trackCount",
+						"albumId"
+					)
+					.build()
+			)
+			.isEqualTo(createdAlbum);
 	}
 
 	@TestConfiguration

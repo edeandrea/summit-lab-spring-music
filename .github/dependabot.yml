@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: /
+    open-pull-requests-limit: 10
+    target-branch: pipeline
+    schedule:
+      interval: daily
+    ignore:
+      - dependency-name: "org.webjars.*"
+
+  - package-ecosystem: github-actions
+    directory: /
+    open-pull-requests-limit: 10
+    target-branch: pipeline
+    schedule:
+      interval: daily

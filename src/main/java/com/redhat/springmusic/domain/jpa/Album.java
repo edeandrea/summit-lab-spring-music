@@ -1,12 +1,13 @@
 package com.redhat.springmusic.domain.jpa;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.redhat.springmusic.domain.RandomIdGenerator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +30,7 @@ public class Album {
     @EqualsAndHashCode.Include
     @Column(length = 40)
     @GeneratedValue(generator = "randomId")
-    @GenericGenerator(name = "randomId", strategy = "com.redhat.springmusic.domain.RandomIdGenerator")
+		@GenericGenerator(name = "randomId", type = RandomIdGenerator.class)
     @Schema(description = "The album id", hidden = true)
     private String id;
 

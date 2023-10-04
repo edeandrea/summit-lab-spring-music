@@ -1,6 +1,6 @@
 package com.redhat.springmusic.api;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
