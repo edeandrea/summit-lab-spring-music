@@ -47,3 +47,49 @@ jobs:
 
       - name: "Build and test JVM ${{ matrix.java }}"
         run: ./mvnw -B clean verify -Dmaven.compiler.release=${{ matrix.java }}
+
+  native-build-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        graal:
+          - { graal: '21.0.0', java: '21' }
+          - { graal: '17.0.8', java: '17' }
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache and restore GraalVM CE (${{ matrix.graal.graal }}
+        id: check-graal-cache
+        uses: actions/cache@v3
+        with:
+          path: graal-${{ matrix.graal.graal }}
+          key: graal-distro-${{ matrix.graal.graal }}
+
+      - name: Download GraalVM CE ${{ matrix.graal.graal }}
+        if: steps.check-graal-cache.outputs.cache-hit != 'true'
+        run: |
+          download_url="https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-${{ matrix.graal.graal }}/graalvm-community-jdk-${{ matrix.graal.graal }}_linux-x64_bin.tar.gz"
+          wget -q -O graalvm-community-jdk-${{ matrix.graal.graal }}_linux-x64_bin.tar.gz $download_url
+
+      - name: Setup GraalVM CE ${{ matrix.graal.graal }} distro
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'jdkfile'
+          jdkFile: graalvm-community-jdk-${{ matrix.graal.graal }}_linux-x64_bin.tar.gz
+          java-version: ${{ matrix.graal.java }}
+          architecture: x64
+          cache: maven
+
+      - name: Build native (${{ matrix.graal.graal }})
+        run: ./mvnw -B clean native:compile -Pnative -Dmaven.compiler.release=${{ matrix.graal.java }}
+
+      - name: Run native (${{ matrix.graal.graal }})
+        uses: JarvusInnovations/background-action@v1
+        with:
+          log-output-if: true
+          log-output-resume: true
+          tail: true
+          wait-on: http-get://localhost:8080/index.html
+          working-directory: target
+          run: summit-lab-spring-music
