@@ -85,7 +85,7 @@ jobs:
         run: ./mvnw -B clean native:compile -Pnative -Dmaven.compiler.release=${{ matrix.graal.java }}
 
       - name: Run native (${{ matrix.graal.graal }})
-        uses: BerniWittmann/background-server-action
+        uses: BerniWittmann/background-server-action@v1
         with:
           command: target/summit-lab-spring-music
           wait-on: http://localhost:8080/index.html
