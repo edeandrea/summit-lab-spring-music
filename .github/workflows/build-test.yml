@@ -85,11 +85,15 @@ jobs:
         run: ./mvnw -B clean native:compile -Pnative -Dmaven.compiler.release=${{ matrix.graal.java }}
 
       - name: Run native (${{ matrix.graal.graal }})
-        uses: JarvusInnovations/background-action@v1
+        uses: BerniWittmann/background-server-action
         with:
-          log-output-if: true
-          log-output-resume: true
-          tail: true
-          wait-on: http-get://localhost:8080/index.html
-          working-directory: target
-          run: summit-lab-spring-music
+          command: target/summit-lab-spring-music
+          wait-on: http://localhost:8080/index.html
+#        uses: JarvusInnovations/background-action@v1
+#        with:
+#          log-output-if: true
+#          log-output-resume: true
+#          tail: true
+#          wait-on: http-get://localhost:8080/index.html
+#          working-directory: target
+#          run: summit-lab-spring-music
