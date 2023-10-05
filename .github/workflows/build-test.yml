@@ -59,7 +59,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache and restore GraalVM CE (${{ matrix.graal.graal }}
+      - name: Cache and restore GraalVM CE (${{ matrix.graal.graal }})
         id: check-graal-cache
         uses: actions/cache@v3
         with:
@@ -88,7 +88,8 @@ jobs:
         shell: bash
         working-directory: target
         run: |
-          summit-lab-spring-music &
+          pwd
+          ./summit-lab-spring-music &
           echo $! > app.pid
           
           sleep 10
