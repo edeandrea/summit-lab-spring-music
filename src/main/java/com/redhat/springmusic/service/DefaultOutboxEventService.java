@@ -41,6 +41,11 @@ public class DefaultOutboxEventService implements OutboxEventService {
 	}
 
 	@Override
+	public void deleteAllEvents() {
+		this.outboxEventRepository.deleteAll();
+	}
+
+	@Override
 	public OutboxEvent persistEvent(AlbumEvent event) {
 		return this.outboxEventRepository.save(
 			OutboxEvent.builder()

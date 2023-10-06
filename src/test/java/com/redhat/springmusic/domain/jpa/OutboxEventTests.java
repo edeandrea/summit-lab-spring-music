@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 
 import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledInNativeImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,7 @@ import com.redhat.springmusic.repositories.jpa.OutboxEventRepository;
 import com.redhat.springmusic.service.AlbumService;
 
 @DataJpaTest(properties = { "spring.cloud.kubernetes.config.enabled=false" })
+@DisabledInNativeImage
 //@SpringBootTest
 class OutboxEventTests {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OutboxEventTests.class);

@@ -10,4 +10,5 @@ public interface OutboxEventService {
 	OutboxEvent persistEvent(AlbumEvent event);
 	Optional<OutboxEvent> getById(long eventId);
 	Iterable<OutboxEvent> getAllEventsForAlbumIdOrderedByTimestampDescending(String albumId);
+	void deleteAllEvents();
 }

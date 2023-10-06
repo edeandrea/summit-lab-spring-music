@@ -3,11 +3,14 @@ package com.redhat.springmusic.api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.redhat.springmusic.domain.jpa.OutboxEvent;
@@ -43,6 +46,7 @@ public class OutboxEventsApi {
 	@ApiResponse(responseCode = "500", description = "Something bad happened")
 	@GetMapping(path = "/event/{eventId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<OutboxEvent> getEventById(@Parameter(description = "The event id", required = true) @PathVariable long eventId) {
+		LOGGER.info("Getting event for event id {}", eventId);
 		return ResponseEntity.of(this.outboxEventService.getById(eventId));
 	}
 
@@ -51,6 +55,16 @@ public class OutboxEventsApi {
 	@ApiResponse(responseCode = "500", description = "Something bad happened")
 	@GetMapping(path = "/album/{albumId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Iterable<OutboxEvent> getEventsForAlbumId(@Parameter(description = "The album id", required = true) @PathVariable String albumId) {
+		LOGGER.info("Getting events for album id {}", albumId);
 		return this.outboxEventService.getAllEventsForAlbumIdOrderedByTimestampDescending(albumId);
+	}
+
+	@Operation(summary = "Delete all events", tags = { "Outbox events" })
+	@ApiResponse(responseCode = "204", description = "Success!")
+	@DeleteMapping
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteAllEvents() {
+		LOGGER.info("Deleting all album events");
+		this.outboxEventService.deleteAllEvents();
 	}
 }

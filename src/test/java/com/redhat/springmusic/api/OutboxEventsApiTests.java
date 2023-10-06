@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledInNativeImage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,6 +27,7 @@ import com.redhat.springmusic.service.OutboxEventService;
 
 @WebMvcTest(value = OutboxEventsApi.class, properties = { "spring.cloud.kubernetes.config.enabled=false" })
 @AutoConfigureMockMvc(printOnlyOnFailure = false)
+@DisabledInNativeImage
 class OutboxEventsApiTests {
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 	private static final Album ALBUM = Album.builder()

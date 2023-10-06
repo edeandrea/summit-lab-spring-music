@@ -81,17 +81,5 @@ jobs:
           architecture: x64
           cache: maven
 
-      - name: Build native (${{ matrix.graal.graal }})
-        run: ./mvnw -B clean native:compile -Pnative -Dmaven.compiler.release=${{ matrix.graal.java }}
-
-      - name: Run native (${{ matrix.graal.graal }})
-        shell: bash
-        working-directory: target
-        run: |
-          pwd
-          ./summit-lab-spring-music &
-          echo $! > app.pid
-          
-          sleep 10
-          curl -f http://localhost:8080/index.html
-          kill -9 `cat app.pid`
+      - name: Build test native (${{ matrix.graal.graal }})
+        run: ./mvnw -B clean verify -PnativeTest -Dmaven.compiler.release=${{ matrix.graal.java }}
