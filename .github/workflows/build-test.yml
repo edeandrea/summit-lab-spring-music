@@ -54,8 +54,8 @@ jobs:
       fail-fast: false
       matrix:
         graal:
-          - { graal: '21.0.0', java: '21' }
-          - { graal: '17.0.8', java: '17' }
+          - { graal: '21.0.1', java: '21' }
+          - { graal: '17.0.9', java: '17' }
     steps:
       - uses: actions/checkout@v4
 
