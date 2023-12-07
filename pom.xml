@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2023.0.0-RC1</spring-cloud.version>
+		<spring-cloud.version>2023.0.0</spring-cloud.version>
 		<springdoc.version>1.7.0</springdoc.version>
 		<lombok.version>1.18.30</lombok.version>
 		<jkube-maven-plugin.version>1.15.0</jkube-maven-plugin.version>
@@ -302,20 +302,6 @@
 				<updatePolicy>daily</updatePolicy>
 			</snapshots>
 		</repository>
-
-		<repository>
-			<id>spring-milestone</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone/</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>daily</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>interval:60</updatePolicy>
-			</snapshots>
-		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -343,20 +329,6 @@
 			<snapshots>
 				<enabled>false</enabled>
 				<updatePolicy>daily</updatePolicy>
-			</snapshots>
-		</pluginRepository>
-
-		<pluginRepository>
-			<id>spring-milestone</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>daily</updatePolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>interval:60</updatePolicy>
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
