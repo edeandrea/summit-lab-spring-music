@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.5</version>
+		<version>3.2.1</version>
 		<relativePath/>
 	</parent>
 	<groupId>com.redhat.summit2019</groupId>
@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2022.0.4</spring-cloud.version>
+		<spring-cloud.version>2023.0.0</spring-cloud.version>
 		<springdoc.version>1.7.0</springdoc.version>
 		<lombok.version>1.18.30</lombok.version>
 		<jkube-maven-plugin.version>1.15.0</jkube-maven-plugin.version>
@@ -184,6 +184,11 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<layers>
+						<enabled>false</enabled>
+					</layers>
+				</configuration>
 			</plugin>
 
 			<plugin>
