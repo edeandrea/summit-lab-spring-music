@@ -61,7 +61,7 @@ jobs:
 
       - name: Cache and restore GraalVM CE (${{ matrix.graal.graal }})
         id: check-graal-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: graalvm-community-jdk-${{ matrix.graal.graal }}_linux-x64_bin.tar.gz
           key: graal-distro-${{ matrix.graal.graal }}
