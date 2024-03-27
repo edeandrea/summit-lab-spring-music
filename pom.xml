@@ -36,6 +36,13 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>io.opentelemetry.instrumentation</groupId>
+				<artifactId>opentelemetry-instrumentation-bom-alpha</artifactId>
+				<version>2.2.0-alpha</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -79,6 +86,22 @@
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+
+		<!--Distributed tracing	-->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing-bridge-otel</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-exporter-otlp</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-jdbc</artifactId>
 		</dependency>
 
 		<dependency>
@@ -292,7 +315,7 @@
 		<repository>
 			<id>redhat-ga-repository</id>
 			<name>Red Hat GA Repository</name>
-			<url>http://maven.repository.redhat.com/ga/</url>
+			<url>https://maven.repository.redhat.com/ga/</url>
 			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>never</updatePolicy>
@@ -321,7 +344,7 @@
 		<pluginRepository>
 			<id>redhat-ga-repository</id>
 			<name>Red Hat GA Repository</name>
-			<url>http://maven.repository.redhat.com/ga/</url>
+			<url>https://maven.repository.redhat.com/ga/</url>
 			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>never</updatePolicy>

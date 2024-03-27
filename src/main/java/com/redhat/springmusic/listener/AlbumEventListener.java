@@ -9,6 +9,8 @@ import org.springframework.util.Assert;
 
 import com.redhat.springmusic.domain.event.AlbumEvent;
 import com.redhat.springmusic.service.OutboxEventService;
+import io.micrometer.tracing.annotation.NewSpan;
+import io.micrometer.tracing.annotation.SpanTag;
 
 @Component
 public class AlbumEventListener {
@@ -20,7 +22,8 @@ public class AlbumEventListener {
 	}
 
 	@EventListener
-	public void handleAlbumEvent(AlbumEvent albumEvent) {
+	@NewSpan(name = "AlbumEventListener.handleAlbumEvent")
+	public void handleAlbumEvent(@SpanTag(key = "albumEvent") AlbumEvent albumEvent) {
 		Assert.notNull(albumEvent, "albumEvent can not be null");
 		LOGGER.info("Handling AlbumEvent {}", albumEvent);
 

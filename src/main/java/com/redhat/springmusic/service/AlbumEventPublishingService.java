@@ -15,6 +15,8 @@ import com.redhat.springmusic.domain.event.AlbumDeletedEvent;
 import com.redhat.springmusic.domain.event.AlbumUpdatedEvent;
 import com.redhat.springmusic.domain.jpa.Album;
 import com.redhat.springmusic.repositories.jpa.AlbumRepository;
+import io.micrometer.tracing.annotation.NewSpan;
+import io.micrometer.tracing.annotation.SpanTag;
 
 @Service
 public class AlbumEventPublishingService implements AlbumService {
@@ -28,6 +30,7 @@ public class AlbumEventPublishingService implements AlbumService {
 	}
 
 	@Override
+	@NewSpan(name = "AlbumService.getAllAlbums")
 	public Iterable<Album> getAllAlbums() {
 		LOGGER.info("Getting all albums");
 		return this.albumRepository.findAll();
@@ -35,7 +38,8 @@ public class AlbumEventPublishingService implements AlbumService {
 
 	@Override
 	@Transactional
-	public Album createAlbum(Album album) {
+	@NewSpan(name = "AlbumService.createAlbum")
+	public Album createAlbum(@SpanTag(key = "arg.album") Album album) {
 		LOGGER.info("Creating album {}", album);
 
 		Album newAlbum = this.albumRepository.save(album);
@@ -46,7 +50,8 @@ public class AlbumEventPublishingService implements AlbumService {
 
 	@Override
 	@Transactional
-	public void updateAlbum(Album album) {
+	@NewSpan(name = "AlbumService.updateAlbum")
+	public void updateAlbum(@SpanTag(key = "arg.album") Album album) {
 		this.albumRepository.findById(album.getId())
 			.map(this.albumRepository::detach)
 			.ifPresent(existingAlbum -> {
@@ -56,14 +61,16 @@ public class AlbumEventPublishingService implements AlbumService {
 	}
 
 	@Override
-	public Optional<Album> getAlbum(String albumId) {
+	@NewSpan(name = "AlbumService.getAlbum")
+	public Optional<Album> getAlbum(@SpanTag(key = "arg.albumId") String albumId) {
 		LOGGER.info("Getting album {}", albumId);
 		return this.albumRepository.findById(albumId);
 	}
 
 	@Override
 	@Transactional
-	public void deleteAlbum(String albumId) {
+	@NewSpan(name = "AlbumService.deleteAlbum")
+	public void deleteAlbum(@SpanTag(key = "arg.albumId") String albumId) {
 		this.albumRepository.findById(albumId)
 			.map(this.albumRepository::detach)
 			.ifPresent(existingAlbum -> {

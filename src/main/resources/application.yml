@@ -28,6 +28,15 @@ management:
   info:
     git:
       mode: full
+  observations:
+    annotations:
+      enabled: true
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318/v1/traces
+  tracing:
+    sampling:
+      probability: 1.0
 
 logging:
   level:

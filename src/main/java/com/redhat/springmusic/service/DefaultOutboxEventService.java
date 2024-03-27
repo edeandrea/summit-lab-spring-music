@@ -13,6 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redhat.springmusic.domain.event.AlbumEvent;
 import com.redhat.springmusic.domain.jpa.OutboxEvent;
 import com.redhat.springmusic.repositories.jpa.OutboxEventRepository;
+import io.micrometer.tracing.annotation.NewSpan;
+import io.micrometer.tracing.annotation.SpanTag;
 
 @Service
 public class DefaultOutboxEventService implements OutboxEventService {
@@ -25,28 +27,33 @@ public class DefaultOutboxEventService implements OutboxEventService {
 	}
 
 	@Override
+	@NewSpan(name = "OutboxEventService.getAllEventsOrderedByTimestampDescending")
 	public Iterable<OutboxEvent> getAllEventsOrderedByTimestampDescending() {
 		LOGGER.info("Getting all album events ordered by timestamp descending");
 		return this.outboxEventRepository.findAll(Sort.by("eventTimestamp").descending());
 	}
 
 	@Override
-	public Optional<OutboxEvent> getById(long eventId) {
+	@NewSpan(name = "OutboxEventService.getById")
+	public Optional<OutboxEvent> getById(@SpanTag(key = "arg.eventId") long eventId) {
 		return this.outboxEventRepository.findById(eventId);
 	}
 
 	@Override
-	public Iterable<OutboxEvent> getAllEventsForAlbumIdOrderedByTimestampDescending(String albumId) {
+	@NewSpan(name = "OutboxEventService.getAllEventsForAlbumIdOrderedByTimestampDescending")
+	public Iterable<OutboxEvent> getAllEventsForAlbumIdOrderedByTimestampDescending(@SpanTag(key = "arg.albumId") String albumId) {
 		return this.outboxEventRepository.findAllByAggregateIdOrderByEventTimestampDesc(albumId);
 	}
 
 	@Override
+	@NewSpan(name = "OutboxEventService.deleteAllEvents")
 	public void deleteAllEvents() {
 		this.outboxEventRepository.deleteAll();
 	}
 
 	@Override
-	public OutboxEvent persistEvent(AlbumEvent event) {
+	@NewSpan(name = "OutboxEventService.persistEvent")
+	public OutboxEvent persistEvent(@SpanTag(key = "arg.event") AlbumEvent event) {
 		return this.outboxEventRepository.save(
 			OutboxEvent.builder()
 				.aggregateType("Album")
