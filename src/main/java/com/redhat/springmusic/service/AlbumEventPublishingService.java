@@ -30,7 +30,7 @@ public class AlbumEventPublishingService implements AlbumService {
 	}
 
 	@Override
-	@NewSpan(name = "AlbumService.getAllAlbums")
+	@NewSpan("AlbumService.getAllAlbums")
 	public Iterable<Album> getAllAlbums() {
 		LOGGER.info("Getting all albums");
 		return this.albumRepository.findAll();
@@ -38,7 +38,7 @@ public class AlbumEventPublishingService implements AlbumService {
 
 	@Override
 	@Transactional
-	@NewSpan(name = "AlbumService.createAlbum")
+	@NewSpan("AlbumService.createAlbum")
 	public Album createAlbum(@SpanTag(key = "arg.album") Album album) {
 		LOGGER.info("Creating album {}", album);
 
@@ -50,7 +50,7 @@ public class AlbumEventPublishingService implements AlbumService {
 
 	@Override
 	@Transactional
-	@NewSpan(name = "AlbumService.updateAlbum")
+	@NewSpan("AlbumService.updateAlbum")
 	public void updateAlbum(@SpanTag(key = "arg.album") Album album) {
 		this.albumRepository.findById(album.getId())
 			.map(this.albumRepository::detach)
@@ -61,7 +61,7 @@ public class AlbumEventPublishingService implements AlbumService {
 	}
 
 	@Override
-	@NewSpan(name = "AlbumService.getAlbum")
+	@NewSpan("AlbumService.getAlbum")
 	public Optional<Album> getAlbum(@SpanTag(key = "arg.albumId") String albumId) {
 		LOGGER.info("Getting album {}", albumId);
 		return this.albumRepository.findById(albumId);
@@ -69,7 +69,7 @@ public class AlbumEventPublishingService implements AlbumService {
 
 	@Override
 	@Transactional
-	@NewSpan(name = "AlbumService.deleteAlbum")
+	@NewSpan("AlbumService.deleteAlbum")
 	public void deleteAlbum(@SpanTag(key = "arg.albumId") String albumId) {
 		this.albumRepository.findById(albumId)
 			.map(this.albumRepository::detach)

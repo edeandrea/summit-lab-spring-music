@@ -22,8 +22,8 @@ public class AlbumEventListener {
 	}
 
 	@EventListener
-	@NewSpan(name = "AlbumEventListener.handleAlbumEvent")
-	public void handleAlbumEvent(@SpanTag(key = "albumEvent") AlbumEvent albumEvent) {
+	@NewSpan("AlbumEventListener.handleAlbumEvent")
+	public void handleAlbumEvent(@SpanTag(key = "arg.albumEvent") AlbumEvent albumEvent) {
 		Assert.notNull(albumEvent, "albumEvent can not be null");
 		LOGGER.info("Handling AlbumEvent {}", albumEvent);
 

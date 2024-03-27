@@ -27,32 +27,32 @@ public class DefaultOutboxEventService implements OutboxEventService {
 	}
 
 	@Override
-	@NewSpan(name = "OutboxEventService.getAllEventsOrderedByTimestampDescending")
+	@NewSpan("OutboxEventService.getAllEventsOrderedByTimestampDescending")
 	public Iterable<OutboxEvent> getAllEventsOrderedByTimestampDescending() {
 		LOGGER.info("Getting all album events ordered by timestamp descending");
 		return this.outboxEventRepository.findAll(Sort.by("eventTimestamp").descending());
 	}
 
 	@Override
-	@NewSpan(name = "OutboxEventService.getById")
+	@NewSpan("OutboxEventService.getById")
 	public Optional<OutboxEvent> getById(@SpanTag(key = "arg.eventId") long eventId) {
 		return this.outboxEventRepository.findById(eventId);
 	}
 
 	@Override
-	@NewSpan(name = "OutboxEventService.getAllEventsForAlbumIdOrderedByTimestampDescending")
+	@NewSpan("OutboxEventService.getAllEventsForAlbumIdOrderedByTimestampDescending")
 	public Iterable<OutboxEvent> getAllEventsForAlbumIdOrderedByTimestampDescending(@SpanTag(key = "arg.albumId") String albumId) {
 		return this.outboxEventRepository.findAllByAggregateIdOrderByEventTimestampDesc(albumId);
 	}
 
 	@Override
-	@NewSpan(name = "OutboxEventService.deleteAllEvents")
+	@NewSpan("OutboxEventService.deleteAllEvents")
 	public void deleteAllEvents() {
 		this.outboxEventRepository.deleteAll();
 	}
 
 	@Override
-	@NewSpan(name = "OutboxEventService.persistEvent")
+	@NewSpan("OutboxEventService.persistEvent")
 	public OutboxEvent persistEvent(@SpanTag(key = "arg.event") AlbumEvent event) {
 		return this.outboxEventRepository.save(
 			OutboxEvent.builder()

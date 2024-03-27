@@ -10,6 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.instrumentation.jdbc.datasource.JdbcTelemetry;
 
+/**
+ * This class is needed to allow tracing down to the JDBC level.
+ * Taken from https://opentelemetry.io/docs/languages/java/automatic/spring-boot/#jdbc-instrumentation
+ */
 @Configuration
 public class OtelDataSourceConfig {
 	@Bean
