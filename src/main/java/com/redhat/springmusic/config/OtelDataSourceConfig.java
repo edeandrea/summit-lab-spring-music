@@ -18,13 +18,13 @@ import io.opentelemetry.instrumentation.jdbc.datasource.JdbcTelemetry;
 public class OtelDataSourceConfig {
 	@Bean
 	public DataSource dataSource(DataSourceProperties dataSourceProperties, OpenTelemetry openTelemetry) {
-		var datasSource = DataSourceBuilder.create()
+		var dataSource = DataSourceBuilder.create()
 			.driverClassName(dataSourceProperties.determineDriverClassName())
 			.url(dataSourceProperties.determineUrl())
 			.username(dataSourceProperties.getUsername())
 			.password(dataSourceProperties.getPassword())
 			.build();
 
-		return JdbcTelemetry.create(openTelemetry).wrap(datasSource);
+		return JdbcTelemetry.create(openTelemetry).wrap(dataSource);
 	}
 }
