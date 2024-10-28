@@ -17,6 +17,9 @@ spring:
       config:
         enabled: false
 
+springdoc:
+  show-actuator: true
+
 management:
   endpoints:
     web:
