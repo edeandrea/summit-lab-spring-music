@@ -33,7 +33,6 @@ jobs:
       fail-fast: false
       matrix:
         java:
-          - '17'
           - '21'
     steps:
       - uses: actions/checkout@v4
@@ -50,36 +49,17 @@ jobs:
 
   native-build-test:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        graal:
-          - { graal: '21.0.2', java: '21' }
-          - { graal: '17.0.9', java: '17' }
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache and restore GraalVM CE (${{ matrix.graal.graal }})
-        id: check-graal-cache
-        uses: actions/cache@v4
-        with:
-          path: graalvm-community-jdk-${{ matrix.graal.graal }}_linux-x64_bin.tar.gz
-          key: graal-distro-${{ matrix.graal.graal }}
-
-      - name: Download GraalVM CE ${{ matrix.graal.graal }}
-        if: steps.check-graal-cache.outputs.cache-hit != 'true'
-        run: |
-          download_url="https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-${{ matrix.graal.graal }}/graalvm-community-jdk-${{ matrix.graal.graal }}_linux-x64_bin.tar.gz"
-          wget -q -O graalvm-community-jdk-${{ matrix.graal.graal }}_linux-x64_bin.tar.gz $download_url
-
       - name: Setup GraalVM CE ${{ matrix.graal.graal }} distro
-        uses: actions/setup-java@v4
+        uses: graalvm/setup-graalvm@v1
         with:
-          distribution: 'jdkfile'
-          jdkFile: graalvm-community-jdk-${{ matrix.graal.graal }}_linux-x64_bin.tar.gz
-          java-version: ${{ matrix.graal.java }}
-          architecture: x64
-          cache: maven
+          java-version: '21'
+          distribution: 'graalvm-community'
+          cache: 'maven'
+          native-image-job-reports: 'true'
+          native-image-pr-reports: 'true'
 
       - name: Build test native (${{ matrix.graal.graal }})
         run: ./mvnw -B clean verify -PnativeTest -Dmaven.compiler.release=${{ matrix.graal.java }}
