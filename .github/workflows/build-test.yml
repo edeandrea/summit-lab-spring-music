@@ -52,7 +52,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup GraalVM CE ${{ matrix.graal.graal }} distro
+      - name: Setup GraalVM CE ${{ matrix.java }} distro
         uses: graalvm/setup-graalvm@v1
         with:
           java-version: '21'
@@ -61,5 +61,5 @@ jobs:
           native-image-job-reports: 'true'
           native-image-pr-reports: 'true'
 
-      - name: Build test native (${{ matrix.graal.graal }})
-        run: ./mvnw -B clean verify -PnativeTest -Dmaven.compiler.release=${{ matrix.graal.java }}
+      - name: Build test native (${{ matrix.java }})
+        run: ./mvnw -B clean verify -PnativeTest -Dmaven.compiler.release=${{ matrix.java }}
