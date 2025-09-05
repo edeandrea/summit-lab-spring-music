@@ -18,7 +18,7 @@
 		<java.version>21</java.version>
 		<spring-cloud.version>2025.0.0</spring-cloud.version>
 		<springdoc.version>2.6.0</springdoc.version>
-		<lombok.version>1.18.38</lombok.version>
+		<lombok.version>1.18.40</lombok.version>
 		<jkube-maven-plugin.version>1.18.1</jkube-maven-plugin.version>
 		<jkube.generator.from>registry.redhat.io/ubi9/openjdk-21:latest</jkube.generator.from>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
